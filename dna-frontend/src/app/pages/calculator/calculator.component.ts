@@ -3,11 +3,12 @@ import { Component, Inject, NgZone, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TuiDialogService } from '@taiga-ui/core';
 import { SupabaseService } from 'app/core/services/supabase.service';
+import { TextboxComponent } from 'app/core/components/textbox/textbox.component';
 
 @Component({
   selector: 'app-calculator',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, TextboxComponent],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
 })
