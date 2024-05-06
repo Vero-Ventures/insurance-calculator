@@ -2,6 +2,7 @@
   <h1>"Logged in on ID: {{ this.userData() }}"</h1>
   <button (click)="this.signOut()">Sign out</button>
   <app-textbox></app-textbox>
+  <app-error></app-error>
 </div>
 <ng-template #notLoggedIn>
   <h1>You are not logged in.</h1>
