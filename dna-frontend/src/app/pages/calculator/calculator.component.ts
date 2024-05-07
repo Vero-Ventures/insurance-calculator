@@ -8,6 +8,7 @@ import { ErrorComponent } from 'app/core/components/error/error.component';
 import { ButtonComponent } from 'app/core/components/button/button.component';
 import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
 import { TabsComponent } from 'app/core/components/tabs/tabs.component';
+import { DatalistComponent } from 'app/core/components/datalist/datalist.component';
 
 @Component({
   selector: 'app-calculator',
@@ -19,6 +20,7 @@ import { TabsComponent } from 'app/core/components/tabs/tabs.component';
     ButtonComponent,
     AppbarComponent,
     TabsComponent,
+    DatalistComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
