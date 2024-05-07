@@ -15,6 +15,7 @@ import { BarchartComponent } from 'app/core/components/barchart/barchart.compone
 import { AxesComponent } from 'app/core/components/axes/axes.component';
 import { LinechartComponent } from 'app/core/components/linechart/linechart.component';
 import { NotificationComponent } from 'app/core/components/notification/notification.component';
+import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/checkbox-block.component';
 
 @Component({
   selector: 'app-calculator',
@@ -33,6 +34,7 @@ import { NotificationComponent } from 'app/core/components/notification/notifica
     AxesComponent,
     LinechartComponent,
     NotificationComponent,
+    CheckboxBlockComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
