@@ -8,7 +8,7 @@ import { ErrorComponent } from 'app/core/components/error/error.component';
 import { ButtonComponent } from 'app/core/components/button/button.component';
 import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
 import { TabsComponent } from 'app/core/components/tabs/tabs.component';
-import { DatalistComponent } from 'app/core/components/datalist/datalist.component';
+import { SelectComponent } from 'app/core/components/select/select.component';
 import { ProgressSegmentedComponent } from 'app/core/components/progress-segmented/progress-segmented.component';
 import { PiechartComponent } from 'app/core/components/piechart/piechart.component';
 import { BarchartComponent } from 'app/core/components/barchart/barchart.component';
@@ -28,7 +28,7 @@ import { InputSliderComponent } from 'app/core/components/input-slider/input-sli
     ButtonComponent,
     AppbarComponent,
     TabsComponent,
-    DatalistComponent,
+    SelectComponent,
     ProgressSegmentedComponent,
     PiechartComponent,
     BarchartComponent,
