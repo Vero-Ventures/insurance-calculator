@@ -7,6 +7,7 @@ import { TextboxComponent } from 'app/core/components/textbox/textbox.component'
 import { ErrorComponent } from 'app/core/components/error/error.component';
 import { ButtonComponent } from 'app/core/components/button/button.component';
 import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
+import { TabsComponent } from 'app/core/components/tabs/tabs.component';
 
 @Component({
   selector: 'app-calculator',
@@ -17,6 +18,7 @@ import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
     ErrorComponent,
     ButtonComponent,
     AppbarComponent,
+    TabsComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
