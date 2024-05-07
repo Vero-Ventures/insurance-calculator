@@ -9,6 +9,7 @@ import { ButtonComponent } from 'app/core/components/button/button.component';
 import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
 import { TabsComponent } from 'app/core/components/tabs/tabs.component';
 import { DatalistComponent } from 'app/core/components/datalist/datalist.component';
+import { ProgressSegmentedComponent } from 'app/core/components/progress-segmented/progress-segmented.component';
 
 @Component({
   selector: 'app-calculator',
@@ -21,6 +22,7 @@ import { DatalistComponent } from 'app/core/components/datalist/datalist.compone
     AppbarComponent,
     TabsComponent,
     DatalistComponent,
+    ProgressSegmentedComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
