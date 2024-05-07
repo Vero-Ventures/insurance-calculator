@@ -14,6 +14,7 @@ import { PiechartComponent } from 'app/core/components/piechart/piechart.compone
 import { BarchartComponent } from 'app/core/components/barchart/barchart.component';
 import { AxesComponent } from 'app/core/components/axes/axes.component';
 import { LinechartComponent } from 'app/core/components/linechart/linechart.component';
+import { NotificationComponent } from 'app/core/components/notification/notification.component';
 
 @Component({
   selector: 'app-calculator',
@@ -31,6 +32,7 @@ import { LinechartComponent } from 'app/core/components/linechart/linechart.comp
     BarchartComponent,
     AxesComponent,
     LinechartComponent,
+    NotificationComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
