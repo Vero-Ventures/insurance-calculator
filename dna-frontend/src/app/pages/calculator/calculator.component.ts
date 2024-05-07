@@ -11,6 +11,7 @@ import { TabsComponent } from 'app/core/components/tabs/tabs.component';
 import { DatalistComponent } from 'app/core/components/datalist/datalist.component';
 import { ProgressSegmentedComponent } from 'app/core/components/progress-segmented/progress-segmented.component';
 import { PiechartComponent } from 'app/core/components/piechart/piechart.component';
+import { BarchartComponent } from 'app/core/components/barchart/barchart.component';
 
 @Component({
   selector: 'app-calculator',
@@ -25,6 +26,7 @@ import { PiechartComponent } from 'app/core/components/piechart/piechart.compone
     DatalistComponent,
     ProgressSegmentedComponent,
     PiechartComponent,
+    BarchartComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
