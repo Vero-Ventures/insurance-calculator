@@ -16,6 +16,7 @@ import { AxesComponent } from 'app/core/components/axes/axes.component';
 import { LinechartComponent } from 'app/core/components/linechart/linechart.component';
 import { NotificationComponent } from 'app/core/components/notification/notification.component';
 import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/checkbox-block.component';
+import { InputSliderComponent } from 'app/core/components/input-slider/input-slider.component';
 
 @Component({
   selector: 'app-calculator',
@@ -35,6 +36,7 @@ import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/check
     LinechartComponent,
     NotificationComponent,
     CheckboxBlockComponent,
+    InputSliderComponent,
   ],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.scss',
