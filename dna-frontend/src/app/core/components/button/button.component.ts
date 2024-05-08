@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiButtonModule } from '@taiga-ui/core';
 
 @Component({
@@ -8,4 +8,7 @@ import { TuiButtonModule } from '@taiga-ui/core';
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
 })
-export class ButtonComponent {}
+export class ButtonComponent {
+  @Input() icon = '';
+  @Input() text = '';
+}

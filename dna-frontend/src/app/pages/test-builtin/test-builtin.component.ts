@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { TextboxComponent } from 'app/core/components/textbox/textbox.component';
 import { ErrorComponent } from 'app/core/components/error/error.component';
 import { ButtonComponent } from 'app/core/components/button/button.component';
@@ -42,10 +42,12 @@ import { TuiValidationError } from '@taiga-ui/cdk';
   styleUrl: './test-builtin.component.scss',
 })
 export class TestBuiltinComponent {
-  @Input() formGroup = new FormGroup({
+  formGroup = new FormGroup({
     textboxControlName: new FormControl('prefilled value'),
   });
-  @Input() textInputLabel = "It's a label!";
-  @Input() pageName = 'Testing page';
-  @Input() validationError = new TuiValidationError('Error! Oh no!');
+  textInputLabel = "It's a label!";
+  pageName = 'Testing page';
+  validationError = new TuiValidationError('Error! Oh no!');
+  buttonIcon = 'tuiIconSettings';
+  buttonText = 'Press me!';
 }
