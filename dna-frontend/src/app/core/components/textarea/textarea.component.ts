@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiTextareaModule } from '@taiga-ui/kit';
 
 @Component({
@@ -15,7 +10,6 @@ import { TuiTextareaModule } from '@taiga-ui/kit';
   styleUrl: './textarea.component.scss',
 })
 export class TextareaComponent {
-  testForm = new FormGroup({
-    testValue: new FormControl('Some prefilled text'),
-  });
+  @Input() formControlName = 'textareaControlName';
+  @Input() label = '';
 }

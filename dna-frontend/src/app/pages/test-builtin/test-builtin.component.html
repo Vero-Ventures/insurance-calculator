@@ -15,7 +15,9 @@
     [min]="min"
     [quantum]="quantum"
     [label]="sliderInputLabel"></app-input-slider>
-  <app-textarea></app-textarea>
+  <app-textarea
+    formControlName="textareaControlName"
+    [label]="textareaLabel"></app-textarea>
 </form>
 
 <app-error [error]="validationError"></app-error>

@@ -47,6 +47,7 @@ export class TestBuiltinComponent {
     selectControlName: new FormControl(),
     checkboxControlName: new FormControl(),
     inputSliderControlName: new FormControl(),
+    textareaControlName: new FormControl("Yeah, it's a big ol textarea!"),
   });
   textInputLabel = "It's a label!";
   selectLabel = 'Choice your option';
@@ -57,6 +58,8 @@ export class TestBuiltinComponent {
   max = 10;
   min = 2;
   quantum = 2;
+
+  textareaLabel = 'Type something really long';
 
   pageName = 'Testing page';
   validationError = new TuiValidationError('Error! Oh no!');
