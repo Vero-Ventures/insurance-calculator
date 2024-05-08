@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiInputSliderModule } from '@taiga-ui/kit';
 
 @Component({
@@ -15,16 +10,9 @@ import { TuiInputSliderModule } from '@taiga-ui/kit';
   styleUrl: './input-slider.component.scss',
 })
 export class InputSliderComponent {
-  readonly testValue = 10;
-  readonly min = 5;
-  readonly max = 20;
-  readonly sliderStep = 1;
-  readonly steps = (this.max - this.min) / this.sliderStep;
-  readonly quantum = 0.01;
-
-  readonly hint = `Dragging slider change input by ${this.sliderStep}.\nBut you can type decimal number which is multiple of ${this.quantum}.`;
-
-  testForm = new FormGroup({
-    testValue: new FormControl(),
-  });
+  @Input() formControlName = 'inputSliderControlName';
+  @Input() max = 10;
+  @Input() min = 5;
+  @Input() quantum = 1;
+  @Input() label = '';
 }

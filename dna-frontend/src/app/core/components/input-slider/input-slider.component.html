@@ -1,5 +1,7 @@
-<form [formGroup]="testForm">
-  <tui-input-slider [formControlName]="testValue" [max]="1000" [quantum]="10">
-    Choose your value
-  </tui-input-slider>
-</form>
+<tui-input-slider
+  [formControlName]="formControlName"
+  [max]="max"
+  [min]="min"
+  [quantum]="quantum">
+  {{ label }}
+</tui-input-slider>

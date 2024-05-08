@@ -9,7 +9,12 @@
   <app-checkbox-block
     formControlName="checkboxControlName"
     [checkboxLabel]="checkboxLabel"></app-checkbox-block>
-  <app-input-slider></app-input-slider>
+  <app-input-slider
+    formControlName="selectControlName"
+    [max]="max"
+    [min]="min"
+    [quantum]="quantum"
+    [label]="sliderInputLabel"></app-input-slider>
   <app-textarea></app-textarea>
 </form>
 

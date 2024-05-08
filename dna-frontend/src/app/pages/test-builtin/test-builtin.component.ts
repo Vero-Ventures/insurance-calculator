@@ -46,11 +46,17 @@ export class TestBuiltinComponent {
     textboxControlName: new FormControl('prefilled value'),
     selectControlName: new FormControl(),
     checkboxControlName: new FormControl(),
+    inputSliderControlName: new FormControl(),
   });
   textInputLabel = "It's a label!";
   selectLabel = 'Choice your option';
   items = ['First Option', 'Second Option', 'Third Option'];
   checkboxLabel = 'Check me off';
+
+  sliderInputLabel = 'Drag my handle to choose a number';
+  max = 10;
+  min = 2;
+  quantum = 2;
 
   pageName = 'Testing page';
   validationError = new TuiValidationError('Error! Oh no!');
