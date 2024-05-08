@@ -17,7 +17,10 @@
   [segments]="segmentBarSegments"
   [value]="segmentBarValue"></app-progress-segmented>
 <app-piechart [value]="piechartValues"></app-piechart>
-<app-axes>
+<app-axes
+  [axisXLabels]="axisXLabels"
+  [axisYLabels]="axisYLabels"
+  [axisYSecondaryLabels]="axisYSecondaryLabels">
   <app-barchart></app-barchart>
 </app-axes>
 <app-axes>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiAxesModule, TuiLineHandler } from '@taiga-ui/addon-charts';
 
 @Component({
@@ -9,9 +9,9 @@ import { TuiAxesModule, TuiLineHandler } from '@taiga-ui/addon-charts';
   styleUrl: './axes.component.scss',
 })
 export class AxesComponent {
-  readonly axisXLabels = ['Jan 2019', 'Feb', 'Mar'];
-  readonly axisYLabels = ['', '25%', '50%', '75%', '100%'];
-  readonly axisYSecondaryLabels = ['80 k', '100 k', '120 k'];
+  @Input() axisXLabels = ['Jan 2019', 'Feb', 'Mar'];
+  @Input() axisYLabels = ['', '25%', '50%', '75%', '100%'];
+  @Input() axisYSecondaryLabels = ['80 k', '100 k', '120 k'];
   readonly verticalLinesHandler: TuiLineHandler = (index, total) =>
     index === total - 1 ? 'none' : 'dashed';
 }

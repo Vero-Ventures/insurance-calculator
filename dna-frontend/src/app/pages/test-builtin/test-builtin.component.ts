@@ -59,4 +59,8 @@ export class TestBuiltinComponent {
   segmentBarValue = 3;
 
   piechartValues = [20, 20, 35, 25];
+
+  axisXLabels = ['July 2025', 'August', 'September'];
+  axisYLabels = ['', '25%', '50%', '75%', '100%'];
+  axisYSecondaryLabels = ['500 k', '1000 k', '1.5 m'];
 }
