@@ -57,4 +57,6 @@ export class TestBuiltinComponent {
   segmentBarMax = 8;
   segmentBarSegments = 8;
   segmentBarValue = 3;
+
+  piechartValues = [20, 20, 35, 25];
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiPieChartModule } from '@taiga-ui/addon-charts';
 
 @Component({
@@ -9,5 +9,5 @@ import { TuiPieChartModule } from '@taiga-ui/addon-charts';
   styleUrl: './piechart.component.scss',
 })
 export class PiechartComponent {
-  readonly value = [25, 25, 50];
+  @Input() value = [25, 25, 50];
 }
