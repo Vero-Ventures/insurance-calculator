@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiTabsModule } from '@taiga-ui/kit';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-tabs',
   standalone: true,
-  imports: [TuiTabsModule],
+  imports: [TuiTabsModule, NgFor],
   templateUrl: './tabs.component.html',
   styleUrl: './tabs.component.scss',
 })
 export class TabsComponent {
   activeItemIndex = 0;
 
-  constructor() {}
+  @Input() tabs = ['Tab Alpha', 'Tab Bravo'];
 
-  onClick(activeIndex: number): void {
-    this.activeItemIndex = activeIndex;
+  onClick(newIndex: number): void {
+    this.activeItemIndex = newIndex;
   }
 }
