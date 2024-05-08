@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiValidationError } from '@taiga-ui/cdk';
 import { TuiErrorModule } from '@taiga-ui/core';
 
@@ -11,7 +11,7 @@ import { TuiErrorModule } from '@taiga-ui/core';
 })
 export class ErrorComponent {
   enabled = false;
-  error = new TuiValidationError('Error component');
+  @Input() error = new TuiValidationError('Error component');
 
   get computedError(): TuiValidationError | null {
     return this.enabled ? this.error : null;

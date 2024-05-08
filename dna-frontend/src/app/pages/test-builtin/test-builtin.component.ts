@@ -15,6 +15,7 @@ import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/check
 import { InputSliderComponent } from 'app/core/components/input-slider/input-slider.component';
 import { TextareaComponent } from 'app/core/components/textarea/textarea.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TuiValidationError } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'app-test-builtin',
@@ -46,4 +47,5 @@ export class TestBuiltinComponent {
   });
   @Input() textInputLabel = "It's a label!";
   @Input() pageName = 'Testing page';
+  @Input() validationError = new TuiValidationError('Error! Oh no!');
 }
