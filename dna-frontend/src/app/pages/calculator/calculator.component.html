@@ -1,24 +1,6 @@
 <div *ngIf="this.userData(); else notLoggedIn">
   <h1>"Logged in on ID: {{ this.userData() }}"</h1>
   <button (click)="this.signOut()">Sign out</button>
-  <app-textbox></app-textbox>
-  <app-error></app-error>
-  <app-button></app-button>
-  <app-appbar></app-appbar>
-  <app-tabs></app-tabs>
-  <app-select></app-select>
-  <app-progress-segmented></app-progress-segmented>
-  <app-piechart></app-piechart>
-  <app-axes>
-    <app-barchart></app-barchart>
-  </app-axes>
-  <app-axes>
-    <app-linechart></app-linechart>
-  </app-axes>
-  <app-notification></app-notification>
-  <app-checkbox-block></app-checkbox-block>
-  <app-input-slider></app-input-slider>
-  <app-textarea></app-textarea>
 </div>
 <ng-template #notLoggedIn>
   <h1>You are not logged in.</h1>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiAppBarModule } from '@taiga-ui/experimental';
 import { TuiSvgModule } from '@taiga-ui/core';
 
@@ -9,4 +9,6 @@ import { TuiSvgModule } from '@taiga-ui/core';
   templateUrl: './appbar.component.html',
   styleUrl: './appbar.component.scss',
 })
-export class AppbarComponent {}
+export class AppbarComponent {
+  @Input() pageName = "It's an app bar";
+}

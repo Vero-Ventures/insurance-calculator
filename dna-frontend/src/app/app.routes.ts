@@ -17,4 +17,12 @@ export const routes: Routes = [
       ),
     title: 'DNA | Login',
   },
+  {
+    path: 'test-builtin',
+    loadComponent: () =>
+      import('./pages/test-builtin/test-builtin.component').then(
+        com => com.TestBuiltinComponent
+      ),
+    title: 'DNA | Login',
+  },
 ];
