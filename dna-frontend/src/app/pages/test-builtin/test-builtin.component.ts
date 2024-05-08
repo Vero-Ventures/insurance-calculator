@@ -44,10 +44,13 @@ import { TuiValidationError } from '@taiga-ui/cdk';
 export class TestBuiltinComponent {
   formGroup = new FormGroup({
     textboxControlName: new FormControl('prefilled value'),
+    selectControlName: new FormControl(),
+    checkboxControlName: new FormControl(),
   });
   textInputLabel = "It's a label!";
   selectLabel = 'Choice your option';
   items = ['First Option', 'Second Option', 'Third Option'];
+  checkboxLabel = 'Check me off';
 
   pageName = 'Testing page';
   validationError = new TuiValidationError('Error! Oh no!');
@@ -63,4 +66,6 @@ export class TestBuiltinComponent {
   axisXLabels = ['July 2025', 'August', 'September'];
   axisYLabels = ['', '25%', '50%', '75%', '100%'];
   axisYSecondaryLabels = ['500 k', '1000 k', '1.5 m'];
+
+  notification = 'This component warns you when something is wrong.';
 }

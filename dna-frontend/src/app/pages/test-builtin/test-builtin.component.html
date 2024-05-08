@@ -6,6 +6,11 @@
     formControlName="selectControlName"
     [items]="items"
     [selectLabel]="selectLabel"></app-select>
+  <app-checkbox-block
+    formControlName="checkboxControlName"
+    [checkboxLabel]="checkboxLabel"></app-checkbox-block>
+  <app-input-slider></app-input-slider>
+  <app-textarea></app-textarea>
 </form>
 
 <app-error [error]="validationError"></app-error>
@@ -23,10 +28,10 @@
   [axisYSecondaryLabels]="axisYSecondaryLabels">
   <app-barchart></app-barchart>
 </app-axes>
-<app-axes>
+<app-axes
+  [axisXLabels]="axisXLabels"
+  [axisYLabels]="axisYLabels"
+  [axisYSecondaryLabels]="axisYSecondaryLabels">
   <app-linechart></app-linechart>
 </app-axes>
-<app-notification></app-notification>
-<app-checkbox-block></app-checkbox-block>
-<app-input-slider></app-input-slider>
-<app-textarea></app-textarea>
+<app-notification [notification]="notification"></app-notification>
