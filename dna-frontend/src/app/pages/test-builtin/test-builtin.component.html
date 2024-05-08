@@ -2,13 +2,16 @@
   <app-textbox
     formControlName="textboxControlName"
     [textInputLabel]="textInputLabel"></app-textbox>
+  <app-select
+    formControlName="selectControlName"
+    [items]="items"
+    [selectLabel]="selectLabel"></app-select>
 </form>
 
 <app-error [error]="validationError"></app-error>
 <app-button [icon]="buttonIcon" [text]="buttonText"></app-button>
 <app-appbar [pageName]="pageName"></app-appbar>
 <app-tabs></app-tabs>
-<app-select></app-select>
 <app-progress-segmented></app-progress-segmented>
 <app-piechart></app-piechart>
 <app-axes>

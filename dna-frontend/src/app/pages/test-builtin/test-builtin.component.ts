@@ -46,6 +46,9 @@ export class TestBuiltinComponent {
     textboxControlName: new FormControl('prefilled value'),
   });
   textInputLabel = "It's a label!";
+  selectLabel = 'Choice your option';
+  items = ['First Option', 'Second Option', 'Third Option'];
+
   pageName = 'Testing page';
   validationError = new TuiValidationError('Error! Oh no!');
   buttonIcon = 'tuiIconSettings';
