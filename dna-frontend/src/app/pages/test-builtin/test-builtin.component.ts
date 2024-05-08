@@ -53,4 +53,8 @@ export class TestBuiltinComponent {
   validationError = new TuiValidationError('Error! Oh no!');
   buttonIcon = 'tuiIconSettings';
   buttonText = 'Press me!';
+
+  segmentBarMax = 8;
+  segmentBarSegments = 8;
+  segmentBarValue = 3;
 }

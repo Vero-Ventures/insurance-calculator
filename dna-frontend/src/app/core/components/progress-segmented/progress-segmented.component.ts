@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiProgressModule } from '@taiga-ui/kit';
 import { TuiProgressSegmentedModule } from '@taiga-ui/experimental';
 
@@ -9,4 +9,8 @@ import { TuiProgressSegmentedModule } from '@taiga-ui/experimental';
   templateUrl: './progress-segmented.component.html',
   styleUrl: './progress-segmented.component.scss',
 })
-export class ProgressSegmentedComponent {}
+export class ProgressSegmentedComponent {
+  @Input() max = 10;
+  @Input() segments = 10;
+  @Input() value = 5;
+}

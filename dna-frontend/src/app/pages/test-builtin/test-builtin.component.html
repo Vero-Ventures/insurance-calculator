@@ -12,7 +12,10 @@
 <app-button [icon]="buttonIcon" [text]="buttonText"></app-button>
 <app-appbar [pageName]="pageName"></app-appbar>
 <app-tabs></app-tabs>
-<app-progress-segmented></app-progress-segmented>
+<app-progress-segmented
+  [max]="segmentBarMax"
+  [segments]="segmentBarSegments"
+  [value]="segmentBarValue"></app-progress-segmented>
 <app-piechart></app-piechart>
 <app-axes>
   <app-barchart></app-barchart>
