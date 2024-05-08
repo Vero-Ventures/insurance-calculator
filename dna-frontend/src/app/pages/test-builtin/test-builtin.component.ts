@@ -14,11 +14,13 @@ import { NotificationComponent } from 'app/core/components/notification/notifica
 import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/checkbox-block.component';
 import { InputSliderComponent } from 'app/core/components/input-slider/input-slider.component';
 import { TextareaComponent } from 'app/core/components/textarea/textarea.component';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-test-builtin',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     TextboxComponent,
     ErrorComponent,
     ButtonComponent,
@@ -39,5 +41,9 @@ import { TextareaComponent } from 'app/core/components/textarea/textarea.compone
   styleUrl: './test-builtin.component.scss',
 })
 export class TestBuiltinComponent {
+  @Input() formGroup = new FormGroup({
+    textboxControlName: new FormControl('prefilled value'),
+  });
+  @Input() textInputLabel = "It's a label!";
   @Input() pageName = 'Testing page';
 }

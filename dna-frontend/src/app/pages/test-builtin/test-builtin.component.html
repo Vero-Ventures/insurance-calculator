@@ -1,4 +1,9 @@
-<app-textbox></app-textbox>
+<form [formGroup]="formGroup">
+  <app-textbox
+    formControlName="textboxControlName"
+    [textInputLabel]="textInputLabel"></app-textbox>
+</form>
+
 <app-error></app-error>
 <app-button></app-button>
 <app-appbar [pageName]="pageName"></app-appbar>

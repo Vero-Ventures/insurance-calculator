@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule } from '@taiga-ui/kit';
-import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-textbox',
@@ -11,7 +10,6 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './textbox.component.scss',
 })
 export class TextboxComponent {
-  testForm = new FormGroup({
-    testValue: new FormControl('test@test.ca'),
-  });
+  @Input() formControlName = 'textboxControlName';
+  @Input() textInputLabel = '';
 }
