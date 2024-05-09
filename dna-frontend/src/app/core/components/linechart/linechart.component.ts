@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { TuiLineChartModule } from '@taiga-ui/addon-charts';
+import { Component, Input } from '@angular/core';
+import { TuiAxesModule, TuiLineChartModule } from '@taiga-ui/addon-charts';
 import { TUI_DEFAULT_STRINGIFY, TuiContextWithImplicit } from '@taiga-ui/cdk';
 import { TuiPoint } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-linechart',
   standalone: true,
-  imports: [TuiLineChartModule],
+  imports: [TuiLineChartModule, TuiAxesModule],
   templateUrl: './linechart.component.html',
   styleUrl: './linechart.component.scss',
 })
@@ -22,6 +22,9 @@ export class LinechartComponent {
   ];
 
   readonly stringify = TUI_DEFAULT_STRINGIFY;
+
+  @Input() labelsX = ['Jan 2019', 'Feb', 'Mar'];
+  @Input() labelsY = ['0', '10 000'];
 
   readonly hintContent = ({
     $implicit,

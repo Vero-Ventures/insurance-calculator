@@ -29,16 +29,6 @@
   [segments]="segmentBarSegments"
   [value]="segmentBarValue"></app-progress-segmented>
 <app-piechart [value]="piechartValues"></app-piechart>
-<app-axes
-  [axisXLabels]="axisXLabels"
-  [axisYLabels]="axisYLabels"
-  [axisYSecondaryLabels]="axisYSecondaryLabels">
-  <app-barchart [value]="barchartValues" [max]="barchartMax"></app-barchart>
-</app-axes>
-<app-axes
-  [axisXLabels]="axisXLabels"
-  [axisYLabels]="axisYLabels"
-  [axisYSecondaryLabels]="axisYSecondaryLabels">
-  <app-linechart></app-linechart>
-</app-axes>
+<app-barchart [value]="barchartValues" [max]="barchartMax"></app-barchart>
+<app-linechart></app-linechart>
 <app-notification [notification]="notification"></app-notification>

@@ -8,7 +8,6 @@ import { SelectComponent } from 'app/core/components/select/select.component';
 import { ProgressSegmentedComponent } from 'app/core/components/progress-segmented/progress-segmented.component';
 import { PiechartComponent } from 'app/core/components/piechart/piechart.component';
 import { BarchartComponent } from 'app/core/components/barchart/barchart.component';
-import { AxesComponent } from 'app/core/components/axes/axes.component';
 import { LinechartComponent } from 'app/core/components/linechart/linechart.component';
 import { NotificationComponent } from 'app/core/components/notification/notification.component';
 import { CheckboxBlockComponent } from 'app/core/components/checkbox-block/checkbox-block.component';
@@ -31,7 +30,6 @@ import { TuiValidationError } from '@taiga-ui/cdk';
     ProgressSegmentedComponent,
     PiechartComponent,
     BarchartComponent,
-    AxesComponent,
     LinechartComponent,
     NotificationComponent,
     CheckboxBlockComponent,

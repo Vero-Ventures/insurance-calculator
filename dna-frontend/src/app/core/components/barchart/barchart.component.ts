@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { TuiBarChartModule } from '@taiga-ui/addon-charts';
+import { TuiAxesModule, TuiBarChartModule } from '@taiga-ui/addon-charts';
 import { tuiCeil } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'app-barchart',
   standalone: true,
-  imports: [TuiBarChartModule],
+  imports: [TuiBarChartModule, TuiAxesModule],
   templateUrl: './barchart.component.html',
   styleUrl: './barchart.component.scss',
 })
@@ -23,8 +23,8 @@ export class BarchartComponent {
 
   @Input() max = 0;
 
-  // @Input() labelsX = ['Jan 2019', 'Feb', 'Mar'];
-  // @Input() labelsY = ['0', '10 000'];
+  @Input() labelsX = ['Jan 2019', 'Feb', 'Mar'];
+  @Input() labelsY = ['0', '10 000'];
 
   getHeight(max: number): number {
     return (max / tuiCeil(max, -3)) * 100;
