@@ -1,12 +1,12 @@
 <tui-axes
-  axisYName="Target"
-  axisYSecondaryName="Sum"
+  [axisYName]="axisYName"
+  [axisYSecondaryName]="axisYSecondaryName"
   class="axes"
   [axisXLabels]="axisXLabels"
   [axisYInset]="true"
   [axisYLabels]="axisYLabels"
   [axisYSecondaryLabels]="axisYSecondaryLabels"
-  [horizontalLines]="2"
-  [verticalLines]="3"
+  [horizontalLines]="horizontalLines"
+  [verticalLines]="verticalLines"
   [verticalLinesHandler]="verticalLinesHandler">
 </tui-axes>

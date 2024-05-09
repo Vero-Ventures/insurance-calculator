@@ -9,9 +9,13 @@ import { TuiAxesModule, TuiLineHandler } from '@taiga-ui/addon-charts';
   styleUrl: './axes.component.scss',
 })
 export class AxesComponent {
+  @Input() axisYName = '';
+  @Input() axisYSecondaryName = '';
   @Input() axisXLabels = ['Jan 2019', 'Feb', 'Mar'];
   @Input() axisYLabels = ['', '25%', '50%', '75%', '100%'];
   @Input() axisYSecondaryLabels = ['80 k', '100 k', '120 k'];
+  @Input() horizontalLines = 5;
+  @Input() verticalLines = 5;
   readonly verticalLinesHandler: TuiLineHandler = (index, total) =>
     index === total - 1 ? 'none' : 'dashed';
 }

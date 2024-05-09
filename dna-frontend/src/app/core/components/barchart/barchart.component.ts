@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TuiBarChartModule } from '@taiga-ui/addon-charts';
 import { tuiCeil } from '@taiga-ui/cdk';
 
@@ -10,7 +10,7 @@ import { tuiCeil } from '@taiga-ui/cdk';
   styleUrl: './barchart.component.scss',
 })
 export class BarchartComponent {
-  readonly value = [
+  @Input() value = [
     [
       3660, 8281, 1069, 9034, 5797, 6918, 8495, 3234, 6204, 1392, 2088, 8637,
       8779,
@@ -21,8 +21,10 @@ export class BarchartComponent {
     ],
   ];
 
-  readonly labelsX = ['Jan 2019', 'Feb', 'Mar'];
-  readonly labelsY = ['0', '10 000'];
+  @Input() max = 0;
+
+  // @Input() labelsX = ['Jan 2019', 'Feb', 'Mar'];
+  // @Input() labelsY = ['0', '10 000'];
 
   getHeight(max: number): number {
     return (max / tuiCeil(max, -3)) * 100;

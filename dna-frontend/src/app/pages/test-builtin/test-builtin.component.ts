@@ -72,6 +72,18 @@ export class TestBuiltinComponent {
 
   piechartValues = [20, 20, 35, 25];
 
+  barchartValues = [
+    [
+      3660, 8281, 1069, 9034, 5797, 6918, 8495, 3234, 6204, 1392, 2088, 8637,
+      8779,
+    ],
+    [
+      3952, 3671, 3781, 5323, 3537, 4107, 2962, 3320, 8632, 4755, 9130, 1195,
+      3574,
+    ],
+  ];
+  barchartMax = 10000;
+
   axisXLabels = ['July 2025', 'August', 'September'];
   axisYLabels = ['', '25%', '50%', '75%', '100%'];
   axisYSecondaryLabels = ['500 k', '1000 k', '1.5 m'];
