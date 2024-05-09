@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import {
   TuiNotificationModule,
+  TuiSvgModule,
   tuiNotificationOptionsProvider,
 } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [TuiNotificationModule],
+  imports: [TuiNotificationModule, TuiSvgModule],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
   providers: [
