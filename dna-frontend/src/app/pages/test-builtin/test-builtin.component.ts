@@ -15,6 +15,7 @@ import { InputSliderComponent } from 'app/core/components/input-slider/input-sli
 import { TextareaComponent } from 'app/core/components/textarea/textarea.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TuiValidationError } from '@taiga-ui/cdk';
+import { TuiPoint } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-test-builtin',
@@ -81,10 +82,24 @@ export class TestBuiltinComponent {
     ],
   ];
   barchartMax = 10000;
+  barchartLabelsX = ['July 2025', 'August', 'September'];
+  barchartLabelsY = ['0', '2500', '5000', '7500', '10000'];
 
-  axisXLabels = ['July 2025', 'August', 'September'];
-  axisYLabels = ['', '25%', '50%', '75%', '100%'];
-  axisYSecondaryLabels = ['500 k', '1000 k', '1.5 m'];
+  linechartValues: readonly TuiPoint[] = [
+    [50, 50],
+    [100, 75],
+    [150, 50],
+    [200, 150],
+    [250, 155],
+    [300, 190],
+    [350, 90],
+  ];
+  linechartX = 0;
+  linechartY = 0;
+  linechartWidth = 400;
+  linechartHeight = 200;
+  linechartLabelsX = ['July 2025', 'August', 'September'];
+  linechartLabelsY = ['0', '2500', '5000', '7500', '10000'];
 
   notification = 'This component warns you when something is wrong.';
 }

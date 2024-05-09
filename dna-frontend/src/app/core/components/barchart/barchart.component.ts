@@ -26,6 +26,8 @@ export class BarchartComponent {
   @Input() labelsX = ['Jan 2019', 'Feb', 'Mar'];
   @Input() labelsY = ['0', '10 000'];
 
+  @Input() horizontalLines = 0;
+
   getHeight(max: number): number {
     return (max / tuiCeil(max, -3)) * 100;
   }

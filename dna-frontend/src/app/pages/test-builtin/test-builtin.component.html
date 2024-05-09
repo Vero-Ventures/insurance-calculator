@@ -29,6 +29,17 @@
   [segments]="segmentBarSegments"
   [value]="segmentBarValue"></app-progress-segmented>
 <app-piechart [value]="piechartValues"></app-piechart>
-<app-barchart [value]="barchartValues" [max]="barchartMax"></app-barchart>
-<app-linechart></app-linechart>
+<app-barchart
+  [value]="barchartValues"
+  [max]="barchartMax"
+  [labelsX]="barchartLabelsX"
+  [labelsY]="barchartLabelsY"></app-barchart>
+<app-linechart
+  [value]="linechartValues"
+  [labelsX]="linechartLabelsX"
+  [labelsY]="linechartLabelsY"
+  [x]="linechartX"
+  [y]="linechartY"
+  [width]="linechartWidth"
+  [height]="linechartHeight"></app-linechart>
 <app-notification [notification]="notification"></app-notification>
