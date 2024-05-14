@@ -23,7 +23,7 @@
     "@angular/forms": "^17.3.0",
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
-    "@angular/router": "^17.3.0",
+    "@angular/router": "^17.3.8",
     "@ngrx/store": "^17.2.0",
     "@supabase/supabase-js": "^2.43.0",
     "@taiga-ui/addon-charts": "^3.76.0",
