@@ -1,6 +1,7 @@
 import { test, chromium } from '@playwright/test';
+import { config } from './config';
 
-test('Signup test', async () => {
+test('Login test', async () => {
   // Open a browser instance
   const browser = await chromium.launch();
   // Launch a new browser context
@@ -9,23 +10,23 @@ test('Signup test', async () => {
   const page = await browser.newPage();
 
   // Navigate to the URL
-  await page.goto('http://localhost:4200/auth');
+  await page.goto(`${config.BASE_URL}/auth`);
 
   // Select elements
-  const signInEmail = await page.$('#signinemail');
-  const signInPassword = await page.$('#signinpassword');
+  const email = await page.$('input:has-text("Email")');
+  const password = await page.$('input:has-text("Password")');
 
   // TODO: Eventually want to randomly generate email
-  await signInEmail?.fill('jyoon72@my.bcit.ca');
+  await email?.fill('jyoon72@my.bcit.ca');
   // TODO: Eventually want to create validation for password
-  await signInPassword?.fill('123456');
+  await password?.fill('123456');
 
   // TODO: Maybe make the button text "Sign in" instead of "Login" to stay consistent
   const signInButton = await page.$('button:has-text("Login")');
   await signInButton?.click();
 
   try {
-    await page.waitForSelector('text=Sign out', { state: 'visible' });
+    await page.waitForURL(`${config.BASE_URL}/landing`);
     console.log('Sign-in test passed');
   } catch (error) {
     console.error('Sign-in test failed');

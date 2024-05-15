@@ -1,4 +1,5 @@
 import { test, chromium } from '@playwright/test';
+import { config } from './config';
 
 test('Signup test', async () => {
   // Open a browser instance
@@ -9,25 +10,22 @@ test('Signup test', async () => {
   const page = await browser.newPage();
 
   // Navigate to the URL
-  await page.goto('http://localhost:4200/auth');
+  await page.goto(`${config.BASE_URL}/auth`);
 
   // Select elements
-  const signupEmail = await page.$('#signupemail');
-  const signupPassword = await page.$('#signuppassword');
+  const email = await page.$('input:has-text("Email")');
+  const password = await page.$('input:has-text("Password")');
 
   // TODO: Eventually want to randomly generate email
-  await signupEmail?.fill('jyoon72@my.bcit.ca');
+  await email?.fill('jyoon72@my.bcit.ca');
   // TODO: Eventually want to create validation for password
-  await signupPassword?.fill('123456');
+  await password?.fill('123456');
 
   const signupButton = await page.$('button:has-text("Signup")');
   await signupButton?.click();
 
   try {
-    await page.waitForSelector(
-      'text=Check your email to complete your sign up.',
-      { state: 'visible' }
-    );
+    await page.waitForURL(`${config.BASE_URL}/landing`);
     console.log('Signup test passed');
   } catch (error) {
     console.error('Signup test failed');
