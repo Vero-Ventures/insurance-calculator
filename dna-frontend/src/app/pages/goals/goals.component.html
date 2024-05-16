@@ -40,7 +40,9 @@
   </form>
   <ng-template #elseBlock>
     <div class="goals-result-container gap-2 flex column c-center">
-      <p>Output</p>
+      <app-value-card
+        [value]="currentValueOfFixedAssets"
+        [compact]="true"></app-value-card>
     </div>
   </ng-template>
 </app-calculator>
