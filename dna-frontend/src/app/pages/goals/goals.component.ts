@@ -19,6 +19,7 @@ import {
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
+import { BarChartComponent } from 'app/core/components/bar-chart/bar-chart.component';
 
 @Component({
   selector: 'app-goals',
@@ -40,6 +41,7 @@ import { ValueCardComponent } from 'app/core/components/value-card/value-card.co
     NgIf,
     ValueCardComponent,
     CalculatorComponent,
+    BarChartComponent,
   ],
   templateUrl: './goals.component.html',
   styleUrl: './goals.component.scss',
