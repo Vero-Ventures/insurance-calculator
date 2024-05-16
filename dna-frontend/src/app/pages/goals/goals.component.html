@@ -13,6 +13,7 @@
       <input tuiTextfield />
     </tui-input>
     <app-horizontal-divider></app-horizontal-divider>
+    <!-- Populate dynamically -->
     <div class="goal-section flex column m-start c-center gap-2">
       <tui-input tuiTextfieldSize="s">
         Name
@@ -32,8 +33,8 @@
         class="delete-button">
         Delete
       </button>
+      <app-horizontal-divider></app-horizontal-divider>
     </div>
-    <app-horizontal-divider></app-horizontal-divider>
     <button tuiButton type="button" appearance="primary" class="delete-button">
       Add New
     </button>
@@ -43,6 +44,35 @@
       <app-value-card
         [value]="currentValueOfFixedAssets"
         [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="futureValueOfFixedAssets"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="currentValueOfLiquidAssets"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="futureValueOfLiquidAssets"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="currentValueOfAssetsToBeSold"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="futureValueOfAssetsToBeSold"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="percentageLiquidityAllocatedToGoals"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="liquidityPreserved"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="liquidityAllocatedTowardsGoals"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="totalSumOfAllGoals"
+        [compact]="true"></app-value-card>
+      <app-value-card [value]="surplus" [compact]="true"></app-value-card>
+      <app-bar-chart header="Value ($)"></app-bar-chart>
     </div>
   </ng-template>
 </app-calculator>
