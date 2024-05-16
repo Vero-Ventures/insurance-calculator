@@ -1,8 +1,13 @@
 import { NgIf } from '@angular/common';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiDataListModule, TuiNotificationModule } from '@taiga-ui/core';
 import {
+  TuiButtonModule,
+  TuiDataListModule,
+  TuiNotificationModule,
+} from '@taiga-ui/core';
+import {
+  TuiCheckboxBlockModule,
   TuiDataListWrapperModule,
   TuiInputDateModule,
   TuiInputModule,
@@ -13,6 +18,7 @@ import {
 } from '@taiga-ui/kit';
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { MultiValueCardComponent } from 'app/core/components/multi-value-card/multi-value-card.component';
+import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 
 @Component({
   selector: 'app-goals',
@@ -28,6 +34,9 @@ import { MultiValueCardComponent } from 'app/core/components/multi-value-card/mu
     TuiDataListWrapperModule,
     TuiTabsModule,
     TuiNotificationModule,
+    TuiCheckboxBlockModule,
+    TuiButtonModule,
+    HorizontalDividerComponent,
     NgIf,
     MultiValueCardComponent,
     CalculatorComponent,

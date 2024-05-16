@@ -9,9 +9,34 @@
     class="goals-form flex column m-start c-center gap-2"
     *ngIf="activeItemIndex === 0; else elseBlock">
     <tui-input tuiTextfieldSize="s">
-      Want
+      % Liquidity Allocated to Goals
       <input tuiTextfield />
     </tui-input>
+    <app-horizontal-divider></app-horizontal-divider>
+    <div class="goal-section flex column m-start c-center gap-2">
+      <tui-input tuiTextfieldSize="s">
+        Name
+        <input tuiTextfield />
+      </tui-input>
+      <tui-input tuiTextfieldSize="s">
+        Amount ($)
+        <input tuiTextfield />
+      </tui-input>
+      <tui-checkbox-block formControlName="goalsForm"
+        >Philanthropic</tui-checkbox-block
+      >
+      <button
+        tuiButton
+        type="button"
+        appearance="secondary"
+        class="delete-button">
+        Delete
+      </button>
+    </div>
+    <app-horizontal-divider></app-horizontal-divider>
+    <button tuiButton type="button" appearance="primary" class="delete-button">
+      Add New
+    </button>
   </form>
   <ng-template #elseBlock>
     <div class="goals-result-container gap-2 flex column c-center">
