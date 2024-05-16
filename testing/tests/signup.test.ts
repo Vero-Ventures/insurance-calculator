@@ -13,8 +13,8 @@ test('Signup test', async () => {
   await page.goto(`${config.BASE_URL}/auth`);
 
   // Select elements
-  const email = await page.$('input:has-text("Email")');
-  const password = await page.$('input:has-text("Password")');
+  const email = await page.getByText('Email');
+  const password = await page.getByText('Password');
 
   // TODO: Eventually want to randomly generate email
   await email?.fill('jyoon72@my.bcit.ca');
