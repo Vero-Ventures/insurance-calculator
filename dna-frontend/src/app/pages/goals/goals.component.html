@@ -1,1 +1,21 @@
-<p>goals works!</p>
+<app-calculator>
+  <tui-tabs
+    class="nav-tabs flex row m-center"
+    [(activeItemIndex)]="activeItemIndex">
+    <button tuiTab>Input Data</button>
+    <button tuiTab>Results</button>
+  </tui-tabs>
+  <form
+    class="goals-form flex column m-start c-center gap-2"
+    *ngIf="activeItemIndex === 0; else elseBlock">
+    <tui-input tuiTextfieldSize="s">
+      Want
+      <input tuiTextfield />
+    </tui-input>
+  </form>
+  <ng-template #elseBlock>
+    <div class="goals-result-container gap-2 flex column c-center">
+      <p>Output</p>
+    </div>
+  </ng-template>
+</app-calculator>
