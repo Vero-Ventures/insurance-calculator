@@ -78,6 +78,14 @@ export const routes: Routes = [
     title: 'DNA | Businesses',
   },
   {
+    path: 'debt/:id',
+    loadComponent: () =>
+      import('./pages/business-edit/business-edit.component').then(
+        com => com.BusinessEditComponent
+      ),
+    title: 'DNA | Businesses',
+  },
+  {
     path: 'assets',
     canActivate: [authGuard],
     loadComponent: () =>
