@@ -1,1 +1,42 @@
-<p>business-edit works!</p>
+<app-header-bar pageName="Edit Business"></app-header-bar>
+<tui-tabs
+  class="nav-tabs flex row m-center"
+  [(activeItemIndex)]="activeItemIndex">
+  <button tuiTab>Information</button>
+  <button tuiTab>Shareholders</button>
+</tui-tabs>
+<form
+  class="business-edit-form flex column m-start c-center gap-2 margin-vertical-s"
+  *ngIf="activeItemIndex === 0; else elseBlock">
+  <tui-input tuiTextfieldSize="s">
+    Name
+    <input tuiTextfield />
+  </tui-input>
+  <tui-input-number tuiTextfieldSize="s"> Valuation ($CAD)</tui-input-number>
+  <tui-input-number tuiTextfieldSize="s"> EBITDA ($CAD)</tui-input-number>
+  <tui-input-number tuiTextfieldSize="s">
+    Appreciation Rate ($CAD)</tui-input-number
+  >
+  <tui-input-number tuiTextfieldSize="s"> Term (Years)</tui-input-number>
+</form>
+<ng-template #elseBlock>
+  <form
+    class="business-edit-form flex column m-start c-center gap-2 margin-vertical-s">
+    <tui-input tuiTextfieldSize="s">
+      Name
+      <input tuiTextfield />
+    </tui-input>
+    <tui-input-number tuiTextfieldSize="s">
+      Share Percentage (%)</tui-input-number
+    >
+    <tui-input-number tuiTextfieldSize="s">
+      Insurance Coverage ($)</tui-input-number
+    >
+    <tui-input-number tuiTextfieldSize="s">
+      EBITDA Contribution Percentage (%)</tui-input-number
+    >
+  </form>
+</ng-template>
+<app-action-bar
+  (leftButtonClick)="cancel()"
+  (rightButtonClick)="save()"></app-action-bar>
