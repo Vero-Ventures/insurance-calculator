@@ -37,6 +37,43 @@
     <!-- Pressing this button will add a new beneficiary info section which is by default empty. -->
   </form>
   <ng-template #elseBlock>
-    <h1>Results</h1>
+    <div class="business-result-container flex column c-center gap-2">
+      <app-line-chart header="EBITDA ($CAD)"></app-line-chart>
+      <app-line-chart header="Share Value ($CAD)"></app-line-chart>
+      <h1 class="divider-label">Shareholder Totals:</h1>
+      <div class="flex row gap-2">
+        <app-value-card
+          [value]="{ label: 'Total Shareholder % Owned', value: '37%' }"
+          [compact]="true"></app-value-card>
+        <app-value-card
+          [value]="{ label: 'Total EBITDA Contribution', value: '69%' }"
+          [compact]="true"></app-value-card>
+      </div>
+      <app-value-card
+        [value]="{
+          label: 'Total Major Shareholder Value ($CAD)',
+          value: '$1,000,000'
+        }"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="{
+          label: 'Total Major Shareholder Insurance ($CAD)',
+          value: '$1,000,000'
+        }"
+        [compact]="true"></app-value-card>
+      <app-value-card
+        [value]="{
+          label: 'Total Major Shareholder Disparity ($CAD)',
+          value: '$1,000,000'
+        }"
+        [compact]="true"></app-value-card>
+      <h1 class="divider-label">Shareholders:</h1>
+      <app-value-list-card
+        header="Shareholder name here"
+        [values]="valueList"></app-value-list-card>
+      <app-value-list-card
+        header="Shareholder name here"
+        [values]="valueList"></app-value-list-card>
+    </div>
   </ng-template>
 </app-calculator>
