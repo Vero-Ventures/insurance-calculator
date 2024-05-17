@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, NgZone } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TuiButtonModule } from '@taiga-ui/core';
 import {
   TuiInputModule,
   TuiInputNumberModule,
@@ -25,6 +26,7 @@ import { HorizontalDividerComponent } from 'app/core/components/horizontal-divid
     BottomBarComponent,
     TuiTabsModule,
     NgIf,
+    TuiButtonModule,
   ],
   templateUrl: './business-edit.component.html',
   styleUrl: './business-edit.component.scss',
