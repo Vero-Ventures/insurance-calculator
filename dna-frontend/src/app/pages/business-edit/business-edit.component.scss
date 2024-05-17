@@ -1,0 +1,38 @@
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background-color: white;
+  height: 100%;
+}
+
+.business-edit-form {
+  height: 100%;
+  width: 100%;
+
+  > * {
+    width: 90%;
+  }
+}
+
+.nav-tabs {
+  margin-bottom: 1em;
+  box-shadow: none;
+}
+
+.businesses-result-container {
+  height: 100%;
+  width: 100%;
+
+  > * {
+    width: 90%;
+  }
+}
+
+.business-section {
+  > * {
+    width: 100%;
+  }
+}
