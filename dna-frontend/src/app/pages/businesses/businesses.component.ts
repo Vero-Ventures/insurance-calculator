@@ -31,7 +31,7 @@ import { ValueListCardComponent } from 'app/core/components/value-list-card/valu
   styleUrl: './businesses.component.scss',
 })
 export class BusinessesComponent {
-  activeItemIndex = 0;
+  mainActiveItemIndex = 0;
 
   valueList = [
     { label: 'EBITDA Contribution ($CAD)', value: '$600,000.00' },
