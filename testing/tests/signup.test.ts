@@ -25,7 +25,7 @@ test('Signup test', async () => {
   await signupButton?.click();
 
   try {
-    await page.waitForURL(`${config.BASE_URL}/landing`);
+    await page.waitForURL('**/landing');
     console.log('Signup test passed');
   } catch (error) {
     console.error('Signup test failed');

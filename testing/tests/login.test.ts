@@ -2,14 +2,8 @@ import { test, chromium } from '@playwright/test';
 import { config } from './config';
 
 test('Login test', async () => {
-  // Open a browser instance
   const browser = await chromium.launch();
-  // Launch a new browser context
-  // const context = await browser.newContext();
-  // Create a new page
   const page = await browser.newPage();
-
-  // Navigate to the URL
   await page.goto(`${config.BASE_URL}/auth`);
 
   // Select elements
@@ -26,7 +20,7 @@ test('Login test', async () => {
   await signInButton?.click();
 
   try {
-    await page.waitForURL(`${config.BASE_URL}/landing`);
+    await page.waitForURL('**/landing');
     console.log('Sign-in test passed');
   } catch (error) {
     console.error(`Sign-in test failed, URL: ${page.url()}`);
