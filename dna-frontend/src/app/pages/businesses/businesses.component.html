@@ -1,13 +1,13 @@
 <app-calculator>
   <tui-tabs
     class="nav-tabs flex row m-center"
-    [(activeItemIndex)]="activeItemIndex">
+    [(activeItemIndex)]="mainActiveItemIndex">
     <button tuiTab>Input Data</button>
     <button tuiTab>Results</button>
   </tui-tabs>
   <form
     class="business-form flex column m-start c-center"
-    *ngIf="activeItemIndex === 0; else elseBlock">
+    *ngIf="mainActiveItemIndex === 0; else elseBlock">
     <div class="business-info-dynamic-section flex column m-start c-center">
       <!-- This class needs to be dynamically created per business -->
       <tui-input tuiTextfieldSize="s" class="business-input">
