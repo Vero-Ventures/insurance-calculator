@@ -12,3 +12,42 @@
   margin-bottom: 1em;
   box-shadow: none;
 }
+
+.business-form {
+  height: auto;
+  width: 100%;
+  margin-bottom: 1em;
+
+  > * {
+    width: 90%;
+  }
+}
+
+.business-result-container {
+  height: auto;
+  width: 100%;
+  margin-bottom: 1em;
+
+  > * {
+    width: 90%;
+  }
+}
+
+.business-input {
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.info-divider {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.edit-button {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.delete-button {
+  width: 100%;
+}

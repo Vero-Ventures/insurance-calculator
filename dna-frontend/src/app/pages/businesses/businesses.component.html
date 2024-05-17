@@ -5,4 +5,38 @@
     <button tuiTab>Input Data</button>
     <button tuiTab>Results</button>
   </tui-tabs>
+  <form
+    class="business-form flex column m-start c-center"
+    *ngIf="activeItemIndex === 0; else elseBlock">
+    <div class="business-info-dynamic-section flex column m-start c-center">
+      <!-- This class needs to be dynamically created per business -->
+      <tui-input tuiTextfieldSize="s" class="business-input">
+        Name
+        <input tuiTextfield />
+      </tui-input>
+      <tui-input-number class="business-input"
+        >Valuation ($CAD)</tui-input-number
+      >
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        class="edit-button">
+        Edit
+      </button>
+      <button
+        tuiButton
+        type="button"
+        appearance="secondary-destructive"
+        class="delete-button">
+        Delete
+      </button>
+      <app-horizontal-divider class="info-divider"></app-horizontal-divider>
+    </div>
+    <button tuiButton type="button" class="add-new-button">Add New</button>
+    <!-- Pressing this button will add a new beneficiary info section which is by default empty. -->
+  </form>
+  <ng-template #elseBlock>
+    <h1>Results</h1>
+  </ng-template>
 </app-calculator>
