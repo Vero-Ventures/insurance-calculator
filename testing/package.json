@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "cd .. && husky testing/.husky && npx playwright install"
+    "prepare": "cd .. && husky testing/.husky"
   },
   "keywords": [],
   "author": "",
