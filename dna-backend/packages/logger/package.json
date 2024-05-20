@@ -14,7 +14,7 @@
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.12",
-    "tsc-alias": "^1.8.9",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.4.5"
   },
   "engines": {
