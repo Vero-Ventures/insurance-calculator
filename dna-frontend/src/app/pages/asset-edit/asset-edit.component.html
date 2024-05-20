@@ -17,26 +17,26 @@
     Asset Name
     <input tuiTextfield />
   </tui-input>
-  <tui-input tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s">
     Year Acquired
     <input tuiTextfield />
-  </tui-input>
-  <tui-input tuiTextfieldSize="s">
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s">
     Initial Value ($)
     <input tuiTextfield />
-  </tui-input>
-  <tui-input tuiTextfieldSize="s">
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s">
     Current Value ($)
     <input tuiTextfield />
-  </tui-input>
-  <tui-input tuiTextfieldSize="s">
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s">
     Appreciation Rate (%)
     <input tuiTextfield />
-  </tui-input>
-  <tui-input tuiTextfieldSize="s">
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s">
     Term (Years)
     <input tuiTextfield />
-  </tui-input>
+  </tui-input-number>
   <tui-checkbox-block formControlName="taxable">Taxable</tui-checkbox-block>
   <tui-checkbox-block formControlName="liquid">Liquid</tui-checkbox-block>
   <tui-checkbox-block formControlName="toBeSold">To Be Sold</tui-checkbox-block>
@@ -51,10 +51,10 @@
   <form class="asset-beneficiary-form gap-2 flex column m-start c-center">
     <!-- Dynamically populate -->
     <div class="asset-section flex column m-start c-center gap-2">
-      <tui-input tuiTextfieldSize="s">
+      <tui-input-number tuiTextfieldSize="s">
         Beneficiary 1 Allocation (%)
         <input tuiTextfield />
-      </tui-input>
+      </tui-input-number>
       <button
         tuiButton
         type="button"

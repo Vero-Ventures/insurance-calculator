@@ -14,7 +14,6 @@ import { HorizontalDividerComponent } from 'app/core/components/horizontal-divid
 import { HeaderBarComponent } from 'app/core/components/header-bar/header-bar.component';
 import { ActionBarComponent } from 'app/core/components/action-bar/action-bar.component';
 import { Router } from '@angular/router';
-import { CalculatorComponent } from '../calculator/calculator.component';
 
 @Component({
   selector: 'app-asset-edit',
@@ -31,7 +30,6 @@ import { CalculatorComponent } from '../calculator/calculator.component';
     TuiCheckboxBlockModule,
     HorizontalDividerComponent,
     NgIf,
-    CalculatorComponent,
     HeaderBarComponent,
     ActionBarComponent,
   ],
