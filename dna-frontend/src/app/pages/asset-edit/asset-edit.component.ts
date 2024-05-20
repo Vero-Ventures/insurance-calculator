@@ -57,9 +57,14 @@ export class AssetEditComponent {
     'Life Insurance',
   ];
 
+  // TODO: Populate with brackets based on province
+  taxBrackets = ['Populate me', 'with province tax data'];
+
   assetEditForm = new FormGroup({
     type: new FormControl(),
     taxable: new FormControl(),
+    liquid: new FormControl(),
+    toBeSold: new FormControl(),
   });
 
   cancel() {
