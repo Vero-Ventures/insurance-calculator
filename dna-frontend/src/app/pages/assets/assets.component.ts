@@ -11,6 +11,8 @@ import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
 import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
+import { ValueListCardComponent } from 'app/core/components/value-list-card/value-list-card.component';
+import { PieChartComponent } from 'app/core/components/pie-chart/pie-chart.component';
 
 @Component({
   selector: 'app-assets',
@@ -27,6 +29,8 @@ import { LineChartComponent } from 'app/core/components/line-chart/line-chart.co
     ValueCardComponent,
     CalculatorComponent,
     LineChartComponent,
+    ValueListCardComponent,
+    PieChartComponent,
   ],
   templateUrl: './assets.component.html',
   styleUrl: './assets.component.scss',
@@ -43,4 +47,17 @@ export class AssetsComponent {
     label: 'Total Insurable Future Value ($)',
     value: '$1,000,000',
   };
+
+  beneficiary1 = [
+    { label: 'Amount ($)', value: '$600,000.00' },
+    { label: 'Percentage (%)', value: '30.00%' },
+    { label: 'Ideal Distribution (%)', value: '30.00%' },
+    { label: 'Additional Required ($)', value: '$0.00' },
+  ];
+  beneficiary2 = [
+    { label: 'Amount ($)', value: '$600,000.00' },
+    { label: 'Percentage (%)', value: '30.00%' },
+    { label: 'Ideal Distribution (%)', value: '30.00%' },
+    { label: 'Additional Required ($)', value: '$0.00' },
+  ];
 }
