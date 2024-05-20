@@ -37,7 +37,15 @@
     Term (Years)
     <input tuiTextfield />
   </tui-input>
-  <tui-checkbox-block formControlName="taxable"> Taxable </tui-checkbox-block>
+  <tui-checkbox-block formControlName="taxable">Taxable</tui-checkbox-block>
+  <tui-checkbox-block formControlName="liquid">Liquid</tui-checkbox-block>
+  <tui-checkbox-block formControlName="toBeSold">To Be Sold</tui-checkbox-block>
+  <tui-select formControlName="taxBracket">
+    Tax Bracket
+    <tui-data-list-wrapper
+      *tuiDataList
+      [items]="taxBrackets"></tui-data-list-wrapper>
+  </tui-select>
 </form>
 <ng-template #elseBlock>
   <div class="assets-result-container gap-2 flex column c-center">
@@ -89,6 +97,8 @@
     </button>
   </div>
 </ng-template>
+<div class="spacer"></div>
+<div class="spacer"></div>
 <app-action-bar
   (leftButtonClick)="cancel()"
   (rightButtonClick)="save()"></app-action-bar>
