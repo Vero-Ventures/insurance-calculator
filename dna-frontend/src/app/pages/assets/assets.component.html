@@ -15,11 +15,24 @@
         <input tuiTextfield />
       </tui-input>
       <tui-input tuiTextfieldSize="s">
-        Amount ($)
+        Current Value ($)
         <input tuiTextfield />
       </tui-input>
       <tui-input tuiTextfieldSize="s">
-        Insurable Future Value ($)
+        Future Tax Liability ($)
+        <input tuiTextfield />
+      </tui-input>
+      <app-horizontal-divider></app-horizontal-divider>
+      <tui-input tuiTextfieldSize="s">
+        Name
+        <input tuiTextfield />
+      </tui-input>
+      <tui-input tuiTextfieldSize="s">
+        Current Value ($)
+        <input tuiTextfield />
+      </tui-input>
+      <tui-input tuiTextfieldSize="s">
+        Future Tax Liability ($)
         <input tuiTextfield />
       </tui-input>
       <button
@@ -50,7 +63,15 @@
       <app-value-card
         [value]="totalInsurableFutureValue"
         [compact]="false"></app-value-card>
-      <app-line-chart header="Value ($)"></app-line-chart>
+      <p>Total Future Value Distributions</p>
+      <app-value-list-card
+        header="Beneficiary 1"
+        [values]="beneficiary1"></app-value-list-card>
+      <app-value-list-card
+        header="Beneficiary 2"
+        [values]="beneficiary2"></app-value-list-card>
+      <app-line-chart></app-line-chart>
+      <app-pie-chart></app-pie-chart>
     </div>
   </ng-template>
 </app-calculator>
