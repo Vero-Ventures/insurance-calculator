@@ -87,6 +87,15 @@ export const routes: Routes = [
     title: 'DNA | Assets',
   },
   {
+    path: 'asset/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/asset-edit/asset-edit.component').then(
+        com => com.AssetEditComponent
+      ),
+    title: 'DNA | Assets',
+  },
+  {
     path: 'debts',
     canActivate: [authGuard],
     loadComponent: () =>
