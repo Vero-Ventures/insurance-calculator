@@ -1,16 +1,18 @@
 import { NgIf } from '@angular/common';
 import { Component, NgZone } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule } from '@taiga-ui/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TuiButtonModule, TuiDataListModule } from '@taiga-ui/core';
 import {
+  TuiCheckboxBlockModule,
+  TuiDataListWrapperModule,
   TuiInputModule,
   TuiInputNumberModule,
+  TuiSelectModule,
   TuiTabsModule,
 } from '@taiga-ui/kit';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { HeaderBarComponent } from 'app/core/components/header-bar/header-bar.component';
 import { ActionBarComponent } from 'app/core/components/action-bar/action-bar.component';
-import { BottomBarComponent } from 'app/core/components/bottom-bar/bottom-bar.component';
 import { Router } from '@angular/router';
 import { CalculatorComponent } from '../calculator/calculator.component';
 
@@ -23,12 +25,15 @@ import { CalculatorComponent } from '../calculator/calculator.component';
     TuiInputModule,
     TuiInputNumberModule,
     TuiButtonModule,
+    TuiSelectModule,
+    TuiDataListModule,
+    TuiDataListWrapperModule,
+    TuiCheckboxBlockModule,
     HorizontalDividerComponent,
     NgIf,
     CalculatorComponent,
     HeaderBarComponent,
     ActionBarComponent,
-    BottomBarComponent,
   ],
   templateUrl: './asset-edit.component.html',
   styleUrl: './asset-edit.component.scss',
@@ -40,6 +45,22 @@ export class AssetEditComponent {
   ) {}
 
   activeItemIndex = 0;
+
+  types = [
+    'Cash',
+    'Stocks',
+    'Bonds',
+    'Real Estate',
+    'Mutual Funds',
+    'Retirement Account',
+    'Crypto',
+    'Life Insurance',
+  ];
+
+  assetEditForm = new FormGroup({
+    type: new FormControl(),
+    taxable: new FormControl(),
+  });
 
   cancel() {
     this.zone.run(() => {
