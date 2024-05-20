@@ -32,7 +32,7 @@
     "@taiga-ui/addon-commerce": "^3.76.0",
     "@taiga-ui/addon-doc": "^3.76.0",
     "@taiga-ui/addon-mobile": "^3.76.0",
-    "@taiga-ui/addon-preview": "^3.76.0",
+    "@taiga-ui/addon-preview": "^3.79.0",
     "@taiga-ui/addon-table": "^3.76.0",
     "@taiga-ui/addon-tablebars": "^3.76.0",
     "@taiga-ui/cdk": "^3.76.0",
