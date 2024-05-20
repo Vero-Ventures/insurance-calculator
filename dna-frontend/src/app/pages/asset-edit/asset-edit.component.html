@@ -48,54 +48,33 @@
   </tui-select>
 </form>
 <ng-template #elseBlock>
-  <div class="assets-result-container gap-2 flex column c-center">
+  <form class="asset-beneficiary-form gap-2 flex column m-start c-center">
     <!-- Dynamically populate -->
     <div class="asset-section flex column m-start c-center gap-2">
       <tui-input tuiTextfieldSize="s">
-        Name
-        <input tuiTextfield />
-      </tui-input>
-      <tui-input tuiTextfieldSize="s">
-        Current Value ($)
-        <input tuiTextfield />
-      </tui-input>
-      <tui-input tuiTextfieldSize="s">
-        Future Tax Liability ($)
-        <input tuiTextfield />
-      </tui-input>
-      <app-horizontal-divider></app-horizontal-divider>
-      <tui-input tuiTextfieldSize="s">
-        Name
-        <input tuiTextfield />
-      </tui-input>
-      <tui-input tuiTextfieldSize="s">
-        Current Value ($)
-        <input tuiTextfield />
-      </tui-input>
-      <tui-input tuiTextfieldSize="s">
-        Future Tax Liability ($)
+        Beneficiary 1 Allocation (%)
         <input tuiTextfield />
       </tui-input>
       <button
         tuiButton
         type="button"
         appearance="secondary"
-        class="edit-button">
-        Edit
-      </button>
-      <button
-        tuiButton
-        type="button"
-        appearance="secondary"
-        class="delete-button">
-        Delete
+        class="remove-button">
+        Remove
       </button>
       <app-horizontal-divider></app-horizontal-divider>
     </div>
-    <button tuiButton type="button" appearance="primary" class="delete-button">
-      Add New
-    </button>
-  </div>
+    <div class="asset-section flex column m-start c-center gap-2">
+      <button
+        tuiButton
+        type="button"
+        appearance="primary"
+        class="remove-button">
+        Add Beneficiary 2
+      </button>
+      <app-horizontal-divider></app-horizontal-divider>
+    </div>
+  </form>
 </ng-template>
 <div class="spacer"></div>
 <div class="spacer"></div>

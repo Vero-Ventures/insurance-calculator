@@ -8,7 +8,8 @@
   height: 100%;
 }
 
-.asset-edit-form {
+.asset-edit-form,
+.asset-beneficiary-form {
   height: 100%;
   width: 100%;
 
@@ -19,15 +20,6 @@
 
 .nav-tabs {
   margin-bottom: 1em;
-}
-
-.assets-result-container {
-  height: 100%;
-  width: 100%;
-
-  > * {
-    width: 90%;
-  }
 }
 
 .asset-section {
