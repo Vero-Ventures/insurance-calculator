@@ -3,6 +3,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { ENVIRONMENT } from 'environments/environment';
 import { Router } from '@angular/router';
 import { Client } from '../models/client.model';
+import { initialClientState } from 'app/states/client.state';
 
 @Injectable({
   providedIn: 'root',
@@ -38,27 +39,45 @@ export class SupabaseService {
     );
   }
 
-  async createClient() {
-    return await this.supabase
-      .from('client_profiles')
-      .insert([{ client: '{}' }])
-      .select();
-  }
-
-  async getClient(client_id: number) {
+  async getClient(clientId: number) {
     return await this.supabase
       .from('client_profiles')
       .select('*')
-      .eq('id', client_id)
+      .eq('id', clientId)
       .single();
   }
 
-  async updateClient(client_id: number, client: Client) {
+  async getClients() {
+    const user = await this.supabase.auth.getUser();
+    return await this.supabase
+      .from('client_profiles')
+      .select('id, client')
+      .eq('advisor_id', user.data.user?.id);
+  }
+
+  async updateClient(clientId: number, client: Client) {
     return await this.supabase
       .from('client_profiles')
       .update({ client: client })
-      .eq('id', client_id)
+      .eq('id', clientId)
       .select();
+  }
+
+  async createClient(clientName: string) {
+    const newClient = initialClientState.client;
+    newClient.name = clientName;
+    const user = await this.supabase.auth.getUser();
+    return await this.supabase
+      .from('client_profiles')
+      .insert([{ advisor_id: user.data.user?.id, client: newClient }])
+      .select();
+  }
+
+  async deleteClient(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .delete()
+      .eq('id', clientId);
   }
 
   async signUp(email: string, password: string) {

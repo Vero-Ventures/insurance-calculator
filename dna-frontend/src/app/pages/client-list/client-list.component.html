@@ -1,36 +1,40 @@
-<div class="flex column m-center c-center padding-horizontal-l">
-  <h1 class="margin-vertical-s main-heading">Clients</h1>
-  <p>Select a client to begin using the calculator.</p>
-  <div class="margin-vertical-s">
+<ng-container *ngIf="vm$ | async as vm">
+  <div class="flex column m-center c-center padding-horizontal-l">
+    <h1 class="margin-vertical-s main-heading">Clients</h1>
+    <p>Select a client to begin using the calculator.</p>
+    <div class="margin-vertical-s">
+      <button
+        tuiButton
+        class="button width-full-container margin-vertical-xs"
+        appearance="primary"
+        (click)="createClient()">
+        New Client
+      </button>
+      <button
+        tuiButton
+        class="button width-full-container margin-vertical-xs"
+        appearance="secondary">
+        Load From File
+      </button>
+    </div>
+    <app-horizontal-divider></app-horizontal-divider>
+    <div class="flex column gap-2 c-start margin-vertical-s">
+      <app-action-item
+        *ngFor="let clientItem of vm.clients"
+        [label]="clientItem.client.name!"
+        actionLabel="Load"
+        (action)="loadClient(clientItem.id)"
+        [canDelete]="true"
+        (delete)="openDeleteDialog(clientItem)"
+        class="width-full-container"></app-action-item>
+    </div>
+    <app-horizontal-divider></app-horizontal-divider>
     <button
       tuiButton
       class="button width-full-container margin-vertical-xs"
-      appearance="primary">
-      New Client
-    </button>
-    <button
-      tuiButton
-      class="button width-full-container margin-vertical-xs"
-      appearance="secondary">
-      Load From File
+      appearance="secondary"
+      [routerLink]="['/landing']">
+      Back to Dashboard
     </button>
   </div>
-  <app-horizontal-divider></app-horizontal-divider>
-  <div class="flex column gap-2 c-start margin-vertical-s">
-    <app-action-item
-      *ngFor="let clientName of clientNames"
-      [label]="clientName"
-      actionLabel="Load"
-      [canDelete]="true"
-      class="width-full-container"
-      (delete)="openDeleteDialog(clientName)"></app-action-item>
-  </div>
-  <app-horizontal-divider></app-horizontal-divider>
-  <button
-    tuiButton
-    class="button width-full-container margin-vertical-xs"
-    appearance="secondary"
-    [routerLink]="['/landing']">
-    Back to Dashboard
-  </button>
-</div>
+</ng-container>
