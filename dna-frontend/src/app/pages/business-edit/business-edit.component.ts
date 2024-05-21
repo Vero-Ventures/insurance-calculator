@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { Component, NgZone } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,18 +37,19 @@ export class BusinessEditComponent {
 
   constructor(
     private router: Router,
-    private zone: NgZone
+    private zone: NgZone,
+    private location: Location
   ) {}
 
   cancel() {
     this.zone.run(() => {
-      this.router.navigate(['/businesses']);
+      this.location.back();
     });
   }
 
   save() {
     this.zone.run(() => {
-      this.router.navigate(['/businesses']);
+      this.location.back();
     });
   }
 }
