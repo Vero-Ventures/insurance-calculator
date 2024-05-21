@@ -7,43 +7,58 @@
 </tui-tabs>
 <form
   class="business-edit-form flex column m-start c-center gap-2 margin-vertical-s"
+  [formGroup]="businessEditInformationForm"
   *ngIf="activeItemIndex === 0; else elseBlock">
-  <tui-input tuiTextfieldSize="s">
+  <tui-input tuiTextfieldSize="s" formControlName="name">
     Name
     <input tuiTextfield />
   </tui-input>
-  <tui-input-number tuiTextfieldSize="s"> Valuation ($CAD)</tui-input-number>
-  <tui-input-number tuiTextfieldSize="s"> EBITDA ($CAD)</tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="valuation">
+    Valuation ($CAD)</tui-input-number
+  >
+  <tui-input-number tuiTextfieldSize="s" formControlName="ebitda">
+    EBITDA ($CAD)</tui-input-number
+  >
+  <tui-input-number tuiTextfieldSize="s" formControlName="appreciationRate">
     Appreciation Rate ($CAD)</tui-input-number
   >
-  <tui-input-number tuiTextfieldSize="s"> Term (Years)</tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="term">
+    Term (Years)</tui-input-number
+  >
   <tui-notification status="warning" [hasIcon]="true">
     Add shareholders using the tabs above.
   </tui-notification>
 </form>
 <ng-template #elseBlock>
   <form
-    class="business-edit-form flex column m-start c-center margin-vertical-s">
+    class="business-edit-form flex column m-start c-center margin-vertical-s"
+    [formGroup]="businessEditShareholdersForm">
     <div
+      formArrayName="shareholders"
       class="business-edit-shareholder-dynamic-section flex column m-start c-center gap-2">
-      <tui-input class="business-edit-shareholder-input" tuiTextfieldSize="s">
+      <tui-input
+        class="business-edit-shareholder-input"
+        tuiTextfieldSize="s"
+        formControlName="name">
         Name
         <input tuiTextfield />
       </tui-input>
       <tui-input-number
         class="business-edit-shareholder-input"
-        tuiTextfieldSize="s">
+        tuiTextfieldSize="s"
+        formControlName="sharePercentage">
         Share Percentage (%)</tui-input-number
       >
       <tui-input-number
         class="business-edit-shareholder-input"
-        tuiTextfieldSize="s">
+        tuiTextfieldSize="s"
+        formControlName="insuranceCoverage">
         Insurance Coverage ($)</tui-input-number
       >
       <tui-input-number
         class="business-edit-shareholder-input"
-        tuiTextfieldSize="s">
+        tuiTextfieldSize="s"
+        formControlName="ebitdaContributionPercentage">
         EBITDA Contribution Percentage (%)</tui-input-number
       >
       <button
