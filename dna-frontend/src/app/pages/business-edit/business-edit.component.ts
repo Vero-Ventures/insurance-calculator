@@ -40,6 +40,7 @@ import { HorizontalDividerComponent } from 'app/core/components/horizontal-divid
 export class BusinessEditComponent {
   activeItemIndex = 0;
   @Input() businessId: number = 0;
+  @Input() clientId: number = 0;
   readonly businessEditInformationForm = new FormGroup({
     name: new FormControl(),
     valuation: new FormControl(),
@@ -57,7 +58,8 @@ export class BusinessEditComponent {
     private route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
-      this.businessId = +params['id'];
+      this.businessId = +params['businessId'];
+      this.clientId = +params['clientId'];
     });
   }
 
