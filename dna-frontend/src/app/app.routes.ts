@@ -78,7 +78,7 @@ export const routes: Routes = [
     title: 'DNA | Businesses',
   },
   {
-    path: 'business/:businessId/:clientId',
+    path: 'business/:clientId/:businessId',
     loadComponent: () =>
       import('./pages/business-edit/business-edit.component').then(
         com => com.BusinessEditComponent
