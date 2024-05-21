@@ -59,10 +59,6 @@ export class ClientListComponent {
     this.clientListStore.deleteClient(clientId);
   }
 
-  openCreateDialog() {
-    // TODO: Create a prompt that allows the user to enter the client name
-  }
-
   openDeleteDialog(clientItem: ClientListItem) {
     this.dialogs
       .open<boolean>(TUI_PROMPT, {
