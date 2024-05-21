@@ -32,6 +32,7 @@ import { ClientListItem } from 'app/states/client-list.state';
   providers: [ClientListStore],
 })
 export class ClientListComponent {
+  newClientName = '';
   vm$ = this.clientListStore.vm$;
 
   constructor(
@@ -58,6 +59,10 @@ export class ClientListComponent {
     this.clientListStore.deleteClient(clientId);
   }
 
+  openCreateDialog() {
+    // TODO: Create a prompt that allows the user to enter the client name
+  }
+
   openDeleteDialog(clientItem: ClientListItem) {
     this.dialogs
       .open<boolean>(TUI_PROMPT, {
@@ -67,13 +72,10 @@ export class ClientListComponent {
           no: 'Cancel',
         },
       })
-      .subscribe(
-        result => {
-          if (result) {
-            this.deleteClient(clientItem.id);
-          }
-        },
-        () => {}
-      );
+      .subscribe(result => {
+        if (result) {
+          this.deleteClient(clientItem.id);
+        }
+      });
   }
 }
