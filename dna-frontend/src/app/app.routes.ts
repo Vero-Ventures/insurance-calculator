@@ -4,11 +4,8 @@ import { authGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./pages/calculator/calculator.component').then(
-        com => com.CalculatorComponent
-      ),
-    title: 'DNA | Home',
+    redirectTo: 'landing',
+    pathMatch: 'full',
   },
   {
     path: 'auth',
