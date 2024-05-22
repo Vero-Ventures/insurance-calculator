@@ -11,20 +11,24 @@
   *ngIf="activeItemIndex === 0; else elseBlock">
   <tui-input tuiTextfieldSize="s" formControlName="name">
     Name
-    <input tuiTextfield />
+    <input tuiTextfield (blur)="onBlur()" />
   </tui-input>
   <tui-input-number tuiTextfieldSize="s" formControlName="valuation">
-    Valuation ($CAD)</tui-input-number
-  >
+    Valuation ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="ebitda">
-    EBITDA ($CAD)</tui-input-number
-  >
+    EBITDA ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="appreciationRate">
-    Appreciation Rate ($CAD)</tui-input-number
-  >
+    Appreciation Rate ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="term">
-    Term (Years)</tui-input-number
-  >
+    Term (Years)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-notification status="warning" [hasIcon]="true">
     Add shareholders using the tabs above.
   </tui-notification>
