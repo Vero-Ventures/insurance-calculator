@@ -1,0 +1,19 @@
+name: dna-app
+
+services:
+  frontend:
+    build:
+      context: ./dna-frontend/
+    ports:
+      - "4200:4200"
+
+  backend:
+    build:
+      context: ./dna-backend/
+    ports:
+      - "3000:3000"
+  advisor:
+    build:
+      context: ./dna-advisor/
+    ports:
+      - "3001:3001"
