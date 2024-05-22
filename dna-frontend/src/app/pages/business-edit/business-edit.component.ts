@@ -53,9 +53,9 @@ export class BusinessEditComponent {
   });
 
   constructor(
-    private zone: NgZone,
-    private location: Location,
-    private route: ActivatedRoute
+    private readonly zone: NgZone,
+    private readonly location: Location,
+    private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
       this.businessId = +params['businessId'];

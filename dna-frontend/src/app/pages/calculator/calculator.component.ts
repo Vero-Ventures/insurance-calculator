@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Inject, NgZone, signal } from '@angular/core';
+import { Component, Inject, Input, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TuiDialogService } from '@taiga-ui/core';
 import { AppbarComponent } from 'app/core/components/appbar/appbar.component';
@@ -14,17 +14,20 @@ import { SupabaseService } from 'app/core/services/supabase.service';
   styleUrl: './calculator.component.scss',
 })
 export class CalculatorComponent {
-  userData = signal({});
+  @Input() clientId: number = 0;
   pageName: string;
 
   constructor(
     @Inject(TuiDialogService)
     private readonly dialog: TuiDialogService,
-    readonly supabase: SupabaseService,
+    private readonly supabase: SupabaseService,
     private readonly router: Router,
     private readonly zone: NgZone,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly route: ActivatedRoute
   ) {
+    this.route.params.subscribe(params => {
+      this.clientId = +params['id'];
+    });
     this.pageName = this.getPageName();
   }
 
@@ -36,9 +39,7 @@ export class CalculatorComponent {
   }
 
   getPageName(): string {
-    return this.toTitleCase(
-      this.activatedRoute.snapshot.title?.split(' | ')[1] || ''
-    );
+    return this.toTitleCase(this.route.snapshot.title?.split(' | ')[1] || '');
   }
 
   signOut() {
