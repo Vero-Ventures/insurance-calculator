@@ -8,32 +8,32 @@
 <form
   class="asset-edit-form flex column m-start c-center gap-2"
   *ngIf="activeItemIndex === 0; else elseBlock"
-  [formGroup]="assetEditForm">
+  [formGroup]="assetEditInformationForm">
   <tui-select formControlName="type">
     Type
     <tui-data-list-wrapper *tuiDataList [items]="types"></tui-data-list-wrapper>
   </tui-select>
-  <tui-input tuiTextfieldSize="s">
+  <tui-input tuiTextfieldSize="s" formControlName="assetName">
     Asset Name
     <input tuiTextfield />
   </tui-input>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="yearAcquired">
     Year Acquired
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="initialValue">
     Initial Value ($)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="currentValue">
     Current Value ($)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="appreciationRate">
     Appreciation Rate (%)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="term">
     Term (Years)
     <input tuiTextfield />
   </tui-input-number>
@@ -48,10 +48,12 @@
   </tui-select>
 </form>
 <ng-template #elseBlock>
-  <form class="asset-beneficiary-form gap-2 flex column m-start c-center">
+  <form
+    class="asset-beneficiary-form gap-2 flex column m-start c-center"
+    [formGroup]="assetEditBeneficiariesForm">
     <!-- Dynamically populate -->
     <div class="asset-section flex column m-start c-center gap-2">
-      <tui-input-number tuiTextfieldSize="s">
+      <tui-input-number tuiTextfieldSize="s" formControlName="allocation">
         Beneficiary 1 Allocation (%)
         <input tuiTextfield />
       </tui-input-number>

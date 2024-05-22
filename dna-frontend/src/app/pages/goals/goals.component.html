@@ -7,23 +7,26 @@
   </tui-tabs>
   <form
     class="goals-form flex column m-start c-center gap-2"
-    *ngIf="activeItemIndex === 0; else elseBlock">
-    <tui-input tuiTextfieldSize="s">
+    *ngIf="activeItemIndex === 0; else elseBlock"
+    [formGroup]="goalsForm">
+    <tui-input-number
+      tuiTextfieldSize="s"
+      formControlName="liquidityAllocatedToGoals">
       % Liquidity Allocated to Goals
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
     <app-horizontal-divider></app-horizontal-divider>
     <!-- Populate dynamically -->
     <div class="goal-section flex column m-start c-center gap-2">
-      <tui-input tuiTextfieldSize="s">
+      <tui-input tuiTextfieldSize="s" formControlName="name">
         Name
         <input tuiTextfield />
       </tui-input>
-      <tui-input tuiTextfieldSize="s">
+      <tui-input-number tuiTextfieldSize="s" formControlName="amount">
         Amount ($)
         <input tuiTextfield />
-      </tui-input>
-      <tui-checkbox-block formControlName="goalsForm"
+      </tui-input-number>
+      <tui-checkbox-block formControlName="philanthropic"
         >Philanthropic</tui-checkbox-block
       >
       <button
