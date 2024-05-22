@@ -1,9 +1,9 @@
 import { test as setup, expect } from '@playwright/test';
-import { config } from './config';
+import { config } from './setup/config';
 
 setup.describe.configure({ mode: 'serial' });
 
-const authFile = 'tests/setup/user.json';
+const authFile = config.USER_FILE;
 
 const testData = {
   email: 'test@123.com',
@@ -28,23 +28,5 @@ setup('Setup authenticated user', async ({ browser }) => {
   } catch (error) {
     console.error('Authentication setup failed');
     throw error;
-  }
-});
-
-setup('Remove existing clients', async ({ browser }) => {
-  const context = await browser.newContext({ storageState: authFile });
-  const page = await context.newPage();
-  try {
-    await page.goto(`${config.BASE_URL}/client-list`);
-    const deleteButton = await page.$('button[class="delete-button"]');
-    while (deleteButton) {
-      await deleteButton.click();
-      await page.waitForTimeout(1000);
-    }
-  } catch (error) {
-    console.error('Remove existing clients failed');
-    throw error;
-  } finally {
-    await context.close();
   }
 });

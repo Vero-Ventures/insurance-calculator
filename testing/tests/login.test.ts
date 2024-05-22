@@ -3,7 +3,7 @@ import { config } from './setup/config';
 
 // For testing existing email
 const testData = {
-  email: 'jihoonyoon0@gmail.com',
+  email: 'test@123.com',
   password: '123456',
 };
 

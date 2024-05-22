@@ -3,8 +3,8 @@ import { config } from './setup/config';
 
 // For testing existing email
 const testData = {
-  email: 'jyoon72@my.bcit.ca',
-  password: '12345678',
+  email: 'test@123.com',
+  password: '123456',
 };
 
 // test('Signup with unregistered email', async ({browser}) => {
