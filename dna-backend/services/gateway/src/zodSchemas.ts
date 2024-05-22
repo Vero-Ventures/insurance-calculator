@@ -16,7 +16,7 @@ export const envSchema = z.object({
     .string()
     .default(DEFAULT_API_PORT)
     .transform(port => parseInt(port, 10)),
-  ADVISOR_HOST: z.string().url().default(DEFAULT_HOST),
+  ADVISOR_HOST: z.string().url().default(`http://${DEFAULT_HOST}`),
   ADVISOR_PORT: z.number({ coerce: true }).default(DEFAULT_ADVISOR_PORT),
   ADVISOR_VERSION: z
     .number({ coerce: true })
