@@ -20,6 +20,7 @@ import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { BeneficiariesStore } from './beneficiaries.store';
 import { Beneficiary } from 'app/core/models/beneficiary.model';
 import { take } from 'rxjs';
+import { generateId } from 'app/core/utils/common.utils';
 
 @Component({
   selector: 'app-beneficiaries',
@@ -86,6 +87,14 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     }));
   }
 
+  get totalAllocation() {
+    return this.beneficiariesChart.reduce(
+      (total: number, beneficiary: Beneficiary) =>
+        total + (beneficiary.allocation || 0),
+      0
+    );
+  }
+
   ngOnInit() {
     this.beneficiariesForm.valueChanges.subscribe(formData => {
       this.beneficiariesStore.setBeneficiaries(
@@ -118,7 +127,7 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
   }
 
   generateId() {
-    let id = Math.floor(Math.random() * 1000000);
+    let id = generateId();
     while (
       this.beneficiaries.value.find(
         (beneficiary: Beneficiary) => parseInt(beneficiary.id) === id
