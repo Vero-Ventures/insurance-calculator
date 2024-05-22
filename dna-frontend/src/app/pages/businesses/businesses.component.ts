@@ -30,12 +30,17 @@ import { ActivatedRoute } from '@angular/router';
     ValueCardComponent,
     ValueListCardComponent,
   ],
+  providers: [BusinessesStore],
   templateUrl: './businesses.component.html',
   styleUrl: './businesses.component.scss',
 })
 export class BusinessesComponent {
   mainActiveItemIndex = 0;
   @Input() clientId: number = 0;
+
+  form = this.formBuilder.group({
+    businesses: this.formBuilder.array([]),
+  });
 
   valueList = [
     { label: 'EBITDA Contribution ($CAD)', value: '$600,000.00' },
