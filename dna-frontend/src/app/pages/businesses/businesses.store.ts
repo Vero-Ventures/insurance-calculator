@@ -1,41 +1,66 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-
-export interface Shareholder {
-  shareholderName: string;
-  sharePercentage: number;
-  insuranceCoverage: number;
-  ebitdaContributionPercentage: number;
-}
-
-export interface Business {
-  businessName: string;
-  valuation: string;
-  ebitda: string;
-  rate: number;
-  term: number;
-  shareholders: Shareholder[];
-}
-
-export interface BusinessesState {
-  error: string | null;
-  businesses: Business[];
-}
+import { Business } from 'app/core/models/business.model';
+import { SupabaseService } from 'app/core/services/supabase.service';
+import {
+  BusinessesState,
+  initialBusinessesState,
+} from 'app/states/businesses.state';
+import { take } from 'rxjs';
 
 @Injectable()
 export class BusinessesStore extends ComponentStore<BusinessesState> {
-  private error$ = this.select(state => state.error);
-  private businesses$ = this.select(state => state.businesses);
+  readonly isLoading$ = this.select(state => state.isLoading);
+  readonly error$ = this.select(state => state.error);
+  readonly businesses$ = this.select(state => state.businesses);
 
-  vm$ = this.select({
+  readonly vm$ = this.select({
+    isLoading: this.isLoading$,
     error: this.error$,
     businesses: this.businesses$,
   });
 
-  constructor() {
-    super({
-      error: null,
-      businesses: [],
+  readonly setIsLoading = this.updater(state => ({
+    ...state,
+    isLoading: true,
+  }));
+
+  readonly setError = this.updater((state, error: HttpErrorResponse) => ({
+    ...state,
+    isLoading: false,
+    error: error.message,
+  }));
+
+  readonly setBusinesses = this.updater((state, businesses: Business[]) => ({
+    ...state,
+    isLoading: false,
+    businesses,
+  }));
+
+  constructor(private supabaseService: SupabaseService) {
+    super(initialBusinessesState);
+  }
+
+  getBusinesses(clientId: number) {
+    this.supabaseService.getBusinesses(clientId).then(response => {
+      if (response.error) {
+        throw response.error;
+      } else {
+        this.setBusinesses(response.data.businesses);
+      }
+    });
+  }
+
+  updateBusinesses(clientId: number) {
+    this.businesses$.pipe(take(1)).subscribe(businesses => {
+      this.supabaseService
+        .updateBusinesses(clientId, businesses)
+        .then(response => {
+          if (response.error) {
+            throw response.error;
+          }
+        });
     });
   }
 }

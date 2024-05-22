@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Client } from '../models/client.model';
 import { initialClientState } from 'app/states/client.state';
 import { Beneficiary } from '../models/beneficiary.model';
+import { Business } from '../models/business.model';
 
 @Injectable({
   providedIn: 'root',
@@ -89,6 +90,22 @@ export class SupabaseService {
     return await this.supabase
       .from('client_profiles')
       .update({ beneficiaries: beneficiaries })
+      .eq('id', clientId)
+      .select();
+  }
+
+  async getBusinesses(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .select('businesses')
+      .eq('id', clientId)
+      .single();
+  }
+
+  async updateBusinesses(clientId: number, businesses: Business[]) {
+    return await this.supabase
+      .from('client_profiles')
+      .update({ businesses: businesses })
       .eq('id', clientId)
       .select();
   }
