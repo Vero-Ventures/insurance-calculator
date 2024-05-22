@@ -1,12 +1,5 @@
-import { Location, NgIf } from '@angular/common';
-import {
-  Component,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Location, NgFor, NgIf } from '@angular/common';
+import { Component, Inject, Input, NgZone, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -21,6 +14,7 @@ import {
   TuiNotificationModule,
 } from '@taiga-ui/core';
 import {
+  TUI_PROMPT,
   TuiInputModule,
   TuiInputNumberModule,
   TuiTabsModule,
@@ -46,6 +40,7 @@ import { take } from 'rxjs';
     BottomBarComponent,
     TuiTabsModule,
     NgIf,
+    NgFor,
     TuiButtonModule,
     TuiNotificationModule,
   ],
@@ -53,7 +48,7 @@ import { take } from 'rxjs';
   styleUrl: './business-edit.component.scss',
   providers: [BusinessesStore],
 })
-export class BusinessEditComponent implements OnInit, OnDestroy {
+export class BusinessEditComponent implements OnInit {
   @Input() businessId: number = 0;
   @Input() clientId: number = 0;
   activeItemIndex = 0;
@@ -89,6 +84,11 @@ export class BusinessEditComponent implements OnInit, OnDestroy {
         );
         if (business) {
           this.businessEditInformationForm.patchValue(business);
+          if (business.shareholders) {
+            business.shareholders.forEach(shareholder => {
+              this.addShareholder(shareholder);
+            });
+          }
         }
       });
     });
@@ -128,12 +128,43 @@ export class BusinessEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.businessesStore.updateBusinesses(this.clientId);
+  onBlur() {
+    // This can be modified to do something on blur, but for now we will only use the save button
+    // this.businessesStore.updateBusinesses(this.clientId);
   }
 
-  onBlur() {
-    this.businessesStore.updateBusinesses(this.clientId);
+  addShareholder(shareholder: Shareholder | null = null) {
+    this.shareholders.push(
+      this.fb.group({
+        name: [shareholder?.name || ''],
+        sharePercentage: [shareholder?.sharePercentage || 0],
+        insuranceCoverage: [shareholder?.insuranceCoverage || 0],
+        ebitdaContributionPercentage: [
+          shareholder?.ebitdaContributionPercentage || 0,
+        ],
+      })
+    );
+  }
+
+  deleteShareholder(index: number) {
+    this.shareholders.removeAt(index);
+  }
+
+  openDeleteDialog(index: number) {
+    const shareholderName = this.shareholders.at(index).value.name;
+    this.dialogs
+      .open<boolean>(TUI_PROMPT, {
+        data: {
+          content: `Do you want to delete ${shareholderName}? This action cannot be undone.`,
+          yes: 'Delete',
+          no: 'Cancel',
+        },
+      })
+      .subscribe(result => {
+        if (result) {
+          this.deleteShareholder(index);
+        }
+      });
   }
 
   cancel() {
@@ -143,6 +174,7 @@ export class BusinessEditComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    this.businessesStore.updateBusinesses(this.clientId);
     this.zone.run(() => {
       this.location.back();
     });
