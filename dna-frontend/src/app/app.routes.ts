@@ -57,7 +57,7 @@ export const routes: Routes = [
     title: 'DNA | Client',
   },
   {
-    path: 'beneficiaries',
+    path: 'beneficiaries/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/beneficiaries/beneficiaries.component').then(
@@ -83,7 +83,7 @@ export const routes: Routes = [
     title: 'DNA | Businesses',
   },
   {
-    path: 'assets',
+    path: 'assets/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/assets/assets.component').then(
@@ -92,7 +92,7 @@ export const routes: Routes = [
     title: 'DNA | Assets',
   },
   {
-    path: 'asset/:id',
+    path: 'asset/:clientId/:businessId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/asset-edit/asset-edit.component').then(
@@ -101,14 +101,14 @@ export const routes: Routes = [
     title: 'DNA | Assets',
   },
   {
-    path: 'debts',
+    path: 'debts/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/debts/debts.component').then(com => com.DebtsComponent),
     title: 'DNA | Debts',
   },
   {
-    path: 'debt/:id',
+    path: 'debt/:clientId/:businessId',
     loadComponent: () =>
       import('./pages/debt-edit/debt-edit.component').then(
         com => com.DebtEditComponent
@@ -116,14 +116,14 @@ export const routes: Routes = [
     title: 'DNA | Debts',
   },
   {
-    path: 'goals',
+    path: 'goals/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/goals/goals.component').then(com => com.GoalsComponent),
     title: 'DNA | Goals',
   },
   {
-    path: 'total-needs',
+    path: 'total-needs/:id',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/total-needs/total-needs.component').then(
