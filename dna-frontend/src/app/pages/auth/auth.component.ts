@@ -47,7 +47,6 @@ export class AuthComponent {
       const email = this.signInForm.value.email as string;
       const password = this.signInForm.value.password as string;
       const response = await this.supabaseService.signUp(email, password);
-      console.log(response);
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -56,7 +55,6 @@ export class AuthComponent {
       });
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error);
         this.showErrorMessage(error.message);
       }
     } finally {
@@ -69,7 +67,6 @@ export class AuthComponent {
       const email = this.signInForm.value.email as string;
       const password = this.signInForm.value.password as string;
       const response = await this.supabaseService.signIn(email, password);
-      console.log(response);
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -78,7 +75,6 @@ export class AuthComponent {
       });
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error);
         this.showErrorMessage(error.message);
       }
     } finally {
