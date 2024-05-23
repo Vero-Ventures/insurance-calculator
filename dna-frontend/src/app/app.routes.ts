@@ -92,7 +92,7 @@ export const routes: Routes = [
     title: 'DNA | Assets',
   },
   {
-    path: 'asset/:clientId/:businessId',
+    path: 'asset/:clientId/:assetId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/asset-edit/asset-edit.component').then(
@@ -108,7 +108,7 @@ export const routes: Routes = [
     title: 'DNA | Debts',
   },
   {
-    path: 'debt/:clientId/:businessId',
+    path: 'debt/:clientId/:debtId',
     loadComponent: () =>
       import('./pages/debt-edit/debt-edit.component').then(
         com => com.DebtEditComponent

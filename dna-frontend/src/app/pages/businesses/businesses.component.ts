@@ -15,7 +15,11 @@ import {
   TuiTabsModule,
 } from '@taiga-ui/kit';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
-import { TuiButtonModule, TuiDialogService } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiDialogService,
+  tuiNumberFormatProvider,
+} from '@taiga-ui/core';
 import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
 import { ValueListCardComponent } from 'app/core/components/value-list-card/value-list-card.component';
@@ -46,7 +50,13 @@ import { generateId } from 'app/core/utils/common.utils';
   ],
   templateUrl: './businesses.component.html',
   styleUrl: './businesses.component.scss',
-  providers: [BusinessesStore],
+  providers: [
+    BusinessesStore,
+    tuiNumberFormatProvider({
+      decimalSeparator: '.',
+      thousandSeparator: ',',
+    }),
+  ],
 })
 export class BusinessesComponent implements OnInit, OnDestroy {
   @Input() clientId: number = 0;
@@ -55,12 +65,6 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   readonly businessesForm = this.fb.group({
     businesses: this.fb.array<Business>([]),
   });
-
-  valueList = [
-    { label: 'EBITDA Contribution ($CAD)', value: '$600,000.00' },
-    { label: 'Share Value ($CAD)', value: '$1,000,000' },
-    { label: 'Liquidation Disparity ($CAD)', value: '$1,000,000' },
-  ];
 
   constructor(
     @Inject(TuiDialogService)
@@ -165,4 +169,10 @@ export class BusinessesComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  valueList = [
+    { label: 'EBITDA Contribution ($CAD)', value: '$600,000.00' },
+    { label: 'Share Value ($CAD)', value: '$1,000,000' },
+    { label: 'Liquidation Disparity ($CAD)', value: '$1,000,000' },
+  ];
 }

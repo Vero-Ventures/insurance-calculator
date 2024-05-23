@@ -7,6 +7,7 @@ import { initialClientState } from 'app/states/client.state';
 import { Beneficiary } from '../models/beneficiary.model';
 import { Business } from '../models/business.model';
 import { Goal } from '../models/goal.model';
+import { Debt } from '../models/debt.model';
 
 @Injectable({
   providedIn: 'root',
@@ -123,6 +124,22 @@ export class SupabaseService {
     return await this.supabase
       .from('client_profiles')
       .update({ percent_goal_liquidity: percent })
+      .eq('id', clientId)
+      .select();
+  }
+
+  async getDebts(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .select('debts')
+      .eq('id', clientId)
+      .single();
+  }
+
+  async updateDebts(clientId: number, debts: Debt[]) {
+    return await this.supabase
+      .from('client_profiles')
+      .update({ debts: debts })
       .eq('id', clientId)
       .select();
   }

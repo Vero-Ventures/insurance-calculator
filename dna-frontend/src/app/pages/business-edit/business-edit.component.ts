@@ -12,6 +12,7 @@ import {
   TuiButtonModule,
   TuiDialogService,
   TuiNotificationModule,
+  tuiNumberFormatProvider,
 } from '@taiga-ui/core';
 import {
   TUI_PROMPT,
@@ -46,7 +47,13 @@ import { take } from 'rxjs';
   ],
   templateUrl: './business-edit.component.html',
   styleUrl: './business-edit.component.scss',
-  providers: [BusinessesStore],
+  providers: [
+    BusinessesStore,
+    tuiNumberFormatProvider({
+      decimalSeparator: '.',
+      thousandSeparator: ',',
+    }),
+  ],
 })
 export class BusinessEditComponent implements OnInit {
   @Input() businessId: number = 0;

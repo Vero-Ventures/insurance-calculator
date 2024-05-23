@@ -15,7 +15,6 @@
           *ngFor="let business of businesses.controls; let i = index"
           formArrayName="businesses">
           <ng-container formGroupName="{{ i }}">
-            <!-- This class needs to be dynamically created per business -->
             <tui-input
               tuiTextfieldSize="s"
               class="business-input"
@@ -57,7 +56,6 @@
         (click)="addBusiness()">
         Add New
       </button>
-      <!-- Pressing this button will add a new beneficiary info section which is by default empty. -->
     </form>
     <ng-template #elseBlock>
       <div class="business-result-container flex column c-center gap-2">
