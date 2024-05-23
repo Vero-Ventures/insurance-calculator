@@ -1,0 +1,26 @@
+:host {
+  --box-border-radius: 10px;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.contents {
+  &-left {
+    background-color: #ebefff;
+    border-top-right-radius: var(--box-border-radius);
+    border-bottom-left-radius: var(--box-border-radius);
+    border-bottom-right-radius: var(--box-border-radius);
+  }
+  &-right {
+    background-color: #d9d9d9;
+    border-top-left-radius: var(--box-border-radius);
+    border-bottom-left-radius: var(--box-border-radius);
+    border-bottom-right-radius: var(--box-border-radius);
+  }
+}
