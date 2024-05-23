@@ -1,9 +1,25 @@
-<button tuiButton size="s" type="button" class="back-button" (click)="back()">
+<button
+  tuiButton
+  size="s"
+  type="button"
+  class="back-button"
+  (click)="back()"
+  [disabled]="isBackButtonDisabled()">
   <span class="tui-text_body-m">Back</span>
 </button>
 <div class="breadcrumbs">
-  <div *ngFor="let route of routes" [routerLink]="route.path"></div>
+  <progress
+    tuiProgressBar
+    [max]="pageList.length"
+    [segments]="pageList.length"
+    [value]="getPageIndex() + 1"></progress>
 </div>
-<button tuiButton size="s" type="button" class="next-button" (click)="next()">
+<button
+  tuiButton
+  size="s"
+  type="button"
+  class="next-button"
+  (click)="next()"
+  [disabled]="isNextButtonDisabled()">
   <span class="tui-text_body-m">Next</span>
 </button>
