@@ -1,4 +1,10 @@
 <app-advisor-bar pageName="Robo-Advisor"></app-advisor-bar>
-<app-chatbox side="right" author="" contents=""></app-chatbox>
-<app-chatbox side="left" author="" contents=""></app-chatbox>
+<div class="chat-contents">
+  <app-chatbox
+    *ngFor="let message of messages"
+    [side]="message['side']"
+    [author]="message['author']"
+    [contents]="message['contents']"></app-chatbox>
+</div>
+<div class="mega-spacer"></div>
 <app-chat-input></app-chat-input>
