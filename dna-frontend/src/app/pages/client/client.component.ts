@@ -68,7 +68,6 @@ export class ClientComponent implements OnInit, OnDestroy {
     province: new FormControl(),
     annualIncome: new FormControl(),
     incomeReplacementMultiplier: new FormControl(),
-    selectedBracket: new FormControl(),
     expectedRetirementAge: new FormControl(),
   });
 

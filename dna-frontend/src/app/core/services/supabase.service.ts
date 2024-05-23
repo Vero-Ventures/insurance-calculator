@@ -8,6 +8,7 @@ import { Beneficiary } from '../models/beneficiary.model';
 import { Business } from '../models/business.model';
 import { Goal } from '../models/goal.model';
 import { Debt } from '../models/debt.model';
+import { Asset } from '../models/asset.model';
 
 @Injectable({
   providedIn: 'root',
@@ -108,6 +109,22 @@ export class SupabaseService {
     return await this.supabase
       .from('client_profiles')
       .update({ businesses: businesses })
+      .eq('id', clientId)
+      .select();
+  }
+
+  async getAssets(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .select('assets')
+      .eq('id', clientId)
+      .single();
+  }
+
+  async updateAssets(clientId: number, assets: Asset[]) {
+    return await this.supabase
+      .from('client_profiles')
+      .update({ assets: assets })
       .eq('id', clientId)
       .select();
   }
