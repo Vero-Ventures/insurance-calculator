@@ -8,30 +8,36 @@
   height: 100%;
 }
 
+.nav-tabs {
+  margin-bottom: 1em;
+  box-shadow: none;
+}
+
 .goals-form {
-  height: 100%;
+  height: auto;
   width: 100%;
+  margin-bottom: 1em;
 
   > * {
     width: 90%;
   }
-}
-
-.nav-tabs {
-  margin-bottom: 1em;
 }
 
 .goals-result-container {
-  height: 100%;
+  height: auto;
   width: 100%;
+  margin-bottom: 1em;
 
   > * {
     width: 90%;
   }
 }
 
-.goal-section {
-  > * {
-    width: 100%;
-  }
+.goal-input {
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+.delete-button {
+  width: 100%;
 }
