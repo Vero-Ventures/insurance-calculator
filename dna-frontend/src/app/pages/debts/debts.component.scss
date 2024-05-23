@@ -9,7 +9,7 @@
 }
 
 .debts-form {
-  height: 100%;
+  height: auto;
   width: 100%;
 
   > * {
@@ -19,10 +19,11 @@
 
 .nav-tabs {
   margin-bottom: 1em;
+  box-shadow: none;
 }
 
 .debts-result-container {
-  height: 100%;
+  height: auto;
   width: 100%;
 
   > * {
