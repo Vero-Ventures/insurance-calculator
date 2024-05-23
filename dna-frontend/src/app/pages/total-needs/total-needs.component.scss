@@ -5,11 +5,12 @@
   align-items: center;
   justify-content: start;
   background-color: white;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
 }
 
 .total-needs-form {
-  height: 100%;
+  height: auto;
   width: 100%;
 
   > * {
@@ -23,7 +24,7 @@
 }
 
 .total-needs-result-container {
-  height: 100%;
+  height: auto;
   width: 100%;
 
   > * {
