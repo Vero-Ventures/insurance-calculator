@@ -1,5 +1,17 @@
 import { ASSET_TYPE } from '../enums/asset-type.enum';
-import { Beneficiary } from './beneficiary.model';
+
+export interface AssetBeneficiaryItem {
+  id: string;
+  name: string | null;
+  allocation: number | null;
+  isEnabled: boolean;
+}
+
+export interface AssetBeneficiary {
+  id: string;
+  name: string | null;
+  allocation: number | null;
+}
 
 export interface Asset {
   id: string;
@@ -13,5 +25,5 @@ export interface Asset {
   isTaxable: boolean;
   isLiquid: boolean;
   isToBeSold: boolean;
-  beneficiaries: Beneficiary[];
+  beneficiaries: AssetBeneficiary[];
 }
