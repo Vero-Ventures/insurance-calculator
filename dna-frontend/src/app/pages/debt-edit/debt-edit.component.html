@@ -1,15 +1,31 @@
 <app-header-bar pageName="Edit Debt"></app-header-bar>
 <form
-  class="debt-edit-form flex column m-start c-center gap-2 margin-vertical-s">
-  <tui-input tuiTextfieldSize="s">
+  class="debt-edit-form flex column m-start c-center gap-2 margin-vertical-s"
+  [formGroup]="debtEditInformationForm">
+  <tui-input tuiTextfieldSize="s" formControlName="name">
     Debt Name
-    <input tuiTextfield />
+    <input tuiTextfield (blur)="onBlur()" />
   </tui-input>
-  <tui-input-number tuiTextfieldSize="s"> Initial Value ($) </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s"> Year Acquired </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s"> Interest Rate (%) </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s"> Term (Years) </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s"> Annual Payment ($) </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="initialValue">
+    Initial Value ($)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="yearAcquired">
+    Year Acquired
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="rate">
+    Interest Rate (%)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="term">
+    Term (Years)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
+  <tui-input-number tuiTextfieldSize="s" formControlName="annualPayment">
+    Annual Payment ($)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
 </form>
 <app-action-bar
   (leftButtonClick)="cancel()"

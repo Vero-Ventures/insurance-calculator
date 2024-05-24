@@ -15,7 +15,7 @@
           class="nav-link flex c-center"
           icon="tuiIconUserLarge"
           iconAlign="left"
-          routerLink="/client"
+          [routerLink]="constructRoute('/client')"
           tuiLink
           >Client</a
         >
@@ -24,7 +24,7 @@
           class="nav-link flex c-center"
           icon="tuiIconUsersLarge"
           iconAlign="left"
-          routerLink="/beneficiaries"
+          [routerLink]="constructRoute('/beneficiaries')"
           tuiLink
           >Beneficiaries</a
         >
@@ -33,7 +33,7 @@
           class="nav-link flex c-center"
           icon="tuiIconBriefcaseLarge"
           iconAlign="left"
-          routerLink="/businesses"
+          [routerLink]="constructRoute('/businesses')"
           tuiLink
           >Businesses</a
         >
@@ -42,7 +42,7 @@
           class="nav-link flex c-center"
           icon="tuiIconDollarSignLarge"
           iconAlign="left"
-          routerLink="/assets"
+          [routerLink]="constructRoute('/assets')"
           tuiLink
           >Assets</a
         >
@@ -51,7 +51,7 @@
           class="nav-link flex c-center"
           icon="tuiIconTrendingDownLarge"
           iconAlign="left"
-          routerLink="/debts"
+          [routerLink]="constructRoute('/debts')"
           tuiLink
           >Debts</a
         >
@@ -60,7 +60,7 @@
           class="nav-link flex c-center"
           icon="tuiIconFlagLarge"
           iconAlign="left"
-          routerLink="/goals"
+          [routerLink]="constructRoute('/goals')"
           tuiLink
           >Goals</a
         >
@@ -69,7 +69,7 @@
           class="nav-link flex c-center"
           icon="tuiIconBarChart2Large"
           iconAlign="left"
-          routerLink="/total-needs"
+          [routerLink]="constructRoute('/total-needs')"
           tuiLink
           >Total Needs</a
         >

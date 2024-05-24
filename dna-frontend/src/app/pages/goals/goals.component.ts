@@ -1,13 +1,18 @@
-import { NgIf } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import {
   FormArray,
+  FormBuilder,
   FormControl,
-  FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { TuiButtonModule } from '@taiga-ui/core';
 import {
+  TuiButtonModule,
+  TuiDialogService,
+  tuiNumberFormatProvider,
+} from '@taiga-ui/core';
+import {
+  TUI_PROMPT,
   TuiCheckboxBlockModule,
   TuiInputModule,
   TuiInputNumberModule,
@@ -18,14 +23,15 @@ import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
 import { BarChartComponent } from 'app/core/components/bar-chart/bar-chart.component';
-import { ClientStore } from '../client/client.store';
+import { GoalsStore } from './goals.store';
+import { Goal } from 'app/core/models/goal.model';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     TuiInputModule,
     TuiInputNumberModule,
     TuiSelectModule,
@@ -33,53 +39,132 @@ import { ActivatedRoute } from '@angular/router';
     TuiCheckboxBlockModule,
     TuiButtonModule,
     HorizontalDividerComponent,
-    NgIf,
     ValueCardComponent,
     CalculatorComponent,
     BarChartComponent,
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    AsyncPipe,
   ],
   templateUrl: './goals.component.html',
   styleUrl: './goals.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ClientStore],
+  providers: [
+    GoalsStore,
+    tuiNumberFormatProvider({
+      decimalSeparator: '.',
+      thousandSeparator: ',',
+    }),
+  ],
 })
-export class GoalsComponent {
+export class GoalsComponent implements OnInit, OnDestroy {
   @Input() clientId: number = 0;
   activeItemIndex = 0;
+  vm$ = this.goalsStore.vm$;
+  readonly goalsForm = this.fb.group({
+    percentGoalLiquidity: new FormControl(),
+    goals: this.fb.array<Goal>([]),
+  });
+  initialPercentSub: Subscription | null = null;
 
   constructor(
-    private readonly clientStore: ClientStore,
-    private route: ActivatedRoute
+    @Inject(TuiDialogService)
+    private readonly dialogs: TuiDialogService,
+    private readonly goalsStore: GoalsStore,
+    private readonly fb: FormBuilder,
+    private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
       this.clientId = +params['clientId'];
-      // Use the clientStore here.
+      this.initializeFields();
     });
   }
 
-  readonly goalsForm = new FormGroup({
-    liquidityAllocatedToGoals: new FormControl(),
-    goals: new FormArray([]),
-  });
-
-  get goals(): FormArray {
+  get goals() {
     return this.goalsForm.get('goals') as FormArray;
   }
 
-  createGoal(): FormGroup {
-    return new FormGroup({
-      name: new FormControl(),
-      amount: new FormControl(),
-      philanthropic: new FormControl(),
+  ngOnInit() {
+    this.goalsForm.valueChanges.subscribe(formData => {
+      this.goalsStore.setPercentGoalLiquidity(
+        (formData.percentGoalLiquidity as number) || 0
+      );
+      this.goalsStore.setGoals((formData.goals as Goal[]) || []);
     });
   }
 
-  addGoal() {
-    this.goals.push(this.createGoal());
+  ngOnDestroy() {
+    this.goalsStore.updateGoals(this.clientId);
   }
 
-  removeGoal(index: number) {
+  onPercentBlur() {
+    this.goalsStore.updatePercentGoalLiquidity(this.clientId);
+  }
+
+  onBlur() {
+    this.goalsStore.updateGoals(this.clientId);
+  }
+
+  initializeFields() {
+    this.goalsStore.getPercentGoalLiquidity(this.clientId);
+    this.initialPercentSub = this.vm$
+      .pipe(map(state => state.percentGoalLiquidity))
+      .subscribe(percentGoalLiquidity => {
+        if (percentGoalLiquidity !== null) {
+          this.initialPercentSub?.unsubscribe();
+          this.goalsForm
+            .get('percentGoalLiquidity')
+            ?.setValue(percentGoalLiquidity);
+          this.initializeGoals();
+        }
+      });
+  }
+
+  initializeGoals() {
+    this.goalsStore.getGoals(this.clientId);
+    this.vm$
+      .pipe(take(3))
+      .pipe(map(state => state.goals))
+      .subscribe(goals => {
+        console.log(goals);
+        if (goals.length !== null) {
+          goals.forEach(goal => {
+            this.addGoal(goal);
+          });
+        }
+      });
+  }
+
+  addGoal(goal: Goal | null = null) {
+    this.goals.push(
+      this.fb.group({
+        name: [goal?.name || ''],
+        amount: [goal?.amount || 0],
+        isPhilanthropic: [goal?.isPhilanthropic || false],
+      })
+    );
+  }
+
+  deleteGoal(index: number) {
     this.goals.removeAt(index);
+    this.goalsStore.updateGoals(this.clientId);
+  }
+
+  openDeleteDialog(index: number) {
+    const goalName = this.goals.at(index).value.name;
+    this.dialogs
+      .open<boolean>(TUI_PROMPT, {
+        data: {
+          content: `Do you want to delete ${goalName}? This action cannot be undone.`,
+          yes: 'Delete',
+          no: 'Cancel',
+        },
+      })
+      .subscribe(result => {
+        if (result) {
+          this.deleteGoal(index);
+        }
+      });
   }
 
   currentValueOfFixedAssets = {

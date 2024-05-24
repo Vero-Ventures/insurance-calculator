@@ -4,11 +4,8 @@ import { authGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./pages/calculator/calculator.component').then(
-        com => com.CalculatorComponent
-      ),
-    title: 'DNA | Home',
+    redirectTo: 'landing',
+    pathMatch: 'full',
   },
   {
     path: 'auth',
@@ -51,7 +48,7 @@ export const routes: Routes = [
     title: 'DNA | Test Page',
   },
   {
-    path: 'client/:id',
+    path: 'client/:clientId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/client/client.component').then(
@@ -60,7 +57,7 @@ export const routes: Routes = [
     title: 'DNA | Client',
   },
   {
-    path: 'beneficiaries',
+    path: 'beneficiaries/:clientId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/beneficiaries/beneficiaries.component').then(
@@ -69,7 +66,7 @@ export const routes: Routes = [
     title: 'DNA | Beneficiaries',
   },
   {
-    path: 'businesses/:id',
+    path: 'businesses/:clientId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/businesses/businesses.component').then(
@@ -104,14 +101,14 @@ export const routes: Routes = [
     title: 'DNA | Assets',
   },
   {
-    path: 'debts',
+    path: 'debts/:clientId',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/debts/debts.component').then(com => com.DebtsComponent),
     title: 'DNA | Debts',
   },
   {
-    path: 'debt/:id',
+    path: 'debt/:clientId/:debtId',
     loadComponent: () =>
       import('./pages/debt-edit/debt-edit.component').then(
         com => com.DebtEditComponent

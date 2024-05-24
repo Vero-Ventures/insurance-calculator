@@ -11,20 +11,24 @@
   *ngIf="activeItemIndex === 0; else elseBlock">
   <tui-input tuiTextfieldSize="s" formControlName="name">
     Name
-    <input tuiTextfield />
+    <input tuiTextfield (blur)="onBlur()" />
   </tui-input>
   <tui-input-number tuiTextfieldSize="s" formControlName="valuation">
-    Valuation ($CAD)</tui-input-number
-  >
+    Valuation ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="ebitda">
-    EBITDA ($CAD)</tui-input-number
-  >
+    EBITDA ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="appreciationRate">
-    Appreciation Rate ($CAD)</tui-input-number
-  >
+    Appreciation Rate ($CAD)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-input-number tuiTextfieldSize="s" formControlName="term">
-    Term (Years)</tui-input-number
-  >
+    Term (Years)
+    <input tuiTextfield (blur)="onBlur()" />
+  </tui-input-number>
   <tui-notification status="warning" [hasIcon]="true">
     Add shareholders using the tabs above.
   </tui-notification>
@@ -34,43 +38,58 @@
     class="business-edit-form flex column m-start c-center margin-vertical-s"
     [formGroup]="businessEditShareholdersForm">
     <div
-      formArrayName="shareholders"
       class="business-edit-shareholder-dynamic-section flex column m-start c-center gap-2">
-      <tui-input
-        class="business-edit-shareholder-input"
-        tuiTextfieldSize="s"
-        formControlName="name">
-        Name
-        <input tuiTextfield />
-      </tui-input>
-      <tui-input-number
-        class="business-edit-shareholder-input"
-        tuiTextfieldSize="s"
-        formControlName="sharePercentage">
-        Share Percentage (%)</tui-input-number
-      >
-      <tui-input-number
-        class="business-edit-shareholder-input"
-        tuiTextfieldSize="s"
-        formControlName="insuranceCoverage">
-        Insurance Coverage ($)</tui-input-number
-      >
-      <tui-input-number
-        class="business-edit-shareholder-input"
-        tuiTextfieldSize="s"
-        formControlName="ebitdaContributionPercentage">
-        EBITDA Contribution Percentage (%)</tui-input-number
-      >
-      <button
-        tuiButton
-        type="button"
-        appearance="secondary-destructive"
-        class="delete-button">
-        Delete
-      </button>
-      <app-horizontal-divider class="info-divider"></app-horizontal-divider>
+      <ng-container
+        *ngFor="let shareholder of shareholders.controls; let i = index"
+        formArrayName="shareholders">
+        <ng-container formGroupName="{{ i }}">
+          <tui-input
+            class="business-edit-shareholder-input"
+            tuiTextfieldSize="s"
+            formControlName="name">
+            Name
+            <input tuiTextfield (blur)="onBlur()" />
+          </tui-input>
+          <tui-input-number
+            class="business-edit-shareholder-input"
+            tuiTextfieldSize="s"
+            formControlName="sharePercentage">
+            Share Percentage (%)
+            <input tuiTextfield (blur)="onBlur()" />
+          </tui-input-number>
+          <tui-input-number
+            class="business-edit-shareholder-input"
+            tuiTextfieldSize="s"
+            formControlName="insuranceCoverage">
+            Insurance Coverage ($)
+            <input tuiTextfield (blur)="onBlur()" />
+          </tui-input-number>
+          <tui-input-number
+            class="business-edit-shareholder-input"
+            tuiTextfieldSize="s"
+            formControlName="ebitdaContributionPercentage">
+            EBITDA Contribution Percentage (%)
+            <input tuiTextfield (blur)="onBlur()" />
+          </tui-input-number>
+          <button
+            tuiButton
+            type="button"
+            appearance="secondary-destructive"
+            class="delete-button"
+            (click)="openDeleteDialog(i)">
+            Delete
+          </button>
+          <app-horizontal-divider class="info-divider"></app-horizontal-divider>
+        </ng-container>
+      </ng-container>
     </div>
-    <button tuiButton type="button" class="add-new-button">Add New</button>
+    <button
+      tuiButton
+      type="button"
+      class="add-new-button"
+      (click)="addShareholder()">
+      Add New
+    </button>
   </form>
 </ng-template>
 <app-action-bar
