@@ -27,7 +27,7 @@
     "@ngrx/component-store": "^17.2.0",
     "@ngrx/operators": "^17.2.0",
     "@ngrx/store": "^17.2.0",
-    "@supabase/supabase-js": "^2.43.0",
+    "@supabase/supabase-js": "^2.43.1",
     "@taiga-ui/addon-charts": "^3.76.0",
     "@taiga-ui/addon-commerce": "^3.76.0",
     "@taiga-ui/addon-doc": "^3.76.0",
