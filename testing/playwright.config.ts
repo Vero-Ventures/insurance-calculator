@@ -38,12 +38,15 @@ export default defineConfig({
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
     },
+
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
       },
       dependencies: ['setup'],
+      // Chromium is set to run all tests, while the rest are set to only run on those where parallelism won't be an issue
+      // testMatch: ['auth.setup.ts', 'login.test.ts', 'signup.test.ts']
     },
 
     {
@@ -52,6 +55,7 @@ export default defineConfig({
         ...devices['Desktop Firefox'],
       },
       dependencies: ['setup'],
+      testMatch: ['auth.setup.ts', 'login.test.ts', 'signup.test.ts'],
     },
 
     {
@@ -60,6 +64,7 @@ export default defineConfig({
         ...devices['Desktop Safari'],
       },
       dependencies: ['setup'],
+      testMatch: ['auth.setup.ts', 'login.test.ts', 'signup.test.ts'],
     },
 
     /* Test against mobile viewports. */
