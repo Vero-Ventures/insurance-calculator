@@ -22,6 +22,7 @@ import { take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PROVINCE_TAX_BRACKETS } from 'app/core/constants/tax.constant';
 import { TaxBracketPipe } from 'app/shared/pipes/tax-bracket.pipe';
+import { MultiValueCardComponent } from 'app/core/components/multi-value-card/multi-value-card.component';
 
 @Component({
   selector: 'app-client',
@@ -36,6 +37,7 @@ import { TaxBracketPipe } from 'app/shared/pipes/tax-bracket.pipe';
     TuiDataListWrapperModule,
     TuiTabsModule,
     ValueCardComponent,
+    MultiValueCardComponent,
     CalculatorComponent,
     NgIf,
     AsyncPipe,

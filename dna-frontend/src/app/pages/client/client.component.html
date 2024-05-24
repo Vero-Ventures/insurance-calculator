@@ -68,14 +68,13 @@
                 (vm.client.incomeReplacementMultiplier || 0) | currency) ||
               '$0.00'
           }"></app-value-card>
-        <app-value-card
+        <app-multi-value-card
           [compact]="true"
-          [value]="{
-            label: 'Tax Bracket',
-            value:
-              calculateTaxBracket(vm.client.province, vm.client.annualIncome)
+          header="Tax Bracket"
+          [values]="
+            calculateTaxBracket(vm.client.province, vm.client.annualIncome)
               | taxBracket
-          }"></app-value-card>
+          "></app-multi-value-card>
       </div>
     </ng-template>
   </ng-container>
