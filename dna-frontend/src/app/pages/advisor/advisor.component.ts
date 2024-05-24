@@ -46,7 +46,6 @@ export class AdvisorComponent {
         prompt: contents,
       })
       .subscribe(value => {
-        console.log(value);
         this.addMessage(this.defaultAdvisorName, value.data);
       });
   }
