@@ -16,7 +16,9 @@ from lib.rag import Rag
 
 
 class Model:
-    def __init__(self, model: LLM | ChatOpenAI, embedding: Embeddings, instruction_template: str):
+    def __init__(
+        self, model: LLM | ChatOpenAI, embedding: Embeddings, instruction_template: str
+    ):
         self._prompt_template = PromptTemplate.from_template(instruction_template)
         self._rag: Optional[Rag] = None
         self._model: LLM | ChatOpenAI = model
