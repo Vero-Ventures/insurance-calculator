@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -24,4 +24,10 @@ export class ChatInputComponent {
   promptForm = new FormGroup({
     prompt: new FormControl(),
   });
+
+  get prompt(): string {
+    return this.promptForm.controls['prompt'].value as string;
+  }
+
+  @Output() send = new EventEmitter();
 }

@@ -7,4 +7,6 @@
     [contents]="message['contents']"></app-chatbox>
 </div>
 <div class="mega-spacer"></div>
-<app-chat-input></app-chat-input>
+<app-chat-input
+  (send)="sendMessage(defaultName, inputBox.prompt)"
+  #inputBox></app-chat-input>

@@ -12,16 +12,21 @@ import { ChatboxComponent } from 'app/core/components/chatbox/chatbox.component'
   styleUrl: './advisor.component.scss',
 })
 export class AdvisorComponent {
-  messages = [
-    {
-      side: 'right',
-      author: 'You',
-      contents: 'Question?',
-    },
-    {
-      side: 'left',
-      author: 'Robo-Advisor',
-      contents: 'Answer.',
-    },
-  ];
+  defaultName = 'You';
+  messages: Array<{ side: string; author: string; contents: string }> = [];
+
+  addMessage(author: string, contents: string) {
+    const side = author == 'Robo-Advisor' ? 'left' : 'right';
+    this.messages.push({
+      side: side,
+      author: author,
+      contents: contents,
+    });
+  }
+
+  sendMessage(author: string, contents: string) {
+    this.addMessage(author, contents);
+
+    // TODO: Connect to LLM here and use addMessage when LLM responds
+  }
 }
