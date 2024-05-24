@@ -11,7 +11,8 @@
     "lint:fix": "ng lint --fix",
     "prettier": "npx prettier --write .",
     "format": "eslint --fix . && prettier --write .",
-    "prepare": "cd .. && husky dna-frontend/.husky"
+    "prepare": "cd .. && husky dna-frontend/.husky",
+    "coverage": "npx nyc --reporter=lcov --reporter=text npx playwright test"
   },
   "private": true,
   "dependencies": {
@@ -73,6 +74,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "^15.2.2",
+    "nyc": "^15.1.0",
+    "@playwright/test": "^1.44.0",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
     "typescript": "~5.4.2"
