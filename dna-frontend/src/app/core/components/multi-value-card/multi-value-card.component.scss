@@ -5,6 +5,7 @@
 .result-header {
   @include center-text;
   margin-top: 1rem;
+  font-weight: 800;
 
   &.compact {
     margin: 0.25rem;
@@ -32,8 +33,7 @@
 
 .value-card-content {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 2rem;
 }
 

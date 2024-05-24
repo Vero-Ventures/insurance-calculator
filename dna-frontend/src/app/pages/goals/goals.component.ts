@@ -8,19 +8,14 @@ import {
 } from '@angular/forms';
 import {
   TuiButtonModule,
-  TuiDataListModule,
   TuiDialogService,
-  TuiNotificationModule,
   tuiNumberFormatProvider,
 } from '@taiga-ui/core';
 import {
   TUI_PROMPT,
   TuiCheckboxBlockModule,
-  TuiDataListWrapperModule,
-  TuiInputDateModule,
   TuiInputModule,
   TuiInputNumberModule,
-  TuiInputSliderModule,
   TuiSelectModule,
   TuiTabsModule,
 } from '@taiga-ui/kit';
@@ -38,14 +33,9 @@ import { Subscription, map } from 'rxjs';
   standalone: true,
   imports: [
     TuiInputModule,
-    TuiInputDateModule,
     TuiInputNumberModule,
-    TuiInputSliderModule,
     TuiSelectModule,
-    TuiDataListModule,
-    TuiDataListWrapperModule,
     TuiTabsModule,
-    TuiNotificationModule,
     TuiCheckboxBlockModule,
     TuiButtonModule,
     HorizontalDividerComponent,
