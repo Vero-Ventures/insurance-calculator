@@ -1,4 +1,4 @@
-import { test, expect } from 'playwright-test-coverage';
+import { test, expect } from '@playwright/test';
 import { config } from '../setup/config';
 
 const authFile = config.USER_FILE;

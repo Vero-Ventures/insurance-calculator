@@ -1,4 +1,4 @@
-import { test as setup, expect } from 'playwright-test-coverage';
+import { test as setup, expect } from '@playwright/test';
 import { config } from './setup/config';
 
 setup.describe.configure({ mode: 'serial' });

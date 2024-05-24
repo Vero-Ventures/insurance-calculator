@@ -1,4 +1,4 @@
-import { test } from 'playwright-test-coverage';
+import { test } from '@playwright/test';
 import { config } from './setup/config';
 
 // For testing existing email
