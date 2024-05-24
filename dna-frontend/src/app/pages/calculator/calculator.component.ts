@@ -26,7 +26,7 @@ export class CalculatorComponent {
     private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
-      this.clientId = +params['id'];
+      this.clientId = +params['clientId'];
     });
     this.pageName = this.getPageName();
   }

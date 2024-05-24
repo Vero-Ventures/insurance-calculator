@@ -80,7 +80,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
-      this.clientId = +params['id'];
+      this.clientId = +params['clientId'];
       this.assetsStore.getAssets(this.clientId);
       // This is necessary to first populate the form with the initial state and then the data from the db
       this.vm$.pipe(take(2)).subscribe(state => {

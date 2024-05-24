@@ -76,7 +76,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
-      this.clientId = +params['id'];
+      this.clientId = +params['clientId'];
       this.initializeFields();
     });
   }
