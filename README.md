@@ -1,29 +1,44 @@
-## **Project Description**
+# Insurance Calculator
 
-**Videre** seeks innovative BCIT CST students to develop an Angular progressive web application (PWA) that aids life insurance advisors in assessing clients' maximum insurable needs. This project builds upon a validated MVP to expand functionality, enhance user experience, and streamline deployment processes.
+## Project Overview
+- Description: An Angular Progressive Web Application that aids life insurance advisors in assessing clients’ maximum insurable needs. Includes the calculator component for such a task, and the advisor component to assist advisors in answering questions.
+- Status: The calculator is able to make all necessary calculations. The advisor is able to answer questions based on user input.
 
-## **Key elements include:**
+## Installation
+- Prerequisites: Standard development tools, such as Git and NPM installed. An internet browser. An internet connection.
+- Setup: Clone the repository using Git. Use your computer’s terminal to navigate to the dna-frontend folder. Run `npm install` to install dependencies for the first time, then run `npm start`. Open localhost on the specified port, for example localhost:4200/auth.
+- Configuration: The frontend will work out of the box provided you follow the Setup instructions.
 
-- **Feature Expansion:** Students will utilize Angular and TypeScript to develop new app functionalities.
-- **Testing and Quality Assurance:** Implementing static analysis to ensure code reliability (ESLint, Prettier, etc).
-- **DevOps Pipeline:** Building a CI/CD pipeline using GitHub Actions
-- **Cloud Deployment:** Deploying the app to cloud infrastructure
-- **Language Model Agent:** Use OpenAI chatbot interface to allow the user interface with the app via a robo-advisor with a customized knowledge base.
+## Project Structure
+- Dna-frontend
+  - Src
+    - App
+      - Core
+        - Components (Contains custom components that aren’t already provided by TaigaUI)
+        - Constants (Contains constants that are used by the calculator)
+        - Enums (Contains enums that are used by the calculator)
+        - Guards (Contains guards that are used by the calculator)
+        - Models (Contains interfaces used by the calculator)
+        - Services (Contains services used by the calculator)
+      - Pages (Contains all the main pages of the calculator)
+        - NOTE: There is a Calculator page that contains the navbar and bottom bar. All the other calculator pages are inserted inside the calculator page.
+      - Shared
+        - Pipe (Contains the pipes used by the calculator)
+      - States (Contains state implementation for the calculator)
+      - Styles (Global styling)
+        - Styles.scss (Global styling)
+- Dna-backend
+  - packages - A directory of shared INTERNAL packages to be used by one or more services
+  - services - A directory of micro services
+    - Gateway
+      - src
+        - server - All server related files
+- Dna-advisor
+  - lib - Code for implementing a RAG pipeline and using LLM models
 
-This project is an exceptional opportunity to apply a wide array of skills acquired through the CST program, including but not limited to Angular, TypeScript, DevOps practices, and cloud deployments, in a real-world, market-validated application.
+## Architecture and Design
+![High Level Architecture Diagram](./high-level-architecture-diagram.png)
 
-## **Technical Stack:**
-
-- Programming Language(s): Angular & Typescript, Github workflow actions
-- Students are encouraged to use TypeScript with Angular for front-end development, embracing the CST program's focus on modern web technologies.
-- The project promotes open-source tools and frameworks, aligning with industry standards for software development and deployment. Emphasis will be placed on utilizing GitHub for version control and collaboration, alongside integrating APIs for enhanced functionalities.
-
-## **Hardware/Software Requirements:**
-
-- Development will utilize open-source tools, with students using their own computing resources.
-- The project will leverage existing cloud platforms (e.g., AWS, Azure) for deployment, requiring students to have access to standard development tools (IDEs, Git) and an internet connection.
-- Videre will provide access to necessary cloud services and APIs.
-
-## **Current Work/Arrangement:**
-
-Currently, the MVP of the financial calculator is functional but requires expansion and refinement for a broader feature set and improved usability. It is built with Angular and deployed to Vercel as a pure front-end app. There is currently no backend database or server. By leveraging Agile methodologies and a robust DevOps pipeline, we intend to streamline development and deployment, ensuring a seamless and scalable solution.
+## Usage
+- Calculator: Navigate to localhost:4200/auth using your internet browser and login or create an account as necessary. Launch the calculator by clicking “Launch Calculator”. Add a new client, and load it using the on-screen buttons. Fill in the forms using your client’s information, using the buttons at the bottom of the screen to navigate through the different forms. The final screen, Total Needs, lists the calculations generated by the app.
+- Advisor: Navigate to localhost:4200/auth using your internet browser and login or create an account as necessary. Launch the advisor by clicking “Chat Now”. Use the text input to add a prompt, and click “Send” to await the advisor’s response.
