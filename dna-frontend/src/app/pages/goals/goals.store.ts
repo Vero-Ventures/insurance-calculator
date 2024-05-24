@@ -77,7 +77,9 @@ export class GoalsStore extends ComponentStore<GoalsState> {
       if (response.error) {
         throw response.error;
       } else {
-        this.setGoals(response.data.goals);
+        if (response.data.goals) {
+          this.setGoals(response.data.goals);
+        }
       }
     });
   }

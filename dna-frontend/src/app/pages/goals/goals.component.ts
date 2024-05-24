@@ -26,7 +26,7 @@ import { BarChartComponent } from 'app/core/components/bar-chart/bar-chart.compo
 import { GoalsStore } from './goals.store';
 import { Goal } from 'app/core/models/goal.model';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Subscription, map, take } from 'rxjs';
 
 @Component({
   selector: 'app-goals',
@@ -66,7 +66,6 @@ export class GoalsComponent implements OnInit, OnDestroy {
     goals: this.fb.array<Goal>([]),
   });
   initialPercentSub: Subscription | null = null;
-  initialGoalsSub: Subscription | null = null;
 
   constructor(
     @Inject(TuiDialogService)
@@ -123,11 +122,12 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
   initializeGoals() {
     this.goalsStore.getGoals(this.clientId);
-    this.initialGoalsSub = this.vm$
+    this.vm$
+      .pipe(take(3))
       .pipe(map(state => state.goals))
       .subscribe(goals => {
-        if (goals.length > 0) {
-          this.initialGoalsSub?.unsubscribe();
+        console.log(goals);
+        if (goals.length !== null) {
           goals.forEach(goal => {
             this.addGoal(goal);
           });
