@@ -193,7 +193,7 @@ export class AssetEditComponent implements OnInit {
       this.fb.group({
         id: beneficiary.id,
         name: beneficiary.name,
-        allocation: 0,
+        allocation: beneficiary.allocation,
         isEnabled: false,
       })
     );
