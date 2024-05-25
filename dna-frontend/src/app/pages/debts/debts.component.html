@@ -81,6 +81,29 @@
               {
                 label: 'Insurable Future Value ($)',
                 value: (calculateSingleFutureValue(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Current Years Held',
+                value: calculateYearsHeld(debt).toString()
+              },
+              {
+                label: 'Amount Paid Off ($)',
+                value: (calculateAmountPaid(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Curent Value of Debt ($)',
+                value: (calculateCurrentDebt(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Debt Remaining ($)',
+                value:
+                  (calculateCurrentDebt(debt) - calculateAmountPaid(debt)
+                    | currency) || '$0.00'
+              },
+              {
+                label: 'Years to be Paid Off',
+                value:
+                  calculateYearsToPayOff(debt)?.toFixed(2)?.toString() || 'N/A'
               }
             ]"></app-value-list-card>
         </ng-container>

@@ -178,8 +178,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   calculateSingleFutureValue(debt: Debt) {
-    const currentYear = new Date().getFullYear();
-    const currentYearsHeld = currentYear - (debt.yearAcquired || currentYear);
+    const currentYearsHeld = this.calculateYearsHeld(debt);
     const amountPaidOffDollars = (debt.annualPayment || 0) * currentYearsHeld;
     const futureValueOfActualTermDebt =
       (debt.initialValue || 0) *
@@ -194,6 +193,23 @@ export class DebtsComponent implements OnInit, OnDestroy {
     );
   }
 
+  calculateYearsHeld(debt: Debt) {
+    const currentYear = new Date().getFullYear();
+    return currentYear - (debt.yearAcquired || currentYear);
+  }
+
+  calculateAmountPaid(debt: Debt) {
+    const yearsPaid = this.calculateYearsHeld(debt);
+    return yearsPaid * (debt.annualPayment || 0);
+  }
+
+  calculateCurrentDebt(debt: Debt) {
+    return (
+      (debt.initialValue || 0) *
+      Math.pow(1 + (debt.rate || 0) / 100, this.calculateYearsHeld(debt))
+    );
+  }
+
   calculateSingleRemainingDebt(debt: Debt) {
     const remainingDebt: TuiPoint[] = [];
     const initialValue = debt.initialValue || 0;
@@ -201,10 +217,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     const startingYear = debt.yearAcquired || 0;
     const rate = debt.rate || 0;
     const term = debt.term || 0;
-    const years =
-      new Date().getFullYear() -
-      (startingYear === 0 ? new Date().getFullYear() : startingYear) +
-      term;
+    const years = this.calculateYearsHeld(debt) + term;
     let remainingValue = initialValue;
     for (let i = 0; i <= years; i++) {
       remainingValue = remainingValue * (1 + rate / 100) - annualPayment;
@@ -219,6 +232,18 @@ export class DebtsComponent implements OnInit, OnDestroy {
       debtValue.push(this.calculateSingleRemainingDebt(debt));
     });
     return debtValue;
+  }
+
+  calculateYearsToPayOff(debt: Debt) {
+    if (debt.annualPayment === 0) {
+      return null;
+    }
+
+    return DebtsComponent.nper(
+      debt.rate || 0,
+      debt.annualPayment || 0,
+      this.calculateCurrentDebt(debt) - this.calculateAmountPaid(debt)
+    );
   }
 
   getXMin(debts: Debt[]) {
@@ -285,4 +310,22 @@ export class DebtsComponent implements OnInit, OnDestroy {
     const steps = 4;
     return createAxisYLabels(min, max, steps);
   };
+
+  static nper(
+    rate: number,
+    annualPayment: number,
+    presentValue: number
+  ): number {
+    rate = rate / 100;
+
+    if (rate <= 0) {
+      rate *= -1;
+    }
+
+    const numerator: number = Math.log(
+      annualPayment / (annualPayment - presentValue * rate)
+    );
+    const denominator: number = Math.log(1 + rate);
+    return numerator / denominator;
+  }
 }
