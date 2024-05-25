@@ -23,7 +23,6 @@ import {
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
-import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { generateId } from 'app/core/utils/common.utils';
@@ -43,7 +42,6 @@ import { Debt } from 'app/core/models/debt.model';
     HorizontalDividerComponent,
     ValueCardComponent,
     CalculatorComponent,
-    LineChartComponent,
     NgIf,
     NgFor,
     AsyncPipe,

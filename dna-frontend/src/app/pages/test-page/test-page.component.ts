@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { LandingCardComponent } from 'app/core/components/landing-card/landing-card.component';
-import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
 import { SubscriptionCardComponent } from 'app/core/components/subscription-card/subscription-card.component';
 import { MultiValueCardComponent } from 'app/core/components/multi-value-card/multi-value-card.component';
@@ -16,7 +15,6 @@ import { ActionItemComponent } from 'app/core/components/action-item/action-item
     LandingCardComponent,
     ValueCardComponent,
     MultiValueCardComponent,
-    LineChartComponent,
     ValueListCardComponent,
     BottomBarComponent,
     ActionItemComponent,
