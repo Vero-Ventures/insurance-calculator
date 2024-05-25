@@ -7,11 +7,14 @@ export const verticalLinesHandler: TuiLineHandler = (index, total) =>
 export const horizontalLinesHandler: TuiLineHandler = (index, total) =>
   index === total ? 'none' : 'dashed';
 
-export function createYearAxisXLabels(years: number) {
-  const currentYear = new Date().getFullYear();
+export function createYearAxisXLabels(
+  years: number,
+  min: number | null = null
+) {
+  const start = min ? min : new Date().getFullYear();
   const labels = [];
   for (let i = 0; i < years; i++) {
-    labels.push(`${currentYear + i}`);
+    labels.push(`${start + i}`);
   }
   return labels;
 }
