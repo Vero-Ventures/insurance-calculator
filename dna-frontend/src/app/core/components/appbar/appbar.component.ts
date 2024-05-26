@@ -23,10 +23,15 @@ import { HorizontalDividerComponent } from '../horizontal-divider/horizontal-div
 })
 export class AppbarComponent {
   @Input() pageName = '';
+  @Input() clientId = 0;
 
   open = false;
 
   toggle(open: boolean) {
     this.open = open;
+  }
+
+  constructRoute(route: string) {
+    return `/${route}/${this.clientId}`;
   }
 }

@@ -1,24 +1,24 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { Business } from 'app/core/models/business.model';
+import { Beneficiary } from 'app/core/models/beneficiary.model';
 import { SupabaseService } from 'app/core/services/supabase.service';
 import {
-  BusinessesState,
-  initialBusinessesState,
-} from 'app/states/businesses.state';
+  BeneficiariesState,
+  initialBeneficiariesState,
+} from 'app/states/beneficiaries.state';
 import { take } from 'rxjs';
 
 @Injectable()
-export class BusinessesStore extends ComponentStore<BusinessesState> {
+export class BeneficiariesStore extends ComponentStore<BeneficiariesState> {
   readonly isLoading$ = this.select(state => state.isLoading);
   readonly error$ = this.select(state => state.error);
-  readonly businesses$ = this.select(state => state.businesses);
+  readonly beneficiaries$ = this.select(state => state.beneficiaries);
 
   readonly vm$ = this.select({
     isLoading: this.isLoading$,
     error: this.error$,
-    businesses: this.businesses$,
+    beneficiaries: this.beneficiaries$,
   });
 
   readonly setIsLoading = this.updater(state => ({
@@ -32,30 +32,32 @@ export class BusinessesStore extends ComponentStore<BusinessesState> {
     error: error.message,
   }));
 
-  readonly setBusinesses = this.updater((state, businesses: Business[]) => ({
-    ...state,
-    isLoading: false,
-    businesses,
-  }));
+  readonly setBeneficiaries = this.updater(
+    (state, beneficiaries: Beneficiary[]) => ({
+      ...state,
+      isLoading: false,
+      beneficiaries,
+    })
+  );
 
   constructor(private supabaseService: SupabaseService) {
-    super(initialBusinessesState);
+    super(initialBeneficiariesState);
   }
 
-  getBusinesses(clientId: number) {
-    this.supabaseService.getBusinesses(clientId).then(response => {
+  getBeneficiaries(clientId: number) {
+    this.supabaseService.getBeneficiaries(clientId).then(response => {
       if (response.error) {
         throw response.error;
       } else {
-        this.setBusinesses(response.data.businesses);
+        this.setBeneficiaries(response.data.beneficiaries);
       }
     });
   }
 
-  updateBusinesses(clientId: number) {
-    this.businesses$.pipe(take(1)).subscribe(businesses => {
+  updateBeneficiaries(clientId: number) {
+    this.beneficiaries$.pipe(take(1)).subscribe(beneficiaries => {
       this.supabaseService
-        .updateBusinesses(clientId, businesses)
+        .updateBeneficiaries(clientId, beneficiaries)
         .then(response => {
           if (response.error) {
             throw response.error;

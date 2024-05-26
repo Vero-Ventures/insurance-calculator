@@ -8,71 +8,65 @@
 <form
   class="asset-edit-form flex column m-start c-center gap-2"
   *ngIf="activeItemIndex === 0; else elseBlock"
-  [formGroup]="assetEditForm">
+  [formGroup]="assetEditInformationForm">
   <tui-select formControlName="type">
     Type
-    <tui-data-list-wrapper *tuiDataList [items]="types"></tui-data-list-wrapper>
+    <tui-data-list-wrapper
+      *tuiDataList
+      [items]="typeOptions"></tui-data-list-wrapper>
   </tui-select>
-  <tui-input tuiTextfieldSize="s">
+  <tui-input tuiTextfieldSize="s" formControlName="name">
     Asset Name
     <input tuiTextfield />
   </tui-input>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="yearAcquired">
     Year Acquired
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="initialValue">
     Initial Value ($)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="currentValue">
     Current Value ($)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="rate">
     Appreciation Rate (%)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-input-number tuiTextfieldSize="s">
+  <tui-input-number tuiTextfieldSize="s" formControlName="term">
     Term (Years)
     <input tuiTextfield />
   </tui-input-number>
-  <tui-checkbox-block formControlName="taxable">Taxable</tui-checkbox-block>
-  <tui-checkbox-block formControlName="liquid">Liquid</tui-checkbox-block>
-  <tui-checkbox-block formControlName="toBeSold">To Be Sold</tui-checkbox-block>
-  <tui-select formControlName="taxBracket">
-    Tax Bracket
-    <tui-data-list-wrapper
-      *tuiDataList
-      [items]="taxBrackets"></tui-data-list-wrapper>
-  </tui-select>
+  <tui-checkbox-block formControlName="isTaxable">Taxable</tui-checkbox-block>
+  <tui-checkbox-block formControlName="isLiquid">Liquid</tui-checkbox-block>
+  <tui-checkbox-block formControlName="isToBeSold"
+    >To Be Sold</tui-checkbox-block
+  >
 </form>
 <ng-template #elseBlock>
-  <form class="asset-beneficiary-form gap-2 flex column m-start c-center">
-    <!-- Dynamically populate -->
+  <form
+    class="asset-beneficiary-form gap-2 flex column m-start c-center"
+    [formGroup]="assetEditBeneficiariesForm">
     <div class="asset-section flex column m-start c-center gap-2">
-      <tui-input-number tuiTextfieldSize="s">
-        Beneficiary 1 Allocation (%)
-        <input tuiTextfield />
-      </tui-input-number>
-      <button
-        tuiButton
-        type="button"
-        appearance="secondary"
-        class="remove-button">
-        Remove
-      </button>
-      <app-horizontal-divider></app-horizontal-divider>
-    </div>
-    <div class="asset-section flex column m-start c-center gap-2">
-      <button
-        tuiButton
-        type="button"
-        appearance="primary"
-        class="remove-button">
-        Add Beneficiary 2
-      </button>
-      <app-horizontal-divider></app-horizontal-divider>
+      <ng-container
+        *ngFor="let beneficiary of beneficiaries.controls; let i = index"
+        formArrayName="beneficiaries">
+        <ng-container formGroupName="{{ i }}">
+          <tui-checkbox-block formControlName="isEnabled">
+            {{ beneficiary.get('name')?.value }}
+          </tui-checkbox-block>
+          <tui-input-number
+            tuiTextfieldSize="s"
+            *ngIf="beneficiary.get('isEnabled')?.value || false"
+            formControlName="allocation">
+            {{ beneficiary.get('name')?.value }} Allocation (%)
+            <input tuiTextfield />
+          </tui-input-number>
+          <app-horizontal-divider></app-horizontal-divider>
+        </ng-container>
+      </ng-container>
     </div>
   </form>
 </ng-template>

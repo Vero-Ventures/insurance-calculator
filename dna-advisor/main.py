@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from lib.model import GPT4AllModel
+from lib.model import GPT4AllModel, OpenAiModel
 from lib.rag import Rag
 from api import create_api
 
@@ -27,6 +27,9 @@ def initialize_model(path: str, template: str, loader):
     print(f"[MODEL] Instruction Template: ***\n{template}\n***")
 
     if loader == GPT4AllModel:
+        return loader(model=path, instruction_template=inst_templ)
+
+    if loader == OpenAiModel:
         return loader(model=path, instruction_template=inst_templ)
 
     raise Exception(f"Could not load the model at: '{path}'")
@@ -60,16 +63,29 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Define the model to download
-    model_name = "TheBloke/TinyLlama-1.1B-1T-OpenOrca-GGUF"
-    model_file = "tinyllama-1.1b-1t-openorca.Q4_K_M.gguf"
-    model_path = hf_hub_download(model_name, filename=model_file)
+    model_path = None
+    inst_templ = None
+    loader = OpenAiModel
 
-    # Include the instruction template for that model, be sure it includes a "{system}" and "{prompt}" placeholder
-    inst_templ = "<|im_start|>system\n{system}<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistants"
+    if loader == GPT4AllModel:
+        # Define the model to download
+        model_name = "TheBloke/TinyLlama-1.1B-1T-OpenOrca-GGUF"
+        model_file = "tinyllama-1.1b-1t-openorca.Q4_K_M.gguf"
+
+        # Include the instruction template for that model, be sure it includes a "{system}" and "{prompt}" placeholder
+        inst_templ = "<|im_start|>system\n{system}<|im_end|>\n<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistants"
+
+        model_path = hf_hub_download(model_name, filename=model_file)
+
+    elif loader == OpenAiModel:
+        inst_templ = "You're an assistant knowledgeable about life insurance. Only answer life insurance related questions. You can use the following details to answer the user's question: {system}\n\nAnswer the following question from the user:\n{prompt}"
+        model_path = "gpt-3.5-turbo-0125"
+
+    else:
+        raise Exception("No valid model loader was specified.")
 
     # Load the model
-    model = initialize_model(path=model_path, template=inst_templ, loader=GPT4AllModel)
+    model = initialize_model(path=model_path, template=inst_templ, loader=loader)
 
     # Load the documents to be embedded and stored in a vector db
     documents = Rag.read_documents(args.documents)

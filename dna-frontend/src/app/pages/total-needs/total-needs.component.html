@@ -7,62 +7,63 @@
   </tui-tabs>
   <form
     class="total-needs-form flex column m-start c-center gap-2"
-    *ngIf="activeItemIndex === 0; else elseBlock">
+    *ngIf="activeItemIndex === 0; else elseBlock"
+    [formGroup]="totalNeedsForm">
     <p>Income Replacement - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <p>Estate Tax Liability - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <p>Equalization - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <p>Goal Shortfall - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <!-- Populate dynamically -->
 
     <p>business 1 Key-Man: shareholder - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <p>business 1 Shareholder Agreement: shareholder - Need $5,000,000</p>
-    <tui-input-slider formControlName="totalNeedsForm" [max]="100" [quantum]="1"
+    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
       >Priority</tui-input-slider
     >
-    <tui-input tuiTextfieldSize="s">
+    <tui-input-number tuiTextfieldSize="s" formControlName="want">
       Want
       <input tuiTextfield />
-    </tui-input>
+    </tui-input-number>
 
     <tui-notification status="warning" [hasIcon]="true">
       Check to ensure all priorities are set

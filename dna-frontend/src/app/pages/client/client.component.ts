@@ -68,7 +68,6 @@ export class ClientComponent implements OnInit, OnDestroy {
     province: new FormControl(),
     annualIncome: new FormControl(),
     incomeReplacementMultiplier: new FormControl(),
-    selectedBracket: new FormControl(),
     expectedRetirementAge: new FormControl(),
   });
 
@@ -77,7 +76,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
-      this.clientId = +params['id'];
+      this.clientId = +params['clientId'];
       this.clientStore.getClient(this.clientId);
       // This is necessary to first populate the form with the initial state and then the data from the db
       this.vm$.pipe(take(2)).subscribe(state => {
