@@ -6,12 +6,7 @@
   "lines": 90,
   "branches": 90,
   "functions": 90,
-  "exclude": [
-    "**/*.spec.ts"
-  ],
-  "reporter": [
-    "text",
-    "html"
-  ],
+  "exclude": ["**/*.spec.ts"],
+  "reporter": ["text", "html"],
   "report-dir": "coverage"
 }
