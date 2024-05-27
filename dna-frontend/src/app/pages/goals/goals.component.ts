@@ -22,7 +22,6 @@ import {
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
-import { BarChartComponent } from 'app/core/components/bar-chart/bar-chart.component';
 import { GoalsStore } from './goals.store';
 import { Goal } from 'app/core/models/goal.model';
 import { ActivatedRoute } from '@angular/router';
@@ -41,7 +40,6 @@ import { Subscription, map, take } from 'rxjs';
     HorizontalDividerComponent,
     ValueCardComponent,
     CalculatorComponent,
-    BarChartComponent,
     ReactiveFormsModule,
     NgIf,
     NgFor,
