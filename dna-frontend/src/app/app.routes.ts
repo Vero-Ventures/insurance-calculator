@@ -131,4 +131,13 @@ export const routes: Routes = [
       ),
     title: 'DNA | Total Needs',
   },
+  {
+    path: 'advisor',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/advisor/advisor.component').then(
+        com => com.AdvisorComponent
+      ),
+    title: 'DNA | Robo-Advisor',
+  },
 ];
