@@ -9,6 +9,7 @@ import { Business } from '../models/business.model';
 import { Goal } from '../models/goal.model';
 import { Debt } from '../models/debt.model';
 import { Asset } from '../models/asset.model';
+import { TotalNeeds } from '../models/total-needs.model';
 
 @Injectable({
   providedIn: 'root',
@@ -173,6 +174,22 @@ export class SupabaseService {
     return await this.supabase
       .from('client_profiles')
       .update({ goals: goals })
+      .eq('id', clientId)
+      .select();
+  }
+
+  async getTotalNeeds(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .select('total_needs')
+      .eq('id', clientId)
+      .single();
+  }
+
+  async updateTotalNeeds(clientId: number, totalNeeds: TotalNeeds) {
+    return await this.supabase
+      .from('client_profiles')
+      .update({ total_needs: totalNeeds })
       .eq('id', clientId)
       .select();
   }
