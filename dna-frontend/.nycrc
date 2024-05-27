@@ -6,7 +6,15 @@
   "lines": 90,
   "branches": 90,
   "functions": 90,
-  "exclude": ["**/*.spec.ts"],
+  "exclude": [
+    "**/*.spec.ts", 
+    "**/*.test.ts", 
+    "**/*.d.ts", 
+    "src/index.ts", 
+    "**/*.config.ts",
+    "**/coverage/*",
+    "**/dist/dna-frontend/browser"
+  ],
   "reporter": ["text", "html"],
   "report-dir": "coverage"
 }
