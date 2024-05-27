@@ -7,7 +7,7 @@ import { HorizontalDividerComponent } from 'app/core/components/horizontal-divid
 import { HeaderBarComponent } from 'app/core/components/header-bar/header-bar.component';
 import { ActionBarComponent } from 'app/core/components/action-bar/action-bar.component';
 import { BottomBarComponent } from 'app/core/components/bottom-bar/bottom-bar.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DebtsStore } from '../debts/debts.store';
 import { take } from 'rxjs';
 
@@ -52,7 +52,8 @@ export class DebtEditComponent implements OnInit {
     private readonly debtsStore: DebtsStore,
     private readonly zone: NgZone,
     private readonly route: ActivatedRoute,
-    private readonly location: Location
+    private readonly location: Location,
+    private readonly router: Router
   ) {
     this.route.params.subscribe(params => {
       this.debtId = +params['debtId'];
@@ -101,7 +102,7 @@ export class DebtEditComponent implements OnInit {
   save() {
     this.debtsStore.updateDebts(this.clientId);
     this.zone.run(() => {
-      this.location.back();
+      this.router.navigate([`/debts/${this.clientId}`]);
     });
   }
 }

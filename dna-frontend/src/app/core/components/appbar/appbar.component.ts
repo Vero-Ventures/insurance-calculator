@@ -34,4 +34,8 @@ export class AppbarComponent {
   constructRoute(route: string) {
     return `/${route}/${this.clientId}`;
   }
+
+  constructRouteWithoutClientId(route: string) {
+    return `/${route}`;
+  }
 }
