@@ -19,7 +19,7 @@ test('Login with registered email and correct password', async ({
     await email?.fill(testData.email);
     await password?.fill(testData.password);
 
-    const signInButton = await page.$('button:has-text("Login")');
+    const signInButton = await page.getByRole('button', { name: 'Login' });
     await signInButton?.click();
     await page.waitForURL('**/landing');
     await expect(page).toHaveURL(/.*\/landing/, { timeout: 5000 });
