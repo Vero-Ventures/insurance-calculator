@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:4200",
+      "localStorage": [
+        {
+          "name": "sb-xvpszxckfhheyuiyygtc-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsImtpZCI6IjRkNlJUNndUUEFQSHRDZUoiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzE2NTg5ODMyLCJpYXQiOjE3MTY1ODYyMzIsImlzcyI6Imh0dHBzOi8veHZwc3p4Y2tmaGhleXVpeXlndGMuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6ImM4Y2RlYmFhLTBmZWUtNDY4MC1hYmVhLTU5ZDE5M2UzNDk5MiIsImVtYWlsIjoidGVzdEAxMjMuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InRlc3RAMTIzLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiJjOGNkZWJhYS0wZmVlLTQ2ODAtYWJlYS01OWQxOTNlMzQ5OTIifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTcxNjU4NjIzMn1dLCJzZXNzaW9uX2lkIjoiMWU2MzRlODAtYWUyNS00OTIyLWEyZTQtYzk1ZGYzYmQ0NDUzIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.ChWSMBjEuMlWyeNOJJ_Tzg-6d1P1ehAwreiPiSP6v4g\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1716589832,\"refresh_token\":\"DJ_0FNxoxgjhpouxv0ggRg\",\"user\":{\"id\":\"c8cdebaa-0fee-4680-abea-59d193e34992\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"test@123.com\",\"email_confirmed_at\":\"2024-05-21T23:47:25.192712Z\",\"phone\":\"\",\"confirmed_at\":\"2024-05-21T23:47:25.192712Z\",\"last_sign_in_at\":\"2024-05-24T21:30:32.25468487Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"test@123.com\",\"email_verified\":false,\"phone_verified\":false,\"sub\":\"c8cdebaa-0fee-4680-abea-59d193e34992\"},\"identities\":[{\"identity_id\":\"fcaad3fc-8312-4478-9e61-20acefab78c8\",\"id\":\"c8cdebaa-0fee-4680-abea-59d193e34992\",\"user_id\":\"c8cdebaa-0fee-4680-abea-59d193e34992\",\"identity_data\":{\"email\":\"test@123.com\",\"email_verified\":false,\"phone_verified\":false,\"sub\":\"c8cdebaa-0fee-4680-abea-59d193e34992\"},\"provider\":\"email\",\"last_sign_in_at\":\"2024-05-21T23:47:25.18871Z\",\"created_at\":\"2024-05-21T23:47:25.188762Z\",\"updated_at\":\"2024-05-21T23:47:25.188762Z\",\"email\":\"test@123.com\"}],\"created_at\":\"2024-05-21T23:47:25.183542Z\",\"updated_at\":\"2024-05-24T21:30:32.258381Z\",\"is_anonymous\":false}}"
+        }
+      ]
+    }
+  ]
+}
