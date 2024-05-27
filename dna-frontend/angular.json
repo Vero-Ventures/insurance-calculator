@@ -92,7 +92,7 @@
             "styles": ["src/styles.scss"],
             "scripts": [],
             "codeCoverage": true,
-            "codeCoverageExclude": ["**/*.spec.ts"]
+            "codeCoverageExclude": ["**/*.spec.ts", "src/app/shared/pipes/**/*"]
           }
         },
         "lint": {
