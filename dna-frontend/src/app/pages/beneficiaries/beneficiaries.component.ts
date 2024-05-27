@@ -253,9 +253,9 @@ export class BeneficiariesComponent implements OnInit, OnDestroy {
     return assets.map(asset => asset.name || 'Unnamed Asset');
   };
 
-  readonly axisValueYLabels = (debts: Asset[]) => {
+  readonly axisValueYLabels = (assets: Asset[]) => {
     const min = 0;
-    const max = this.getAssetYMax(debts);
+    const max = this.getAssetYMax(assets);
     const steps = 4;
     return createAxisYLabels(min, max, steps);
   };
