@@ -177,23 +177,6 @@ export class SupabaseService {
       .select();
   }
 
-  async createClient(clientName: string) {
-    const newClient = initialClientState.client;
-    newClient.name = clientName;
-    const user = await this.supabase.auth.getUser();
-    return await this.supabase
-      .from('client_profiles')
-      .insert([{ advisor_id: user.data.user?.id, client: newClient }])
-      .select();
-  }
-
-  async deleteClient(clientId: number) {
-    return await this.supabase
-      .from('client_profiles')
-      .delete()
-      .eq('id', clientId);
-  }
-
   async signUp(email: string, password: string) {
     this.clearSession();
     return await this.supabase.auth.signUp({ email, password });
