@@ -1,99 +1,189 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <app-calculator>
-    <tui-tabs
-      class="nav-tabs flex row m-center"
-      [(activeItemIndex)]="activeItemIndex">
-      <button tuiTab>Input Data</button>
-      <button tuiTab>Results</button>
-    </tui-tabs>
-    <form
-      class="goals-form flex column m-start c-center gap-2"
-      [formGroup]="goalsForm"
-      *ngIf="activeItemIndex === 0; else elseBlock">
-      <tui-input-number
-        class="goal-input"
-        formControlName="percentGoalLiquidity">
-        % Liquidity Allocated to Goals
-        <input tuiTextfield (blur)="onPercentBlur()" />
-      </tui-input-number>
-      <app-horizontal-divider></app-horizontal-divider>
-      <div class="goal-section flex column m-start c-center gap-2">
-        <ng-container
-          *ngFor="let goal of goals.controls; let i = index"
-          formArrayName="goals">
-          <ng-container formGroupName="{{ i }}">
-            <tui-input
-              tuiTextfieldSize="s"
-              class="goal-input"
-              formControlName="name">
-              Name
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input>
-            <tui-input-number class="goal-input" formControlName="amount">
-              Amount ($)
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input-number>
-            <tui-checkbox-block
-              class="goal-input"
-              formControlName="isPhilanthropic"
-              (focusedChange)="onBlur()">
-              Philanthropic
-            </tui-checkbox-block>
-            <button
-              tuiButton
-              type="button"
-              appearance="secondary-destructive"
-              class="delete-button"
-              (click)="openDeleteDialog(i)">
-              Delete
-            </button>
-            <app-horizontal-divider></app-horizontal-divider>
+  <ng-container *ngIf="assetVm$ | async as assetVm">
+    <app-calculator>
+      <tui-tabs
+        class="nav-tabs flex row m-center"
+        [(activeItemIndex)]="activeItemIndex">
+        <button tuiTab>Input Data</button>
+        <button tuiTab>Results</button>
+      </tui-tabs>
+      <form
+        class="goals-form flex column m-start c-center gap-2"
+        [formGroup]="goalsForm"
+        *ngIf="activeItemIndex === 0; else elseBlock">
+        <tui-input-number
+          class="goal-input"
+          formControlName="percentGoalLiquidity">
+          % Liquidity Allocated to Goals
+          <input tuiTextfield (blur)="onPercentBlur()" />
+        </tui-input-number>
+        <app-horizontal-divider></app-horizontal-divider>
+        <div class="goal-section flex column m-start c-center gap-2">
+          <ng-container
+            *ngFor="let goal of goals.controls; let i = index"
+            formArrayName="goals">
+            <ng-container formGroupName="{{ i }}">
+              <tui-input
+                tuiTextfieldSize="s"
+                class="goal-input"
+                formControlName="name">
+                Name
+                <input tuiTextfield (blur)="onBlur()" />
+              </tui-input>
+              <tui-input-number class="goal-input" formControlName="amount">
+                Amount ($)
+                <input tuiTextfield (blur)="onBlur()" />
+              </tui-input-number>
+              <tui-checkbox-block
+                class="goal-input"
+                formControlName="isPhilanthropic"
+                (focusedChange)="onBlur()">
+                Philanthropic
+              </tui-checkbox-block>
+              <button
+                tuiButton
+                type="button"
+                appearance="secondary-destructive"
+                class="delete-button"
+                (click)="openDeleteDialog(i)">
+                Delete
+              </button>
+              <app-horizontal-divider></app-horizontal-divider>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </div>
-      <button
-        tuiButton
-        type="button"
-        appearance="primary"
-        class="delete-button"
-        (click)="addGoal()">
-        Add New
-      </button>
-    </form>
-    <ng-template #elseBlock>
-      <div class="goals-result-container gap-2 flex column c-center">
-        <app-value-card
-          [value]="currentValueOfFixedAssets"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="futureValueOfFixedAssets"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="currentValueOfLiquidAssets"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="futureValueOfLiquidAssets"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="currentValueOfAssetsToBeSold"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="futureValueOfAssetsToBeSold"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="percentageLiquidityAllocatedToGoals"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="liquidityPreserved"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="liquidityAllocatedTowardsGoals"
-          [compact]="true"></app-value-card>
-        <app-value-card
-          [value]="totalSumOfAllGoals"
-          [compact]="true"></app-value-card>
-        <app-value-card [value]="surplus" [compact]="true"></app-value-card>
-      </div>
-    </ng-template>
-  </app-calculator>
+        </div>
+        <button
+          tuiButton
+          type="button"
+          appearance="primary"
+          class="delete-button"
+          (click)="addGoal()">
+          Add New
+        </button>
+      </form>
+      <ng-template #elseBlock>
+        <div class="goals-result-container gap-2 flex column c-center">
+          <app-value-list-card
+            header="Liquidity"
+            [values]="[
+              {
+                label: 'Liquidity Preserved ($)',
+                value:
+                  (calculateLiquidityPreserved(
+                    assetVm.assets,
+                    vm.percentGoalLiquidity || 0
+                  ) | currency) || '$0.00'
+              },
+              {
+                label: 'Liquidity Allocated to Goals (%)',
+                value:
+                  ((vm.percentGoalLiquidity || 0) / 100 | percent: '1.2') ||
+                  '0.00%'
+              },
+              {
+                label: 'Liquidity Allocated to Goals ($)',
+                value:
+                  (calculateLiquidityToGoal(
+                    assetVm.assets,
+                    vm.percentGoalLiquidity || 0
+                  ) | currency) || '$0.00'
+              }
+            ]">
+          </app-value-list-card>
+          <app-value-list-card
+            header="Goals"
+            [values]="[
+              {
+                label: 'Total Sum of All Goals ($)',
+                value: (calculateTotalSumGoals(vm.goals) | currency) || '$0.00'
+              },
+              {
+                label: 'Surplus / Shortfall ($)',
+                value:
+                  (calculateShortfall(
+                    assetVm.assets,
+                    vm.goals,
+                    vm.percentGoalLiquidity || 0
+                  ) | currency) || '$0.00'
+              }
+            ]">
+          </app-value-list-card>
+          <app-value-list-card
+            header="Total Asset Values"
+            [values]="[
+              {
+                label: 'Current Value of Fixed Assets ($)',
+                value:
+                  (calculateCurrentValueFixed(assetVm.assets) | currency) ||
+                  '$0.00'
+              },
+              {
+                label: 'Future Value of Fixed Assets ($)',
+                value:
+                  (calculateFutureValueFixed(assetVm.assets) | currency) ||
+                  '$0.00'
+              },
+              {
+                label: 'Current Value of Liquid Assets ($)',
+                value:
+                  (calculateCurrentValueLiquid(assetVm.assets) | currency) ||
+                  '$0.00'
+              },
+              {
+                label: 'Future Value of Liquid Assets ($)',
+                value:
+                  (calculateFutureValueLiquid(assetVm.assets) | currency) ||
+                  '$0.00'
+              },
+              {
+                label: 'Current Value of Assets to Sell ($)',
+                value:
+                  (calculateCurrentValueToBeSold(assetVm.assets) | currency) ||
+                  '$0.00'
+              },
+              {
+                label: 'Future Value of Assets to Sell ($)',
+                value:
+                  (calculateFutureValueToBeSold(assetVm.assets) | currency) ||
+                  '$0.00'
+              }
+            ]">
+          </app-value-list-card>
+          <app-chart-island
+            class="extended"
+            header="Liquidity / Goal Distribution">
+            <tui-axes
+              axisYName="Value ($)"
+              class="axes"
+              [axisYInset]="true"
+              [axisYLabels]="
+                axisValueYLabels(
+                  assetVm.assets,
+                  vm.goals,
+                  vm.percentGoalLiquidity || 0
+                )
+              "
+              [horizontalLines]="5"
+              [horizontalLinesHandler]="horizontalLinesHandler">
+              <tui-bar-set
+                class="bars"
+                [size]="null"
+                [value]="
+                  getLiquidityGoalDistribution(
+                    assetVm.assets,
+                    vm.goals,
+                    vm.percentGoalLiquidity || 0
+                  )
+                ">
+              </tui-bar-set
+            ></tui-axes>
+            <app-legend
+              class="overlay-legend"
+              [invert]="true"
+              [items]="getGoalLegend()"></app-legend>
+          </app-chart-island>
+        </div>
+      </ng-template>
+    </app-calculator>
+  </ng-container>
 </ng-container>

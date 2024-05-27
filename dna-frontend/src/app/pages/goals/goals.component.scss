@@ -41,3 +41,24 @@
 .delete-button {
   width: 100%;
 }
+
+.extended {
+  position: relative;
+  padding-bottom: 10em;
+}
+
+.bars {
+  width: 100%;
+
+  > * {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+.overlay-legend {
+  position: absolute;
+  top: 4em;
+  right: 0.5em;
+  z-index: 10;
+}

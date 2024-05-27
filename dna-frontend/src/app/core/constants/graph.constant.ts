@@ -1,12 +1,12 @@
 export const GRAPH_COLORS = [
-  '#FF0000', // Red
-  '#00FF00', // Green
-  '#0000FF', // Blue
-  '#FFFF00', // Yellow
-  '#FF00FF', // Magenta
-  '#00FFFF', // Cyan
-  '#FFA500', // Orange
-  '#800080', // Purple
-  '#008000', // Dark Green
-  '#000080', // Navy Blue
+  '#e06262', // Red
+  '#55d655', // Green
+  '#5555c2', // Blue
+  '#e2e258', // Yellow
+  '#e658e6', // Magenta
+  '#57dada', // Cyan
+  '#e7b75e', // Orange
+  '#9c499c', // Purple
+  '#347534', // Dark Green
+  '#383877', // Navy Blue
 ];

@@ -1,4 +1,4 @@
-<div class="legend">
+<div [ngClass]="invert ? 'legend-inverted' : 'legend'">
   <div class="legend-item" *ngFor="let item of items; let i = index">
     <div class="legend-color" [style.background-color]="item.color"></div>
     <small class="legend-label tui-text_body-s">{{ item.label }}</small>
