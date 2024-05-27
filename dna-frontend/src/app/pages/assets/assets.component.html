@@ -51,157 +51,162 @@
           </button>
         </form>
         <ng-template #elseBlock>
-          <div class="assets-result-container gap-2 flex column c-center">
-            <app-value-list-card
-              *ngFor="let asset of vm.assets; let i = index"
-              [header]="asset.name || 'Asset ' + (i + 1)"
-              [values]="[
-                {
-                  label: 'Total Allocation (%)',
-                  value: (calculateAllocation(asset) | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Initial Value ($)',
-                  value: (asset.initialValue || 0 | currency) || '$0.00'
-                },
-                {
-                  label: 'Current Years Held',
-                  value: calculateCurrentYearsHeld(asset).toString()
-                },
-                {
-                  label: 'Current Growth Dollars ($)',
-                  value: (calculateGrowthDollars(asset) | currency) || '$0.00'
-                },
-                {
-                  label: 'Current Growth Percentage (%)',
-                  value:
-                    (calculateGrowthPercentage(
-                      asset.initialValue || 0,
-                      asset.currentValue || 0
-                    ) | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Future Value Dollars ($)',
-                  value:
-                    (calculateFutureValueDollars(asset) | currency) || '$0.00'
-                },
-                {
-                  label: 'Future Growth Percentage ($)',
-                  value:
-                    (calculateGrowthPercentage(
-                      asset.initialValue || 0,
-                      calculateFutureValueDollars(asset)
-                    ) | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Current Tax Liability ($)',
-                  value:
-                    (calculateCurrentTaxLiability(asset, clientVm.client)
-                      | currency) || '$0.00'
-                },
-                {
-                  label: 'Future Tax Liability ($)',
-                  value:
-                    (calculateFutureTaxLiability(asset, clientVm.client)
-                      | currency) || '$0.00'
-                }
-              ]">
-            </app-value-list-card>
-            <app-chart-island header="Asset Type Distribution">
-              <app-pie-chart
-                [value]="getAssetTypeDistribution(vm.assets)"></app-pie-chart>
-            </app-chart-island>
-            <app-legend [items]="getAssetTypeLegend(vm.assets)"></app-legend>
-            <app-chart-island header="Asset Growth Over Time"
-              ><tui-axes
-                axisYName="Asset Value ($)"
-                class="axes"
-                [axisXLabels]="axisXLabels(vm.assets)"
-                [axisYInset]="true"
-                [axisYLabels]="axisAssetYLabels(vm.assets)"
-                [horizontalLines]="4"
-                [horizontalLinesHandler]="horizontalLinesHandler"
-                ><tui-line-chart
-                  *ngFor="
-                    let value of calculateAssetsOverTime(vm.assets);
-                    let i = index
-                  "
-                  class="chart"
-                  [style.color]="color(i)"
-                  [x]="getXMin(vm.assets)"
-                  [y]="0"
-                  [smoothingFactor]="50"
-                  [width]="getXMax(vm.assets)"
-                  [height]="getAssetYMax(vm.assets)"
-                  [value]="value"></tui-line-chart>
-              </tui-axes>
-            </app-chart-island>
-            <app-legend [items]="getAssetLegend(vm.assets)"></app-legend>
-            <app-value-list-card
-              *ngFor="
-                let beneficiary of beneficiaryVm.beneficiaries;
-                let i = index
-              "
-              [header]="beneficiary.name || 'Beneficiary ' + (i + 1)"
-              [values]="[
-                {
-                  label: 'Amount ($)',
-                  value:
-                    (calculateSingleBeneficiaryTotal(vm.assets, beneficiary)
-                      | currency) || '$0.00'
-                },
-                {
-                  label: 'Percentage (%)',
-                  value:
-                    (calculateSingleBeneficiaryPercent(vm.assets, beneficiary) /
-                      100 | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Ideal Distribution (%)',
-                  value:
-                    ((beneficiary.allocation || 0) / 100 | percent: '1.2') ||
-                    '0%'
-                },
-                {
-                  label: 'Additional Required ($)',
-                  value:
-                    (calculateSingleAdditionalRequired(
-                      vm.assets,
-                      beneficiaryVm.beneficiaries,
-                      beneficiary
-                    ) | currency) || '$0.00'
-                }
-              ]"></app-value-list-card>
-            <app-value-list-card
-              header="Beneficiary Totals"
-              [values]="[
-                {
-                  label: 'Amount ($)',
-                  value:
-                    (calculateBeneficiaryTotal(vm.assets) | currency) || '$0.00'
-                },
-                {
-                  label: 'Percentage (%)',
-                  value:
-                    (calculateBeneficiaryPercent(vm.assets) / 100
-                      | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Ideal Distribution (%)',
-                  value:
-                    (calculateIdealDistribution(beneficiaryVm.beneficiaries) /
-                      100 | percent: '1.2') || '0%'
-                },
-                {
-                  label: 'Additional Required ($)',
-                  value:
-                    (calculateAdditionalRequired(
-                      vm.assets,
-                      beneficiaryVm.beneficiaries
-                    ) | currency) || '$0.00'
-                }
-              ]"></app-value-list-card>
-          </div>
+          <ng-container *ngIf="vm.assets">
+            <div class="assets-result-container gap-2 flex column c-center">
+              <app-value-list-card
+                *ngFor="let asset of vm.assets; let i = index"
+                [header]="asset.name || 'Asset ' + (i + 1)"
+                [values]="[
+                  {
+                    label: 'Total Allocation (%)',
+                    value: (calculateAllocation(asset) | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Initial Value ($)',
+                    value: (asset.initialValue || 0 | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Current Years Held',
+                    value: calculateCurrentYearsHeld(asset).toString()
+                  },
+                  {
+                    label: 'Current Growth Dollars ($)',
+                    value: (calculateGrowthDollars(asset) | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Current Growth Percentage (%)',
+                    value:
+                      (calculateGrowthPercentage(
+                        asset.initialValue || 0,
+                        asset.currentValue || 0
+                      ) | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Future Value Dollars ($)',
+                    value:
+                      (calculateFutureValueDollars(asset) | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Future Growth Percentage ($)',
+                    value:
+                      (calculateGrowthPercentage(
+                        asset.initialValue || 0,
+                        calculateFutureValueDollars(asset)
+                      ) | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Current Tax Liability ($)',
+                    value:
+                      (calculateCurrentTaxLiability(asset, clientVm.client)
+                        | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Future Tax Liability ($)',
+                    value:
+                      (calculateFutureTaxLiability(asset, clientVm.client)
+                        | currency) || '$0.00'
+                  }
+                ]">
+              </app-value-list-card>
+              <app-chart-island header="Asset Type Distribution">
+                <app-pie-chart
+                  [value]="getAssetTypeDistribution(vm.assets)"></app-pie-chart>
+              </app-chart-island>
+              <app-legend [items]="getAssetTypeLegend(vm.assets)"></app-legend>
+              <app-chart-island header="Asset Growth Over Time"
+                ><tui-axes
+                  axisYName="Asset Value ($)"
+                  class="axes"
+                  [axisXLabels]="axisXLabels(vm.assets)"
+                  [axisYInset]="true"
+                  [axisYLabels]="axisAssetYLabels(vm.assets)"
+                  [horizontalLines]="4"
+                  [horizontalLinesHandler]="horizontalLinesHandler"
+                  ><tui-line-chart
+                    *ngFor="
+                      let value of calculateAssetsOverTime(vm.assets);
+                      let i = index
+                    "
+                    class="chart"
+                    [style.color]="color(i)"
+                    [x]="getXMin(vm.assets)"
+                    [y]="0"
+                    [smoothingFactor]="50"
+                    [width]="getXMax(vm.assets)"
+                    [height]="getAssetYMax(vm.assets)"
+                    [value]="value"></tui-line-chart>
+                </tui-axes>
+              </app-chart-island>
+              <app-legend [items]="getAssetLegend(vm.assets)"></app-legend>
+              <app-value-list-card
+                *ngFor="
+                  let beneficiary of beneficiaryVm.beneficiaries;
+                  let i = index
+                "
+                [header]="beneficiary.name || 'Beneficiary ' + (i + 1)"
+                [values]="[
+                  {
+                    label: 'Amount ($)',
+                    value:
+                      (calculateSingleBeneficiaryTotal(vm.assets, beneficiary)
+                        | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Percentage (%)',
+                    value:
+                      (calculateSingleBeneficiaryPercent(
+                        vm.assets,
+                        beneficiary
+                      ) / 100 | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Ideal Distribution (%)',
+                    value:
+                      ((beneficiary.allocation || 0) / 100 | percent: '1.2') ||
+                      '0%'
+                  },
+                  {
+                    label: 'Additional Required ($)',
+                    value:
+                      (calculateSingleAdditionalRequired(
+                        vm.assets,
+                        beneficiaryVm.beneficiaries,
+                        beneficiary
+                      ) | currency) || '$0.00'
+                  }
+                ]"></app-value-list-card>
+              <app-value-list-card
+                header="Beneficiary Totals"
+                [values]="[
+                  {
+                    label: 'Amount ($)',
+                    value:
+                      (calculateBeneficiaryTotal(vm.assets) | currency) ||
+                      '$0.00'
+                  },
+                  {
+                    label: 'Percentage (%)',
+                    value:
+                      (calculateBeneficiaryPercent(vm.assets) / 100
+                        | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Ideal Distribution (%)',
+                    value:
+                      (calculateIdealDistribution(beneficiaryVm.beneficiaries) /
+                        100 | percent: '1.2') || '0%'
+                  },
+                  {
+                    label: 'Additional Required ($)',
+                    value:
+                      (calculateAdditionalRequired(
+                        vm.assets,
+                        beneficiaryVm.beneficiaries
+                      ) | currency) || '$0.00'
+                  }
+                ]"></app-value-list-card>
+            </div>
+          </ng-container>
         </ng-template>
       </app-calculator>
     </ng-container>
