@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -12,6 +12,7 @@ import {
   TuiButtonModule,
   TuiDialogService,
   TuiNotificationModule,
+  TuiPoint,
   tuiNumberFormatProvider,
 } from '@taiga-ui/core';
 import {
@@ -23,12 +24,22 @@ import {
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
-import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { generateId } from 'app/core/utils/common.utils';
 import { DebtsStore } from './debts.store';
 import { Debt } from 'app/core/models/debt.model';
+import { ChartIslandComponent } from 'app/core/components/chart-island/chart-island.component';
+import { TuiAxesModule, TuiLineChartModule } from '@taiga-ui/addon-charts';
+import {
+  createAxisYLabels,
+  createYearAxisXLabels,
+  getColor,
+  horizontalLinesHandler,
+} from 'app/core/utils/charts.utils';
+import { LegendItem } from 'app/core/models/legend.model';
+import { LegendComponent } from 'app/core/components/legend/legend.component';
+import { ValueListCardComponent } from 'app/core/components/value-list-card/value-list-card.component';
 
 @Component({
   selector: 'app-debts',
@@ -39,14 +50,19 @@ import { Debt } from 'app/core/models/debt.model';
     TuiInputNumberModule,
     TuiTabsModule,
     TuiNotificationModule,
+    TuiLineChartModule,
     TuiButtonModule,
+    TuiAxesModule,
     HorizontalDividerComponent,
+    LegendComponent,
+    ChartIslandComponent,
     ValueCardComponent,
+    ValueListCardComponent,
     CalculatorComponent,
-    LineChartComponent,
     NgIf,
     NgFor,
     AsyncPipe,
+    CurrencyPipe,
   ],
   templateUrl: './debts.component.html',
   styleUrl: './debts.component.scss',
@@ -65,6 +81,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   readonly debtsForm = this.fb.group({
     debts: this.fb.array<Debt>([]),
   });
+  readonly horizontalLinesHandler = horizontalLinesHandler;
 
   constructor(
     @Inject(TuiDialogService)
@@ -115,7 +132,6 @@ export class DebtsComponent implements OnInit, OnDestroy {
         rate: [debt?.rate || 0],
         term: [debt?.term || 0],
         annualPayment: [debt?.annualPayment || 0],
-        insurableFutureValue: [debt?.insurableFutureValue || 0],
       })
     );
   }
@@ -157,12 +173,159 @@ export class DebtsComponent implements OnInit, OnDestroy {
       });
   }
 
-  totalInitialValue = {
-    label: 'Total Initial Value ($)',
-    value: '$1,000,000',
+  calculateTotalInitialValue(debts: Debt[]) {
+    return debts.reduce((acc, debt) => acc + (debt.initialValue || 0), 0);
+  }
+
+  calculateSingleFutureValue(debt: Debt) {
+    const currentYearsHeld = this.calculateYearsHeld(debt);
+    const amountPaidOffDollars = (debt.annualPayment || 0) * currentYearsHeld;
+    const futureValueOfActualTermDebt =
+      (debt.initialValue || 0) *
+      Math.pow(1 + (debt.rate || 0) / 100, debt.term || 0);
+    return futureValueOfActualTermDebt - amountPaidOffDollars;
+  }
+
+  calculateTotalFutureValue(debts: Debt[]) {
+    return debts.reduce(
+      (acc, debt) => acc + this.calculateSingleFutureValue(debt),
+      0
+    );
+  }
+
+  calculateYearsHeld(debt: Debt) {
+    const currentYear = new Date().getFullYear();
+    return currentYear - (debt.yearAcquired || currentYear);
+  }
+
+  calculateAmountPaid(debt: Debt) {
+    const yearsPaid = this.calculateYearsHeld(debt);
+    return yearsPaid * (debt.annualPayment || 0);
+  }
+
+  calculateCurrentDebt(debt: Debt) {
+    return (
+      (debt.initialValue || 0) *
+      Math.pow(1 + (debt.rate || 0) / 100, this.calculateYearsHeld(debt))
+    );
+  }
+
+  calculateSingleRemainingDebt(debt: Debt) {
+    const remainingDebt: TuiPoint[] = [];
+    const initialValue = debt.initialValue || 0;
+    const annualPayment = debt.annualPayment || 0;
+    const startingYear = debt.yearAcquired || 0;
+    const rate = debt.rate || 0;
+    const term = debt.term || 0;
+    const years = this.calculateYearsHeld(debt) + term;
+    let remainingValue = initialValue;
+    for (let i = 0; i <= years; i++) {
+      remainingValue = remainingValue * (1 + rate / 100) - annualPayment;
+      remainingDebt.push([startingYear + i, remainingValue]);
+    }
+    return remainingDebt;
+  }
+
+  calculateRemainingDebt(debts: Debt[]) {
+    const debtValue: TuiPoint[][] = [];
+    debts.forEach(debt => {
+      debtValue.push(this.calculateSingleRemainingDebt(debt));
+    });
+    return debtValue;
+  }
+
+  calculateYearsToPayOff(debt: Debt) {
+    if (debt.annualPayment === 0) {
+      return null;
+    }
+
+    return DebtsComponent.nper(
+      debt.rate || 0,
+      debt.annualPayment || 0,
+      this.calculateCurrentDebt(debt) - this.calculateAmountPaid(debt)
+    );
+  }
+
+  getXMin(debts: Debt[]) {
+    return debts.reduce(
+      (acc, debt) =>
+        Math.min(
+          acc,
+          debt.yearAcquired ? debt.yearAcquired : new Date().getFullYear()
+        ),
+      new Date().getFullYear()
+    );
+  }
+
+  getXMax(debts: Debt[]) {
+    return debts.reduce(
+      (acc, debt) =>
+        Math.max(
+          acc,
+          new Date().getFullYear() -
+            (debt.yearAcquired ? debt.yearAcquired : new Date().getFullYear()) +
+            (debt.term || 0)
+        ),
+      0
+    );
+  }
+
+  getDebtYMax(debts: Debt[]) {
+    return debts.reduce(
+      (acc, debt) =>
+        Math.max(
+          acc,
+          Math.max(
+            ...this.calculateSingleRemainingDebt(debt).map(point => point[1])
+          ) || 0
+        ),
+      0
+    );
+  }
+
+  getDebtLegend(debts: Debt[]) {
+    const legendItems: LegendItem[] = [];
+    debts.forEach((debt, index) => {
+      legendItems.push({
+        color: getColor(index),
+        label: debt.name || `Debt ${index + 1}`,
+      });
+    });
+    return legendItems;
+  }
+
+  color(index: number) {
+    return getColor(index);
+  }
+
+  readonly axisXLabels = (debts: Debt[]) => {
+    const min = this.getXMin(debts);
+    const max = this.getXMax(debts);
+    return createYearAxisXLabels(max, min);
   };
-  totalInsurableFutureValue = {
-    label: 'Total Insurable Future Value ($)',
-    value: '$1,000,000',
+
+  readonly axisDebtYLabels = (debts: Debt[]) => {
+    const min = 0;
+    const max = this.getDebtYMax(debts);
+    const steps = 4;
+    return createAxisYLabels(min, max, steps);
   };
+
+  static nper(
+    rate: number,
+    annualPayment: number,
+    presentValue: number
+  ): number {
+    rate = rate / 100;
+
+    if (rate <= 0) {
+      rate *= -1;
+    }
+
+    const numerator: number = Math.log(
+      annualPayment / (annualPayment - presentValue * rate)
+    );
+    const denominator: number = Math.log(1 + rate);
+    return numerator / denominator;
+  }
 }

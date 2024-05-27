@@ -1,5 +1,4 @@
-<tui-island>
-  <h3 class="tui-text_body-l">{{ header }}</h3>
+<ng-container class="chart">
   <tui-pie-chart
     size="m"
     [tuiHintContent]="content"
@@ -9,4 +8,4 @@
     <div>{{ names[index] }}</div>
     <div>{{ values[index] | percent: '1.2' }}</div>
   </ng-template>
-</tui-island>
+</ng-container>

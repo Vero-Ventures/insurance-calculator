@@ -7,7 +7,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { CalculatorComponent } from '../calculator/calculator.component';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  NgFor,
+  NgIf,
+  PercentPipe,
+} from '@angular/common';
 import {
   TUI_PROMPT,
   TuiInputModule,
@@ -18,17 +24,28 @@ import { HorizontalDividerComponent } from 'app/core/components/horizontal-divid
 import {
   TuiButtonModule,
   TuiDialogService,
+  TuiPoint,
   tuiNumberFormatProvider,
 } from '@taiga-ui/core';
-import { LineChartComponent } from 'app/core/components/line-chart/line-chart.component';
 import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
 import { ValueListCardComponent } from 'app/core/components/value-list-card/value-list-card.component';
 import { FormArray, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { BusinessesStore } from './businesses.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
-import { Business } from 'app/core/models/business.model';
+import { Business, Shareholder } from 'app/core/models/business.model';
 import { generateId } from 'app/core/utils/common.utils';
+import { MultiValueCardComponent } from 'app/core/components/multi-value-card/multi-value-card.component';
+import { ChartIslandComponent } from 'app/core/components/chart-island/chart-island.component';
+import { TuiAxesModule, TuiLineChartModule } from '@taiga-ui/addon-charts';
+import {
+  createYearAxisXLabels,
+  createAxisYLabels,
+  horizontalLinesHandler,
+  getColor,
+} from 'app/core/utils/charts.utils';
+import { LegendComponent } from 'app/core/components/legend/legend.component';
+import { LegendItem } from 'app/core/models/legend.model';
 
 @Component({
   selector: 'app-businesses',
@@ -40,11 +57,17 @@ import { generateId } from 'app/core/utils/common.utils';
     HorizontalDividerComponent,
     TuiTabsModule,
     TuiButtonModule,
-    LineChartComponent,
+    TuiLineChartModule,
+    TuiAxesModule,
+    ChartIslandComponent,
     ValueCardComponent,
     ValueListCardComponent,
-    AsyncPipe,
+    MultiValueCardComponent,
+    LegendComponent,
     ReactiveFormsModule,
+    AsyncPipe,
+    PercentPipe,
+    CurrencyPipe,
     NgIf,
     NgFor,
   ],
@@ -65,6 +88,7 @@ export class BusinessesComponent implements OnInit, OnDestroy {
   readonly businessesForm = this.fb.group({
     businesses: this.fb.array<Business>([]),
   });
+  readonly horizontalLinesHandler = horizontalLinesHandler;
 
   constructor(
     @Inject(TuiDialogService)
@@ -170,9 +194,185 @@ export class BusinessesComponent implements OnInit, OnDestroy {
       });
   }
 
-  valueList = [
-    { label: 'EBITDA Contribution ($CAD)', value: '$600,000.00' },
-    { label: 'Share Value ($CAD)', value: '$1,000,000' },
-    { label: 'Liquidation Disparity ($CAD)', value: '$1,000,000' },
-  ];
+  calculateEbitdaContribution(business: Business, shareholder: Shareholder) {
+    return (
+      ((shareholder.ebitdaContributionPercentage || 0) / 100) *
+      (business.ebitda || 0)
+    );
+  }
+
+  calculateShareValue(business: Business, shareholder: Shareholder) {
+    return (
+      ((shareholder.sharePercentage || 0) / 100) * (business.valuation || 0)
+    );
+  }
+
+  calculateLiquidationDisparity(business: Business, shareholder: Shareholder) {
+    return (
+      this.calculateShareValue(business, shareholder) -
+      (shareholder.insuranceCoverage || 0)
+    );
+  }
+
+  calculateTotalShareholderPercentage(business: Business) {
+    return (
+      business.shareholders.reduce(
+        (acc, shareholder) => acc + (shareholder.sharePercentage || 0),
+        0
+      ) / 100
+    );
+  }
+
+  calculateTotalEbitdaPercentage(business: Business) {
+    return (
+      business.shareholders.reduce(
+        (acc, shareholder) =>
+          acc + (shareholder.ebitdaContributionPercentage || 0),
+        0
+      ) / 100
+    );
+  }
+
+  calculateTotalShareholderValue(business: Business) {
+    return business.shareholders.reduce(
+      (acc, shareholder) =>
+        acc +
+        ((shareholder.sharePercentage || 0) / 100) * (business.valuation || 0),
+      0
+    );
+  }
+
+  calculateTotalShareholderInsurance(business: Business) {
+    return business.shareholders.reduce(
+      (acc, shareholder) => acc + (shareholder.insuranceCoverage || 0),
+      0
+    );
+  }
+
+  calculateTotalShareholderDisparity(business: Business) {
+    return (
+      this.calculateTotalShareholderValue(business) -
+      this.calculateTotalShareholderInsurance(business)
+    );
+  }
+
+  calculateSingleCompoundedEbitda(
+    business: Business,
+    shareholder: Shareholder
+  ) {
+    const contributions: TuiPoint[] = [];
+    const term = business.term || 0;
+    const ebitda = business.ebitda || 0;
+    const rate = business.appreciationRate || 0;
+    const shareholderEbitda = shareholder.ebitdaContributionPercentage || 0;
+    const currentYear = new Date().getFullYear();
+    for (let year: number = 0; year <= term; year++) {
+      const compounded: number =
+        (shareholderEbitda / 100) * ebitda * Math.pow(1 + rate / 100, year);
+      contributions.push([currentYear + year, compounded]);
+    }
+    return contributions;
+  }
+
+  calculateCompoundedEbitdaContribution(business: Business) {
+    const ebitda: TuiPoint[][] = [];
+    business.shareholders.forEach(shareholder => {
+      ebitda.push(this.calculateSingleCompoundedEbitda(business, shareholder));
+    });
+    return ebitda;
+  }
+
+  calculateSingleCompoundedShareValue(
+    business: Business,
+    shareholder: Shareholder
+  ) {
+    const contributions: TuiPoint[] = [];
+    const term = business.term || 0;
+    const sharePercentage = shareholder.sharePercentage || 0;
+    const valuation = business.valuation || 0;
+    const rate = business.appreciationRate || 0;
+    const currentYear = new Date().getFullYear();
+    for (let year: number = 0; year <= term; year++) {
+      const compounded =
+        (sharePercentage / 100) * valuation * Math.pow(1 + rate / 100, year);
+      contributions.push([currentYear + year, compounded]);
+    }
+    return contributions;
+  }
+
+  calculateCompoundedShareValue(business: Business) {
+    const shareValue: TuiPoint[][] = [];
+    business.shareholders.forEach(shareholder => {
+      shareValue.push(
+        this.calculateSingleCompoundedShareValue(business, shareholder)
+      );
+    });
+    return shareValue;
+  }
+
+  getXMin() {
+    return new Date().getFullYear();
+  }
+
+  getXMax(business: Business) {
+    return business.term || 0;
+  }
+
+  getEbitdaYMax(business: Business) {
+    const ebitdaPercent = business.shareholders.reduce(
+      (acc, shareholder) =>
+        Math.max(acc, shareholder.ebitdaContributionPercentage || 0),
+      0
+    );
+    const rate = business.appreciationRate || 0;
+    const term = business.term || 0;
+    const ebitda = (business.ebitda || 0) * (ebitdaPercent / 100);
+    const compoundedEbitda = ebitda * Math.pow(1 + rate / 100, term);
+    return compoundedEbitda;
+  }
+
+  getShareYMax(business: Business) {
+    const sharePercent = business.shareholders.reduce(
+      (acc, shareholder) => Math.max(acc, shareholder.sharePercentage || 0),
+      0
+    );
+    const rate = business.appreciationRate || 0;
+    const term = business.term || 0;
+    const shareValue = (business.valuation || 0) * (sharePercent / 100);
+    const compoundedShareValue = shareValue * Math.pow(1 + rate / 100, term);
+    return compoundedShareValue;
+  }
+
+  getShareholderLegend(shareholders: Shareholder[]) {
+    const legendItems: LegendItem[] = [];
+    shareholders.forEach((shareholder, index) => {
+      legendItems.push({
+        color: getColor(index),
+        label: shareholder.name || `Shareholder ${index + 1}`,
+      });
+    });
+    return legendItems;
+  }
+
+  color(index: number) {
+    return getColor(index);
+  }
+
+  readonly axisXLabels = (business: Business) => {
+    return createYearAxisXLabels(business.term || 0);
+  };
+
+  readonly axisEbitdaYLabels = (business: Business) => {
+    const min = 0;
+    const max = this.getEbitdaYMax(business);
+    const steps = 4;
+    return createAxisYLabels(min, max, steps);
+  };
+
+  readonly axisShareYLabels = (business: Business) => {
+    const min = 0;
+    const max = this.getShareYMax(business);
+    const steps = 4;
+    return createAxisYLabels(min, max, steps);
+  };
 }

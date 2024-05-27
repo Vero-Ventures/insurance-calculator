@@ -19,18 +19,6 @@
               Name
               <input tuiTextfield (blur)="onBlur()" />
             </tui-input>
-            <tui-input-number
-              class="business-input"
-              formControlName="initialValue">
-              Initial Value ($)
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input-number>
-            <tui-input-number
-              class="business-input"
-              formControlName="insurableFutureValue">
-              Insurable Future Value ($)
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input-number>
             <button
               tuiButton
               type="button"
@@ -61,14 +49,83 @@
       </button>
     </form>
     <ng-template #elseBlock>
-      <div class="debts-result-container gap-2 flex column c-center">
+      <div class="debts-result-container flex column c-center gap-2">
         <app-value-card
-          [value]="totalInitialValue"
-          [compact]="false"></app-value-card>
+          [value]="{
+            label: 'Total Initial Value ($)',
+            value:
+              (calculateTotalInitialValue(vm.debts) || 0 | currency) || '$0.00'
+          }"
+          [compact]="true"></app-value-card>
         <app-value-card
-          [value]="totalInsurableFutureValue"
-          [compact]="false"></app-value-card>
-        <app-line-chart header="Value ($)"></app-line-chart>
+          [value]="{
+            label: 'Total Insurable Future Value ($)',
+            value:
+              (calculateTotalFutureValue(vm.debts) || 0 | currency) || '$0.00'
+          }"
+          [compact]="true"></app-value-card>
+        <ng-container *ngFor="let debt of vm.debts; let i = index">
+          <app-value-list-card
+            [header]="debt.name || 'Debt ' + (i + 1)"
+            [values]="[
+              {
+                label: 'Initial Value ($)',
+                value: (debt.initialValue | currency) || '$0.00'
+              },
+              {
+                label: 'Insurable Future Value ($)',
+                value: (calculateSingleFutureValue(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Current Years Held',
+                value: calculateYearsHeld(debt).toString()
+              },
+              {
+                label: 'Amount Paid Off ($)',
+                value: (calculateAmountPaid(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Curent Value of Debt ($)',
+                value: (calculateCurrentDebt(debt) | currency) || '$0.00'
+              },
+              {
+                label: 'Debt Remaining ($)',
+                value:
+                  (calculateCurrentDebt(debt) - calculateAmountPaid(debt)
+                    | currency) || '$0.00'
+              },
+              {
+                label: 'Years to be Paid Off',
+                value:
+                  calculateYearsToPayOff(debt)?.toFixed(2)?.toString() || 'N/A'
+              }
+            ]"></app-value-list-card>
+        </ng-container>
+        <app-chart-island header="Debts Over Time ($)">
+          <tui-axes
+            axisYName="Debt Value ($)"
+            class="axes"
+            [axisXLabels]="axisXLabels(vm.debts)"
+            [axisYInset]="true"
+            [axisYLabels]="axisDebtYLabels(vm.debts)"
+            [horizontalLines]="4"
+            [horizontalLinesHandler]="horizontalLinesHandler"
+            ><tui-line-chart
+              *ngFor="
+                let value of calculateRemainingDebt(vm.debts);
+                let i = index
+              "
+              class="chart"
+              [style.color]="color(i)"
+              [x]="getXMin(vm.debts)"
+              [y]="0"
+              [smoothingFactor]="50"
+              [width]="getXMax(vm.debts)"
+              [height]="getDebtYMax(vm.debts)"
+              [value]="value"></tui-line-chart>
+          </tui-axes>
+        </app-chart-island>
+        <app-legend [items]="getDebtLegend(vm.debts)"></app-legend>
       </div>
     </ng-template>
   </app-calculator>

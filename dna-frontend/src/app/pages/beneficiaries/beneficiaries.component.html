@@ -1,65 +1,91 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <app-calculator>
-    <tui-tabs
-      class="nav-tabs flex row m-center"
-      [(activeItemIndex)]="activeItemIndex">
-      <button tuiTab>Input Data</button>
-      <button tuiTab>Results</button>
-    </tui-tabs>
-    <form
-      class="beneficiary-form flex column m-start c-center"
-      [formGroup]="beneficiariesForm"
-      *ngIf="activeItemIndex === 0; else elseBlock">
-      <div
-        class="beneficiary-info-dynamic-section flex column m-start c-center">
-        <ng-container
-          *ngFor="let beneficiary of beneficiaries.controls; let i = index"
-          formArrayName="beneficiaries">
-          <ng-container formGroupName="{{ i }}">
-            <tui-input
-              tuiTextfieldSize="s"
-              class="beneficiary-input"
-              formControlName="name">
-              Name
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input>
-            <tui-input-number
-              class="beneficiary-input"
-              formControlName="allocation">
-              Allocation
-              <input tuiTextfield (blur)="onBlur()" />
-            </tui-input-number>
-            <button
-              tuiButton
-              type="button"
-              appearance="secondary-destructive"
-              class="delete-button"
-              (click)="openDeleteDialog(i)">
-              Delete
-            </button>
-            <app-horizontal-divider
-              class="info-divider"></app-horizontal-divider>
+  <ng-container *ngIf="assetVm$ | async as assetVm">
+    <app-calculator>
+      <tui-tabs
+        class="nav-tabs flex row m-center"
+        [(activeItemIndex)]="activeItemIndex">
+        <button tuiTab>Input Data</button>
+        <button tuiTab>Results</button>
+      </tui-tabs>
+      <form
+        class="beneficiary-form flex column m-start c-center"
+        [formGroup]="beneficiariesForm"
+        *ngIf="activeItemIndex === 0; else elseBlock">
+        <div
+          class="beneficiary-info-dynamic-section flex column m-start c-center">
+          <ng-container
+            *ngFor="let beneficiary of beneficiaries.controls; let i = index"
+            formArrayName="beneficiaries">
+            <ng-container formGroupName="{{ i }}">
+              <tui-input
+                tuiTextfieldSize="s"
+                class="beneficiary-input"
+                formControlName="name">
+                Name
+                <input tuiTextfield (blur)="onBlur()" />
+              </tui-input>
+              <tui-input-number
+                class="beneficiary-input"
+                formControlName="allocation">
+                Allocation
+                <input tuiTextfield (blur)="onBlur()" />
+              </tui-input-number>
+              <button
+                tuiButton
+                type="button"
+                appearance="secondary-destructive"
+                class="delete-button"
+                (click)="openDeleteDialog(i)">
+                Delete
+              </button>
+              <app-horizontal-divider
+                class="info-divider"></app-horizontal-divider>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </div>
-      <button
-        tuiButton
-        type="button"
-        class="add-new-button"
-        (click)="addBeneficiary()">
-        Add New
-      </button>
-    </form>
-    <ng-template #elseBlock>
-      <div class="beneficiary-result-container flex column c-center gap-2">
-        <app-pie-chart
-          header="Desired Beneficiary Allocation"
-          [value]="beneficiariesChart"></app-pie-chart>
-        <app-pie-chart
-          header="Real Beneficiary Distribution"
-          [value]="beneficiariesChart"></app-pie-chart>
-        <app-bar-chart header="Asset Value Distribution"></app-bar-chart>
-      </div>
-    </ng-template>
-  </app-calculator>
+        </div>
+        <button
+          tuiButton
+          type="button"
+          class="add-new-button"
+          (click)="addBeneficiary()">
+          Add New
+        </button>
+      </form>
+      <ng-template #elseBlock>
+        <div class="beneficiary-result-container flex column c-center gap-2">
+          <app-chart-island header="Desired Beneficiary Allocation">
+            <app-pie-chart [value]="beneficiariesChart"></app-pie-chart>
+          </app-chart-island>
+          <app-legend
+            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+          <app-chart-island header="Real Beneficiary Distribution">
+            <app-pie-chart
+              [value]="
+                getRealDistribution(vm.beneficiaries, assetVm.assets)
+              "></app-pie-chart>
+          </app-chart-island>
+          <app-legend
+            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+          <app-chart-island header="Asset Value Distribution">
+            <tui-axes
+              axisYName="Asset Value ($)"
+              class="axes"
+              [axisXLabels]="axisXLabels(assetVm.assets)"
+              [axisYInset]="true"
+              [axisYLabels]="axisValueYLabels(assetVm.assets)"
+              [horizontalLines]="4"
+              [horizontalLinesHandler]="horizontalLinesHandler"
+              ><tui-bar-chart
+                [max]="getAssetYMax(assetVm.assets)"
+                [value]="
+                  getAssetValueDistribution(vm.beneficiaries, assetVm.assets)
+                "></tui-bar-chart
+            ></tui-axes>
+          </app-chart-island>
+          <app-legend
+            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+        </div>
+      </ng-template>
+    </app-calculator>
+  </ng-container>
 </ng-container>
