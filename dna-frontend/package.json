@@ -6,13 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "prettier": "npx prettier --write .",
     "format": "eslint --fix . && prettier --write .",
     "prepare": "cd .. && husky dna-frontend/.husky",
-    "coverage": "npx nyc --reporter=lcov --reporter=text npx playwright test"
+    "coverage": "npx nyc --reporter=lcov --reporter=text npx jest"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +57,7 @@
     "@angular-eslint/template-parser": "17.3.0",
     "@angular/cli": "^17.3.5",
     "@angular/compiler-cli": "^17.3.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@playwright/test": "^1.44.0",
     "@types/dompurify": "3.0.5",
     "@types/jasmine": "~5.1.0",
