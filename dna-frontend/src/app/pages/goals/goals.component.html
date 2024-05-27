@@ -62,127 +62,130 @@
         </button>
       </form>
       <ng-template #elseBlock>
-        <div class="goals-result-container gap-2 flex column c-center">
-          <app-value-list-card
-            header="Liquidity"
-            [values]="[
-              {
-                label: 'Liquidity Preserved ($)',
-                value:
-                  (calculateLiquidityPreserved(
-                    assetVm.assets,
-                    vm.percentGoalLiquidity || 0
-                  ) | currency) || '$0.00'
-              },
-              {
-                label: 'Liquidity Allocated to Goals (%)',
-                value:
-                  ((vm.percentGoalLiquidity || 0) / 100 | percent: '1.2') ||
-                  '0.00%'
-              },
-              {
-                label: 'Liquidity Allocated to Goals ($)',
-                value:
-                  (calculateLiquidityToGoal(
-                    assetVm.assets,
-                    vm.percentGoalLiquidity || 0
-                  ) | currency) || '$0.00'
-              }
-            ]">
-          </app-value-list-card>
-          <app-value-list-card
-            header="Goals"
-            [values]="[
-              {
-                label: 'Total Sum of All Goals ($)',
-                value: (calculateTotalSumGoals(vm.goals) | currency) || '$0.00'
-              },
-              {
-                label: 'Surplus / Shortfall ($)',
-                value:
-                  (calculateShortfall(
-                    assetVm.assets,
-                    vm.goals,
-                    vm.percentGoalLiquidity || 0
-                  ) | currency) || '$0.00'
-              }
-            ]">
-          </app-value-list-card>
-          <app-value-list-card
-            header="Total Asset Values"
-            [values]="[
-              {
-                label: 'Current Value of Fixed Assets ($)',
-                value:
-                  (calculateCurrentValueFixed(assetVm.assets) | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Future Value of Fixed Assets ($)',
-                value:
-                  (calculateFutureValueFixed(assetVm.assets) | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Current Value of Liquid Assets ($)',
-                value:
-                  (calculateCurrentValueLiquid(assetVm.assets) | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Future Value of Liquid Assets ($)',
-                value:
-                  (calculateFutureValueLiquid(assetVm.assets) | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Current Value of Assets to Sell ($)',
-                value:
-                  (calculateCurrentValueToBeSold(assetVm.assets) | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Future Value of Assets to Sell ($)',
-                value:
-                  (calculateFutureValueToBeSold(assetVm.assets) | currency) ||
-                  '$0.00'
-              }
-            ]">
-          </app-value-list-card>
-          <app-chart-island
-            class="extended"
-            header="Liquidity / Goal Distribution">
-            <tui-axes
-              axisYName="Value ($)"
-              class="axes"
-              [axisYInset]="true"
-              [axisYLabels]="
-                axisValueYLabels(
-                  assetVm.assets,
-                  vm.goals,
-                  vm.percentGoalLiquidity || 0
-                )
-              "
-              [horizontalLines]="5"
-              [horizontalLinesHandler]="horizontalLinesHandler">
-              <tui-bar-set
-                class="bars"
-                [size]="null"
-                [value]="
-                  getLiquidityGoalDistribution(
+        <ng-container *ngIf="assetVm.assets && vm.goals">
+          <div class="goals-result-container gap-2 flex column c-center">
+            <app-value-list-card
+              header="Liquidity"
+              [values]="[
+                {
+                  label: 'Liquidity Preserved ($)',
+                  value:
+                    (calculateLiquidityPreserved(
+                      assetVm.assets,
+                      vm.percentGoalLiquidity || 0
+                    ) | currency) || '$0.00'
+                },
+                {
+                  label: 'Liquidity Allocated to Goals (%)',
+                  value:
+                    ((vm.percentGoalLiquidity || 0) / 100 | percent: '1.2') ||
+                    '0.00%'
+                },
+                {
+                  label: 'Liquidity Allocated to Goals ($)',
+                  value:
+                    (calculateLiquidityToGoal(
+                      assetVm.assets,
+                      vm.percentGoalLiquidity || 0
+                    ) | currency) || '$0.00'
+                }
+              ]">
+            </app-value-list-card>
+            <app-value-list-card
+              header="Goals"
+              [values]="[
+                {
+                  label: 'Total Sum of All Goals ($)',
+                  value:
+                    (calculateTotalSumGoals(vm.goals) | currency) || '$0.00'
+                },
+                {
+                  label: 'Surplus / Shortfall ($)',
+                  value:
+                    (calculateShortfall(
+                      assetVm.assets,
+                      vm.goals,
+                      vm.percentGoalLiquidity || 0
+                    ) | currency) || '$0.00'
+                }
+              ]">
+            </app-value-list-card>
+            <app-value-list-card
+              header="Total Asset Values"
+              [values]="[
+                {
+                  label: 'Current Value of Fixed Assets ($)',
+                  value:
+                    (calculateCurrentValueFixed(assetVm.assets) | currency) ||
+                    '$0.00'
+                },
+                {
+                  label: 'Future Value of Fixed Assets ($)',
+                  value:
+                    (calculateFutureValueFixed(assetVm.assets) | currency) ||
+                    '$0.00'
+                },
+                {
+                  label: 'Current Value of Liquid Assets ($)',
+                  value:
+                    (calculateCurrentValueLiquid(assetVm.assets) | currency) ||
+                    '$0.00'
+                },
+                {
+                  label: 'Future Value of Liquid Assets ($)',
+                  value:
+                    (calculateFutureValueLiquid(assetVm.assets) | currency) ||
+                    '$0.00'
+                },
+                {
+                  label: 'Current Value of Assets to Sell ($)',
+                  value:
+                    (calculateCurrentValueToBeSold(assetVm.assets)
+                      | currency) || '$0.00'
+                },
+                {
+                  label: 'Future Value of Assets to Sell ($)',
+                  value:
+                    (calculateFutureValueToBeSold(assetVm.assets) | currency) ||
+                    '$0.00'
+                }
+              ]">
+            </app-value-list-card>
+            <app-chart-island
+              class="extended"
+              header="Liquidity / Goal Distribution">
+              <tui-axes
+                axisYName="Value ($)"
+                class="axes"
+                [axisYInset]="true"
+                [axisYLabels]="
+                  axisValueYLabels(
                     assetVm.assets,
                     vm.goals,
                     vm.percentGoalLiquidity || 0
                   )
-                ">
-              </tui-bar-set
-            ></tui-axes>
-            <app-legend
-              class="overlay-legend"
-              [invert]="true"
-              [items]="getGoalLegend()"></app-legend>
-          </app-chart-island>
-        </div>
+                "
+                [horizontalLines]="5"
+                [horizontalLinesHandler]="horizontalLinesHandler">
+                <tui-bar-set
+                  class="bars"
+                  [size]="null"
+                  [value]="
+                    getLiquidityGoalDistribution(
+                      assetVm.assets,
+                      vm.goals,
+                      vm.percentGoalLiquidity || 0
+                    )
+                  ">
+                </tui-bar-set
+              ></tui-axes>
+              <app-legend
+                class="overlay-legend"
+                [invert]="true"
+                [items]="getGoalLegend()"></app-legend>
+            </app-chart-island>
+          </div>
+        </ng-container>
       </ng-template>
     </app-calculator>
   </ng-container>

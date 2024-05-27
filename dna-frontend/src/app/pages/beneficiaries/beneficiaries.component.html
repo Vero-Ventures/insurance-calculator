@@ -52,39 +52,41 @@
         </button>
       </form>
       <ng-template #elseBlock>
-        <div class="beneficiary-result-container flex column c-center gap-2">
-          <app-chart-island header="Desired Beneficiary Allocation">
-            <app-pie-chart [value]="beneficiariesChart"></app-pie-chart>
-          </app-chart-island>
-          <app-legend
-            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
-          <app-chart-island header="Real Beneficiary Distribution">
-            <app-pie-chart
-              [value]="
-                getRealDistribution(vm.beneficiaries, assetVm.assets)
-              "></app-pie-chart>
-          </app-chart-island>
-          <app-legend
-            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
-          <app-chart-island header="Asset Value Distribution">
-            <tui-axes
-              axisYName="Asset Value ($)"
-              class="axes"
-              [axisXLabels]="axisXLabels(assetVm.assets)"
-              [axisYInset]="true"
-              [axisYLabels]="axisValueYLabels(assetVm.assets)"
-              [horizontalLines]="4"
-              [horizontalLinesHandler]="horizontalLinesHandler"
-              ><tui-bar-chart
-                [max]="getAssetYMax(assetVm.assets)"
+        <ng-container *ngIf="vm.beneficiaries && assetVm.assets">
+          <div class="beneficiary-result-container flex column c-center gap-2">
+            <app-chart-island header="Desired Beneficiary Allocation">
+              <app-pie-chart [value]="beneficiariesChart"></app-pie-chart>
+            </app-chart-island>
+            <app-legend
+              [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+            <app-chart-island header="Real Beneficiary Distribution">
+              <app-pie-chart
                 [value]="
-                  getAssetValueDistribution(vm.beneficiaries, assetVm.assets)
-                "></tui-bar-chart
-            ></tui-axes>
-          </app-chart-island>
-          <app-legend
-            [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
-        </div>
+                  getRealDistribution(vm.beneficiaries, assetVm.assets)
+                "></app-pie-chart>
+            </app-chart-island>
+            <app-legend
+              [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+            <app-chart-island header="Asset Value Distribution">
+              <tui-axes
+                axisYName="Asset Value ($)"
+                class="axes"
+                [axisXLabels]="axisXLabels(assetVm.assets)"
+                [axisYInset]="true"
+                [axisYLabels]="axisValueYLabels(assetVm.assets)"
+                [horizontalLines]="4"
+                [horizontalLinesHandler]="horizontalLinesHandler"
+                ><tui-bar-chart
+                  [max]="getAssetYMax(assetVm.assets)"
+                  [value]="
+                    getAssetValueDistribution(vm.beneficiaries, assetVm.assets)
+                  "></tui-bar-chart
+              ></tui-axes>
+            </app-chart-island>
+            <app-legend
+              [items]="getBeneficiaryLegend(vm.beneficiaries)"></app-legend>
+          </div>
+        </ng-container>
       </ng-template>
     </app-calculator>
   </ng-container>
