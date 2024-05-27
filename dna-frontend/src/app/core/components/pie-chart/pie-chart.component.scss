@@ -1,3 +1,16 @@
+:host {
+  --tui-chart-0: #ff0000;
+  --tui-chart-1: #00ff00;
+  --tui-chart-2: #0000ff;
+  --tui-chart-3: #ffff00;
+  --tui-chart-4: #ff00ff;
+  --tui-chart-5: #00ffff;
+  --tui-chart-6: #ffa500;
+  --tui-chart-7: #800080;
+  --tui-chart-8: #008000;
+  --tui-chart-9: #000080;
+}
+
 tui-island {
   display: flex;
   flex-direction: column;

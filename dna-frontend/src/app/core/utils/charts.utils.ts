@@ -9,11 +9,12 @@ export const horizontalLinesHandler: TuiLineHandler = (index, total) =>
 
 export function createYearAxisXLabels(
   years: number,
-  min: number | null = null
+  min: number | null = null,
+  steps: number = 1
 ) {
   const start = min ? min : new Date().getFullYear();
   const labels = [];
-  for (let i = 0; i < years; i++) {
+  for (let i = 0; i < years; i += steps) {
     labels.push(`${start + i}`);
   }
   return labels;

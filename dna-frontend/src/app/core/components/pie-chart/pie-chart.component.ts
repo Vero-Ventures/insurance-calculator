@@ -3,6 +3,7 @@ import { TuiIslandModule } from '@taiga-ui/kit';
 import { TuiPieChartModule } from '@taiga-ui/addon-charts';
 import { TuiHintModule } from '@taiga-ui/core';
 import { PercentPipe } from '@angular/common';
+import { Value } from 'app/core/models/value.model';
 
 @Component({
   selector: 'app-pie-chart',
@@ -12,21 +13,17 @@ import { PercentPipe } from '@angular/common';
   styleUrl: './pie-chart.component.scss',
 })
 export class PieChartComponent {
-  @Input() header: string = '';
-  @Input() value: {
-    name: string;
-    value: number;
-  }[] = [];
+  @Input() value: Value[] = [];
 
   get total() {
-    return this.value.reduce((acc, item) => acc + item.value, 0);
+    return this.value.reduce((acc, item) => acc + parseFloat(item.value), 0);
   }
 
   get names() {
-    return this.value.map(item => item.name);
+    return this.value.map(item => item.label);
   }
 
   get values() {
-    return this.value.map(item => item.value / this.total);
+    return this.value.map(item => parseFloat(item.value) / this.total);
   }
 }

@@ -1,4 +1,10 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  NgFor,
+  NgIf,
+  PercentPipe,
+} from '@angular/common';
 import {
   Component,
   Inject,
@@ -12,6 +18,7 @@ import {
   TuiButtonModule,
   TuiDialogService,
   TuiNotificationModule,
+  TuiPoint,
   tuiNumberFormatProvider,
 } from '@taiga-ui/core';
 import {
@@ -30,6 +37,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { generateId } from 'app/core/utils/common.utils';
 import { Asset } from 'app/core/models/asset.model';
 import { AssetsStore } from './assets.store';
+import { ClientStore } from '../client/client.store';
+import { PROVINCE_TAX_BRACKETS } from 'app/core/constants/tax.constant';
+import { CA_PROVINCES } from 'app/core/enums/ca-provinces.enum';
+import { Client } from 'app/core/models/client.model';
+import { ChartIslandComponent } from 'app/core/components/chart-island/chart-island.component';
+import { LegendComponent } from 'app/core/components/legend/legend.component';
+import { LegendItem } from 'app/core/models/legend.model';
+import {
+  createAxisYLabels,
+  createYearAxisXLabels,
+  getColor,
+  horizontalLinesHandler,
+} from 'app/core/utils/charts.utils';
+import { BeneficiariesStore } from '../beneficiaries/beneficiaries.store';
+import { Beneficiary } from 'app/core/models/beneficiary.model';
+import { Value } from 'app/core/models/value.model';
+import { ASSET_TYPE } from 'app/core/enums/asset-type.enum';
+import { TuiAxesModule, TuiLineChartModule } from '@taiga-ui/addon-charts';
 
 @Component({
   selector: 'app-assets',
@@ -41,19 +66,27 @@ import { AssetsStore } from './assets.store';
     TuiTabsModule,
     TuiNotificationModule,
     TuiButtonModule,
+    TuiAxesModule,
+    TuiLineChartModule,
     HorizontalDividerComponent,
     ValueCardComponent,
     CalculatorComponent,
     ValueListCardComponent,
+    ChartIslandComponent,
+    LegendComponent,
     PieChartComponent,
     NgIf,
     NgFor,
     AsyncPipe,
+    CurrencyPipe,
+    PercentPipe,
   ],
   templateUrl: './assets.component.html',
   styleUrl: './assets.component.scss',
   providers: [
     AssetsStore,
+    ClientStore,
+    BeneficiariesStore,
     tuiNumberFormatProvider({
       decimalSeparator: '.',
       thousandSeparator: ',',
@@ -64,14 +97,19 @@ export class AssetsComponent implements OnInit, OnDestroy {
   @Input() clientId: number = 0;
   activeItemIndex = 0;
   vm$ = this.assetsStore.vm$;
+  clientVm$ = this.clientStore.vm$;
+  beneficiaryVm$ = this.beneficiariesStore.vm$;
   readonly assetsForm = this.fb.group({
     assets: this.fb.array<Asset>([]),
   });
+  readonly horizontalLinesHandler = horizontalLinesHandler;
 
   constructor(
     @Inject(TuiDialogService)
     private readonly dialogs: TuiDialogService,
     private readonly assetsStore: AssetsStore,
+    private readonly clientStore: ClientStore,
+    private readonly beneficiariesStore: BeneficiariesStore,
     private readonly fb: FormBuilder,
     private readonly zone: NgZone,
     private readonly router: Router,
@@ -86,6 +124,8 @@ export class AssetsComponent implements OnInit, OnDestroy {
           this.addAsset(asset);
         });
       });
+      this.clientStore.getClient(this.clientId);
+      this.beneficiariesStore.getBeneficiaries(this.clientId);
     });
   }
 
@@ -165,25 +205,314 @@ export class AssetsComponent implements OnInit, OnDestroy {
       });
   }
 
-  totalInitialValue = {
-    label: 'Total Initial Value ($)',
-    value: '$1,000,000',
-  };
-  totalInsurableFutureValue = {
-    label: 'Total Insurable Future Value ($)',
-    value: '$1,000,000',
+  calculateAllocation(asset: Asset) {
+    return asset.beneficiaries.reduce(
+      (acc, beneficiary) => acc + (beneficiary.allocation || 0) / 100,
+      0
+    );
+  }
+
+  calculateTaxBracket(province: CA_PROVINCES | null, value: number | null) {
+    if (!province || !value) {
+      return null;
+    }
+
+    const brackets = PROVINCE_TAX_BRACKETS[province];
+    let selectedBracket = brackets[0];
+    for (const bracket of brackets) {
+      if (value >= bracket.minIncome) {
+        selectedBracket = bracket;
+      }
+    }
+    return selectedBracket;
+  }
+
+  getCapitalGainsTaxRate(value: number, client: Client) {
+    const taxBracket = this.calculateTaxBracket(client.province, value);
+
+    if (!taxBracket) {
+      return 0;
+    }
+    return taxBracket.taxRate * 0.5;
+  }
+
+  calculateFutureValueDollars(asset: Asset) {
+    return (
+      (asset.currentValue || 0) *
+      Math.pow(1 + (asset.rate || 0) / 100, asset.term || 0)
+    );
+  }
+
+  calculateFutureTaxLiability(asset: Asset, client: Client) {
+    if (!asset.isTaxable) {
+      return 0;
+    }
+    const futureValueDollars = this.calculateFutureValueDollars(asset);
+    return (
+      (futureValueDollars - (asset.initialValue || 0)) *
+      (this.getCapitalGainsTaxRate(futureValueDollars, client) / 100)
+    );
+  }
+
+  calculateCurrentTaxLiability(asset: Asset, client: Client) {
+    if (!asset.isTaxable) {
+      return 0;
+    }
+    const currentValue = asset.currentValue || 0;
+    return (
+      (currentValue - (asset.initialValue || 0)) *
+      (this.getCapitalGainsTaxRate(currentValue, client) / 100)
+    );
+  }
+
+  calculateCurrentYearsHeld(asset: Asset) {
+    const currentYear = new Date().getFullYear();
+    return currentYear - (asset.yearAcquired || currentYear);
+  }
+
+  calculateGrowthDollars(asset: Asset) {
+    return (asset.currentValue || 0) - (asset.initialValue || 0);
+  }
+
+  calculateGrowthPercentage(start: number, end: number) {
+    return end / start - 1;
+  }
+
+  calculateTotalFutureValue(assets: Asset[]) {
+    return assets.reduce(
+      (acc, asset) => acc + this.calculateFutureValueDollars(asset),
+      0
+    );
+  }
+
+  calculateSingleBeneficiaryTotal(assets: Asset[], beneficiary: Beneficiary) {
+    return assets.reduce((acc, asset) => {
+      const assetBeneficiary = asset.beneficiaries.find(
+        b => b.id === beneficiary.id
+      );
+
+      if (!assetBeneficiary) {
+        return acc;
+      }
+
+      return (
+        acc +
+        ((this.calculateFutureValueDollars(asset) *
+          (assetBeneficiary?.allocation || 0)) /
+          100 || 0)
+      );
+    }, 0);
+  }
+
+  calculateBeneficiaryTotal(assets: Asset[]) {
+    return assets.reduce((acc, asset) => {
+      return (
+        acc +
+        asset.beneficiaries.reduce(
+          (acc, beneficiary) =>
+            acc +
+            ((this.calculateFutureValueDollars(asset) *
+              (beneficiary.allocation || 0)) /
+              100 || 0),
+          0
+        )
+      );
+    }, 0);
+  }
+
+  calculateSingleBeneficiaryPercent(assets: Asset[], beneficiary: Beneficiary) {
+    const beneficiaryTotal = this.calculateSingleBeneficiaryTotal(
+      assets,
+      beneficiary
+    );
+    const total = this.calculateTotalFutureValue(assets);
+    return (beneficiaryTotal / total) * 100 || 0;
+  }
+
+  calculateBeneficiaryPercent(assets: Asset[]) {
+    const beneficiaryTotal = this.calculateBeneficiaryTotal(assets);
+    const total = this.calculateTotalFutureValue(assets);
+    return (beneficiaryTotal / total) * 100 || 0;
+  }
+
+  calculateIdealDistribution(beneficiaries: Beneficiary[]) {
+    return beneficiaries.reduce((acc, beneficiary) => {
+      return acc + (beneficiary.allocation || 0);
+    }, 0);
+  }
+
+  calculateTotalDesiredValue(assets: Asset[], beneficiaries: Beneficiary[]) {
+    return beneficiaries.reduce((total, beneficiary) => {
+      const currentAmount = this.calculateSingleBeneficiaryTotal(
+        assets,
+        beneficiary
+      );
+      const desiredPercent = (beneficiary.allocation || 0) / 100;
+      const idealAmount = currentAmount / desiredPercent;
+      return Math.max(total, idealAmount);
+    }, 0);
+  }
+
+  calculateSingleAdditionalRequired(
+    assets: Asset[],
+    beneficiaries: Beneficiary[],
+    beneficiary: Beneficiary
+  ) {
+    const totalDesiredValue = this.calculateTotalDesiredValue(
+      assets,
+      beneficiaries
+    );
+    const currentAmount = this.calculateSingleBeneficiaryTotal(
+      assets,
+      beneficiary
+    );
+    const desiredPercent = (beneficiary.allocation || 0) / 100;
+    const realIdealAmount = totalDesiredValue * desiredPercent;
+    return Math.max(0, realIdealAmount - currentAmount);
+  }
+
+  calculateAdditionalRequired(assets: Asset[], beneficiaries: Beneficiary[]) {
+    return Math.max(
+      0,
+      assets.reduce((acc, asset) => {
+        return (
+          acc +
+          asset.beneficiaries.reduce(
+            (acc, beneficiary) =>
+              acc +
+              this.calculateSingleAdditionalRequired(
+                assets,
+                beneficiaries,
+                beneficiary
+              ),
+            0
+          )
+        );
+      }, 0)
+    );
+  }
+
+  getAssetTypeDistribution(assets: Asset[]) {
+    const currentTotal = assets.reduce((acc, asset) => {
+      return acc + (asset.currentValue || 0);
+    }, 0);
+
+    const distribution: Value[] = [];
+
+    assets.forEach(asset => {
+      const type = asset.type || ASSET_TYPE.OTHER;
+      const index = distribution.findIndex(d => d.label === type);
+      if (distribution.findIndex(d => d.label === type) !== -1) {
+        distribution[index].value = `${
+          parseFloat(distribution[index].value) +
+          (asset.currentValue || 0) / currentTotal
+        }`;
+      } else {
+        distribution.push({
+          label: type,
+          value: `${(asset.currentValue || 0) / currentTotal}`,
+        });
+      }
+    });
+
+    return distribution;
+  }
+
+  calculateSingleAssetOverTime(asset: Asset) {
+    const assetOverTime: TuiPoint[] = [];
+    const rate = asset.rate || 0;
+    const term = asset.term || 0;
+    const initialValue = asset.initialValue || 0;
+    const startingYear = asset.yearAcquired || 0;
+    let currentValue = initialValue;
+    for (let i = 0; i <= term; i++) {
+      if (startingYear + i === new Date().getFullYear()) {
+        currentValue = asset.currentValue || currentValue;
+      }
+      currentValue = currentValue * (1 + rate / 100);
+      assetOverTime.push([startingYear + i, currentValue]);
+    }
+    return assetOverTime;
+  }
+
+  calculateAssetsOverTime(assets: Asset[]) {
+    const assetValue: TuiPoint[][] = [];
+    assets.forEach(asset => {
+      assetValue.push(this.calculateSingleAssetOverTime(asset));
+    });
+    return assetValue;
+  }
+
+  getXMin(assets: Asset[]) {
+    return assets.reduce(
+      (acc, asset) =>
+        Math.min(
+          acc,
+          asset.yearAcquired ? asset.yearAcquired : new Date().getFullYear()
+        ),
+      new Date().getFullYear()
+    );
+  }
+
+  getXMax(assets: Asset[]) {
+    const maxPoints = 13;
+    return Math.min(
+      maxPoints,
+      assets.reduce((acc, asset) => Math.max(acc, asset.term || 0), 0)
+    );
+  }
+
+  getAssetYMax(assets: Asset[]) {
+    return assets.reduce(
+      (acc, asset) =>
+        Math.max(
+          acc,
+          this.calculateFutureValueDollars(asset) || 0,
+          asset.currentValue || 0
+        ),
+      0
+    );
+  }
+
+  getAssetLegend(assets: Asset[]) {
+    const legendItems: LegendItem[] = [];
+    assets.forEach((asset, index) => {
+      legendItems.push({
+        color: getColor(index),
+        label: asset.name || `Asset ${index + 1}`,
+      });
+    });
+    return legendItems;
+  }
+
+  getAssetTypeLegend(assets: Asset[]) {
+    const legendItems: LegendItem[] = [];
+    assets.forEach((asset, index) => {
+      const type = asset.type || ASSET_TYPE.OTHER;
+      if (legendItems.findIndex(d => d.label === type) === -1) {
+        legendItems.push({
+          color: getColor(index),
+          label: type || `Unknown`,
+        });
+      }
+    });
+    return legendItems;
+  }
+
+  color(index: number) {
+    return getColor(index);
+  }
+
+  readonly axisXLabels = (assets: Asset[]) => {
+    const min = this.getXMin(assets);
+    const max = this.getXMax(assets);
+    return createYearAxisXLabels(max, min);
   };
 
-  beneficiary1 = [
-    { label: 'Amount ($)', value: '$600,000.00' },
-    { label: 'Percentage (%)', value: '30.00%' },
-    { label: 'Ideal Distribution (%)', value: '30.00%' },
-    { label: 'Additional Required ($)', value: '$0.00' },
-  ];
-  beneficiary2 = [
-    { label: 'Amount ($)', value: '$600,000.00' },
-    { label: 'Percentage (%)', value: '30.00%' },
-    { label: 'Ideal Distribution (%)', value: '30.00%' },
-    { label: 'Additional Required ($)', value: '$0.00' },
-  ];
+  readonly axisAssetYLabels = (assets: Asset[]) => {
+    const min = 0;
+    const max = this.getAssetYMax(assets);
+    const steps = 4;
+    return createAxisYLabels(min, max, steps);
+  };
 }
