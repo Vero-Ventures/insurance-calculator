@@ -173,6 +173,9 @@ export class TotalNeedsComponent implements OnInit, OnDestroy {
   }
 
   initialSetup(totalNeeds: TotalNeeds) {
+    this.debtsVm$.pipe(take(2)).subscribe(debtsState => {
+      this.setupDebtFutureLiability(debtsState.debts);
+    });
     this.clientVm$.pipe(take(2)).subscribe(clientState => {
       this.setupIncomeReplacement(clientState.client);
       this.assetsVm$.pipe(take(2)).subscribe(assetsState => {
@@ -195,9 +198,6 @@ export class TotalNeedsComponent implements OnInit, OnDestroy {
           });
         });
       });
-    });
-    this.debtsVm$.pipe(take(2)).subscribe(debtsState => {
-      this.setupDebtFutureLiability(debtsState.debts);
     });
   }
 
