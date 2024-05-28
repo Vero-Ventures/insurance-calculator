@@ -1,0 +1,27 @@
+<header>
+  <tui-app-bar class="app-bar">
+    <tui-svg
+      class="sidebar-icon-toggle"
+      tuiSlot="left"
+      (click)="toggle(true)"
+      (tuiActiveZoneChange)="toggle(false)"
+      src="tuiIconMenuLarge">
+      <div *tuiSidebar="open" class="flex column">
+        <div class="nav-label flex c-center">
+          <h3>Exit the Robo-Advisor</h3>
+        </div>
+        <app-horizontal-divider></app-horizontal-divider>
+        <a
+          class="nav-action flex c-center"
+          icon="tuiIconLogOutLarge"
+          iconAlign="left"
+          routerLink="/landing"
+          tuiLink
+          >Exit to Dashboard</a
+        >
+        <app-horizontal-divider></app-horizontal-divider>
+      </div>
+    </tui-svg>
+    <h1 class="page-title">{{ pageName }}</h1>
+  </tui-app-bar>
+</header>

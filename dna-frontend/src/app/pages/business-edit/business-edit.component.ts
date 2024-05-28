@@ -7,7 +7,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   TuiButtonModule,
   TuiDialogService,
@@ -78,7 +78,8 @@ export class BusinessEditComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly zone: NgZone,
     private readonly route: ActivatedRoute,
-    private readonly location: Location
+    private readonly location: Location,
+    private readonly router: Router
   ) {
     this.route.params.subscribe(params => {
       this.businessId = +params['businessId'];
@@ -183,7 +184,7 @@ export class BusinessEditComponent implements OnInit {
   save() {
     this.businessesStore.updateBusinesses(this.clientId);
     this.zone.run(() => {
-      this.location.back();
+      this.router.navigate([`/businesses/${this.clientId}`]);
     });
   }
 }

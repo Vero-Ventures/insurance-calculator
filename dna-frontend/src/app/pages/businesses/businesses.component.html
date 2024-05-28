@@ -52,122 +52,130 @@
       </button>
     </form>
     <ng-template #elseBlock>
-      <div class="business-result-container flex column c-center gap-2">
-        <ng-container *ngFor="let business of vm.businesses; let i = index">
-          <app-multi-value-card
-            [header]="business.name || 'Business ' + (i + 1)"
-            [compact]="true"
-            [values]="[
-              {
-                label: 'Total Shareholder Percentage Owned (%)',
-                value:
-                  (calculateTotalShareholderPercentage(business) || 0
-                    | percent) || '0%'
-              },
-              {
-                label: 'Total EBITDA Contribution (%)',
-                value:
-                  (calculateTotalEbitdaPercentage(business) || 0 | percent) ||
-                  '0%'
-              },
-              {
-                label: 'Total Major Shareholder Value ($)',
-                value:
-                  (calculateTotalShareholderValue(business) || 0 | currency) ||
-                  '$0.00'
-              },
-              {
-                label: 'Total Major Shareholder Insurance ($)',
-                value:
-                  (calculateTotalShareholderInsurance(business) || 0
-                    | currency) || '$0.00'
-              },
-              {
-                label: 'Total Major Shareholder Disparity ($)',
-                value:
-                  (calculateTotalShareholderDisparity(business) || 0
-                    | currency) || '$0.00'
-              }
-            ]"></app-multi-value-card>
-          <ng-container
-            *ngFor="let shareholder of business.shareholders; let i = index">
-            <app-value-list-card
-              [header]="shareholder.name || 'Shareholder ' + (i + 1)"
+      <ng-container *ngIf="vm.businesses">
+        <div class="business-result-container flex column c-center gap-2">
+          <ng-container *ngFor="let business of vm.businesses; let i = index">
+            <app-multi-value-card
+              [header]="business.name || 'Business ' + (i + 1)"
+              [compact]="true"
               [values]="[
                 {
-                  label: 'EBITDA Contribution ($)',
+                  label: 'Total Shareholder Percentage Owned (%)',
                   value:
-                    (calculateEbitdaContribution(business, shareholder)
+                    (calculateTotalShareholderPercentage(business) || 0
+                      | percent) || '0%'
+                },
+                {
+                  label: 'Total EBITDA Contribution (%)',
+                  value:
+                    (calculateTotalEbitdaPercentage(business) || 0 | percent) ||
+                    '0%'
+                },
+                {
+                  label: 'Total Major Shareholder Value ($)',
+                  value:
+                    (calculateTotalShareholderValue(business) || 0
                       | currency) || '$0.00'
                 },
                 {
-                  label: 'Share Value ($)',
+                  label: 'Total Major Shareholder Insurance ($)',
                   value:
-                    (calculateShareValue(business, shareholder) | currency) ||
-                    '$0.00'
+                    (calculateTotalShareholderInsurance(business) || 0
+                      | currency) || '$0.00'
                 },
                 {
-                  label: 'Liquidation Disparity ($)',
+                  label: 'Total Major Shareholder Disparity ($)',
                   value:
-                    (calculateLiquidationDisparity(business, shareholder)
+                    (calculateTotalShareholderDisparity(business) || 0
                       | currency) || '$0.00'
                 }
-              ]"></app-value-list-card>
+              ]"></app-multi-value-card>
+            <ng-container
+              *ngFor="let shareholder of business.shareholders; let i = index">
+              <app-value-list-card
+                [header]="shareholder.name || 'Shareholder ' + (i + 1)"
+                [values]="[
+                  {
+                    label: 'EBITDA Contribution ($)',
+                    value:
+                      (calculateEbitdaContribution(business, shareholder)
+                        | currency) || '$0.00'
+                  },
+                  {
+                    label: 'Share Value ($)',
+                    value:
+                      (calculateShareValue(business, shareholder) | currency) ||
+                      '$0.00'
+                  },
+                  {
+                    label: 'Liquidation Disparity ($)',
+                    value:
+                      (calculateLiquidationDisparity(business, shareholder)
+                        | currency) || '$0.00'
+                  }
+                ]"></app-value-list-card>
+            </ng-container>
+            <app-chart-island header="Compounded EBITDA ($)">
+              <tui-axes
+                axisYName="EBITDA ($)"
+                class="axes"
+                [axisXLabels]="axisXLabels(business)"
+                [axisYInset]="true"
+                [axisYLabels]="axisEbitdaYLabels(business)"
+                [horizontalLines]="4"
+                [horizontalLinesHandler]="horizontalLinesHandler"
+                ><tui-line-chart
+                  *ngFor="
+                    let value of calculateCompoundedEbitdaContribution(
+                      business
+                    );
+                    let i = index
+                  "
+                  class="chart"
+                  [style.color]="color(i)"
+                  [x]="getXMin()"
+                  [y]="0"
+                  [smoothingFactor]="50"
+                  [width]="getXMax(business)"
+                  [height]="getEbitdaYMax(business)"
+                  [value]="value"></tui-line-chart>
+              </tui-axes>
+            </app-chart-island>
+            <app-legend
+              [items]="
+                getShareholderLegend(business.shareholders)
+              "></app-legend>
+            <app-chart-island header="Share Value Over Time ($)">
+              <tui-axes
+                axisYName="EBITDA ($)"
+                class="axes"
+                [axisXLabels]="axisXLabels(business)"
+                [axisYInset]="true"
+                [axisYLabels]="axisShareYLabels(business)"
+                [horizontalLines]="4"
+                [horizontalLinesHandler]="horizontalLinesHandler"
+                ><tui-line-chart
+                  *ngFor="
+                    let value of calculateCompoundedShareValue(business);
+                    let i = index
+                  "
+                  class="chart"
+                  [style.color]="color(i)"
+                  [x]="getXMin()"
+                  [y]="0"
+                  [smoothingFactor]="50"
+                  [width]="getXMax(business)"
+                  [height]="getShareYMax(business)"
+                  [value]="value"></tui-line-chart>
+              </tui-axes>
+            </app-chart-island>
+            <app-legend
+              [items]="
+                getShareholderLegend(business.shareholders)
+              "></app-legend>
           </ng-container>
-          <app-chart-island header="Compounded EBITDA ($)">
-            <tui-axes
-              axisYName="EBITDA ($)"
-              class="axes"
-              [axisXLabels]="axisXLabels(business)"
-              [axisYInset]="true"
-              [axisYLabels]="axisEbitdaYLabels(business)"
-              [horizontalLines]="4"
-              [horizontalLinesHandler]="horizontalLinesHandler"
-              ><tui-line-chart
-                *ngFor="
-                  let value of calculateCompoundedEbitdaContribution(business);
-                  let i = index
-                "
-                class="chart"
-                [style.color]="color(i)"
-                [x]="getXMin()"
-                [y]="0"
-                [smoothingFactor]="50"
-                [width]="getXMax(business)"
-                [height]="getEbitdaYMax(business)"
-                [value]="value"></tui-line-chart>
-            </tui-axes>
-          </app-chart-island>
-          <app-legend
-            [items]="getShareholderLegend(business.shareholders)"></app-legend>
-          <app-chart-island header="Share Value Over Time ($)">
-            <tui-axes
-              axisYName="EBITDA ($)"
-              class="axes"
-              [axisXLabels]="axisXLabels(business)"
-              [axisYInset]="true"
-              [axisYLabels]="axisShareYLabels(business)"
-              [horizontalLines]="4"
-              [horizontalLinesHandler]="horizontalLinesHandler"
-              ><tui-line-chart
-                *ngFor="
-                  let value of calculateCompoundedShareValue(business);
-                  let i = index
-                "
-                class="chart"
-                [style.color]="color(i)"
-                [x]="getXMin()"
-                [y]="0"
-                [smoothingFactor]="50"
-                [width]="getXMax(business)"
-                [height]="getShareYMax(business)"
-                [value]="value"></tui-line-chart>
-            </tui-axes>
-          </app-chart-island>
-          <app-legend
-            [items]="getShareholderLegend(business.shareholders)"></app-legend>
-        </ng-container>
-      </div>
+        </div>
+      </ng-container>
     </ng-template>
   </app-calculator>
 </ng-container>

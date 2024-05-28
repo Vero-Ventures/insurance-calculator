@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HorizontalDividerComponent } from '../horizontal-divider/horizontal-divider.component';
 
 @Component({
-  selector: 'app-appbar',
+  selector: 'app-advisor-bar',
   standalone: true,
   imports: [
     TuiAppBarModule,
@@ -18,24 +18,15 @@ import { HorizontalDividerComponent } from '../horizontal-divider/horizontal-div
     HorizontalDividerComponent,
     TuiSvgModule,
   ],
-  templateUrl: './appbar.component.html',
-  styleUrl: './appbar.component.scss',
+  templateUrl: './advisor-bar.component.html',
+  styleUrl: './advisor-bar.component.scss',
 })
-export class AppbarComponent {
+export class AdvisorBarComponent {
   @Input() pageName = '';
-  @Input() clientId = 0;
 
   open = false;
 
   toggle(open: boolean) {
     this.open = open;
-  }
-
-  constructRoute(route: string) {
-    return `/${route}/${this.clientId}`;
-  }
-
-  constructRouteWithoutClientId(route: string) {
-    return `/${route}`;
   }
 }
