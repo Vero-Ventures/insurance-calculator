@@ -5,6 +5,7 @@ import { TuiActiveZoneModule } from '@taiga-ui/cdk';
 import { TuiLinkModule, TuiSvgModule } from '@taiga-ui/core';
 import { RouterModule } from '@angular/router';
 import { HorizontalDividerComponent } from '../horizontal-divider/horizontal-divider.component';
+import { SupabaseService } from 'app/core/services/supabase.service';
 
 @Component({
   selector: 'app-appbar',
@@ -27,6 +28,8 @@ export class AppbarComponent {
 
   open = false;
 
+  constructor(private supabaseService: SupabaseService) {}
+
   toggle(open: boolean) {
     this.open = open;
   }
@@ -37,5 +40,19 @@ export class AppbarComponent {
 
   constructRouteWithoutClientId(route: string) {
     return `/${route}`;
+  }
+
+  async downloadProfile() {
+    const id = this.clientId;
+    const profile = await this.supabaseService.getProfile(id);
+
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute(
+      'href',
+      'data:text/plain;charset=utf-u,' +
+        encodeURIComponent(JSON.stringify(profile))
+    );
+    downloadAnchor.setAttribute('download', `dna-user-profile-${id}.json`);
+    downloadAnchor.click();
   }
 }

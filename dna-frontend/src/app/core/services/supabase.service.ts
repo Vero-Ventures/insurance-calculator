@@ -44,6 +44,26 @@ export class SupabaseService {
     );
   }
 
+  async getProfile(clientId: number) {
+    const result = await this.supabase
+      .from('client_profiles')
+      .select()
+      .eq('id', clientId)
+      .single();
+
+    if (!result.data) {
+      throw new Error('Could not find any profile with id of ' + clientId);
+    }
+
+    delete result.data[0]['advisor_id'];
+
+    return result.data[0];
+  }
+
+  async insertProfile() {
+    return Promise.resolve(null);
+  }
+
   async getClient(clientId: number) {
     return await this.supabase
       .from('client_profiles')
