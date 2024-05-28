@@ -45,6 +45,31 @@ export class SupabaseService {
     );
   }
 
+  async getProfile(clientId: number) {
+    const result = await this.supabase
+      .from('client_profiles')
+      .select()
+      .eq('id', clientId)
+      .single();
+
+    if (!result.data) {
+      throw new Error('Could not find any profile with id of ' + clientId);
+    }
+
+    return result.data;
+  }
+
+  async insertProfile(profile: Record<string, unknown>) {
+    await this.deleteClient(profile['id'] as number);
+    const user = await this.supabase.auth.getUser();
+    return this.supabase.from('client_profiles').insert([
+      {
+        ...profile,
+        advisor_id: user.data.user?.id,
+      },
+    ]);
+  }
+
   async getClient(clientId: number) {
     return await this.supabase
       .from('client_profiles')
