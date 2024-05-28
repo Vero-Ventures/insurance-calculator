@@ -14,4 +14,5 @@ export class LandingCardComponent {
   @Input() header: string = '';
   @Input() buttonText: string = '';
   @Input() linkDestination: Array<string> = ['/test'];
+  @Input() imageSrc: string = '';
 }
