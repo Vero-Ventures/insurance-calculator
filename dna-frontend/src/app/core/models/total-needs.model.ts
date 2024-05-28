@@ -5,16 +5,12 @@ export interface TotalNeedsItem {
 }
 
 export interface ShareholderNeeds {
+  businessId: string | null;
+  businessName: string | null;
   name: string | null;
   need: number | null;
   want: number | null;
   priority: number | null;
-}
-
-export interface TotalNeedsBusiness {
-  id: number;
-  name: string | null;
-  shareholders: ShareholderNeeds[];
 }
 
 export interface TotalNeeds {
@@ -23,6 +19,6 @@ export interface TotalNeeds {
   equalization: TotalNeedsItem;
   debtFutureLiability: TotalNeedsItem;
   goalShortfall: TotalNeedsItem;
-  keyMan: TotalNeedsBusiness[];
-  shareholderAgreement: TotalNeedsBusiness[];
+  keyMan: ShareholderNeeds[];
+  shareholderAgreement: ShareholderNeeds[];
 }
