@@ -1,105 +1,187 @@
-<app-calculator>
-  <tui-tabs
-    class="nav-tabs flex row m-center"
-    [(activeItemIndex)]="activeItemIndex">
-    <button tuiTab>Input Data</button>
-    <button tuiTab>Results</button>
-  </tui-tabs>
-  <form
-    class="total-needs-form flex column m-start c-center gap-2"
-    *ngIf="activeItemIndex === 0; else elseBlock"
-    [formGroup]="totalNeedsForm">
-    <p>Income Replacement - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <p>Estate Tax Liability - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <p>Equalization - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <p>Goal Shortfall - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <!-- Populate dynamically -->
-
-    <p>business 1 Key-Man: shareholder - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <p>business 1 Shareholder Agreement: shareholder - Need $5,000,000</p>
-    <tui-input-slider formControlName="priority" [max]="100" [quantum]="1"
-      >Priority</tui-input-slider
-    >
-    <tui-input-number tuiTextfieldSize="s" formControlName="want">
-      Want
-      <input tuiTextfield />
-    </tui-input-number>
-
-    <tui-notification status="warning" [hasIcon]="true">
-      Check to ensure all priorities are set
-    </tui-notification>
-  </form>
-  <ng-template #elseBlock>
-    <div class="total-needs-result-container gap-2 flex column c-center">
-      <app-multi-value-card
-        header="Total"
-        [values]="testValues"
-        [compact]="false"></app-multi-value-card>
-      <app-multi-value-card
-        header="Income Replacement"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-      <app-multi-value-card
-        header="Estate Tax Liability"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-      <app-multi-value-card
-        header="Equalization"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-      <app-multi-value-card
-        header="Goal Shortfall"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-      <!-- Populate dynamically -->
-      <app-multi-value-card
-        header="business Key-Man: shareholder"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-      <app-multi-value-card
-        header="business Shareholder Agreement: shareholder"
-        [values]="testValues"
-        [compact]="true"></app-multi-value-card>
-    </div>
-  </ng-template>
-</app-calculator>
+<ng-container *ngIf="vm$ | async as vm">
+  <app-calculator>
+    <tui-tabs
+      class="nav-tabs flex row m-center"
+      [(activeItemIndex)]="activeItemIndex">
+      <button tuiTab>Input Data</button>
+      <button tuiTab>Results</button>
+    </tui-tabs>
+    <form
+      class="total-needs-form flex column m-start c-center gap-2"
+      *ngIf="activeItemIndex === 0; else elseBlock"
+      [formGroup]="totalNeedsForm">
+      <ng-container formGroupName="incomeReplacement">
+        <tui-notification status="warning" [hasIcon]="true">
+          Check to ensure all priorities are set
+        </tui-notification>
+        <h3 class="tui-text_body-m">
+          {{
+            'Income Replacement - Need ' +
+              (totalNeedsForm.get('incomeReplacement')?.get('need')?.value || 0
+                | currency) || '$0.00'
+          }}
+        </h3>
+        <tui-input-slider
+          formControlName="priority"
+          [max]="100"
+          [quantum]="0.01"
+          (focusedChange)="onBlur('incomeReplacement')"
+          >Priority</tui-input-slider
+        >
+        <tui-input-number tuiTextfieldSize="s" formControlName="want">
+          Want
+          <input tuiTextfield (blur)="onWantBlur('incomeReplacement')" />
+        </tui-input-number>
+      </ng-container>
+      <ng-container formGroupName="estateTaxLiability">
+        <h3 class="tui-text_body-m">
+          {{
+            'Estate Tax Liability - Need ' +
+              (totalNeedsForm.get('estateTaxLiability')?.get('need')?.value || 0
+                | currency) || '$0.00'
+          }}
+        </h3>
+        <tui-input-slider
+          formControlName="priority"
+          [max]="100"
+          [quantum]="0.01"
+          (focusedChange)="onBlur('estateTaxLiability')"
+          >Priority</tui-input-slider
+        >
+        <tui-input-number tuiTextfieldSize="s" formControlName="want">
+          Want
+          <input tuiTextfield (blur)="onWantBlur('estateTaxLiability')" />
+        </tui-input-number>
+      </ng-container>
+      <ng-container formGroupName="equalization">
+        <h3 class="tui-text_body-m">
+          {{
+            'Equalization - Need ' +
+              (totalNeedsForm.get('equalization')?.get('need')?.value || 0
+                | currency) || '$0.00'
+          }}
+        </h3>
+        <tui-input-slider
+          formControlName="priority"
+          [max]="100"
+          [quantum]="0.01"
+          (focusedChange)="onBlur('equalization')"
+          >Priority</tui-input-slider
+        >
+        <tui-input-number tuiTextfieldSize="s" formControlName="want">
+          Want
+          <input tuiTextfield (blur)="onWantBlur('equalization')" />
+        </tui-input-number>
+      </ng-container>
+      <ng-container formGroupName="debtFutureLiability">
+        <h3 class="tui-text_body-m">
+          {{
+            'Debt Future Liability - Need ' +
+              (totalNeedsForm.get('debtFutureLiability')?.get('need')?.value ||
+                0 | currency) || '$0.00'
+          }}
+        </h3>
+        <tui-input-slider
+          formControlName="priority"
+          [max]="100"
+          [quantum]="0.01"
+          (focusedChange)="onBlur('debtFutureLiability')"
+          >Priority</tui-input-slider
+        >
+        <tui-input-number tuiTextfieldSize="s" formControlName="want">
+          Want
+          <input tuiTextfield (blur)="onWantBlur('debtFutureLiability')" />
+        </tui-input-number>
+      </ng-container>
+      <ng-container formGroupName="goalShortfall">
+        <h3 class="tui-text_body-m">
+          {{
+            'Goal Shortfall - Need ' +
+              (totalNeedsForm.get('goalShortfall')?.get('need')?.value || 0
+                | currency) || '$0.00'
+          }}
+        </h3>
+        <tui-input-slider
+          formControlName="priority"
+          [max]="100"
+          [quantum]="0.01"
+          (focusedChange)="onBlur('goalShortfall')"
+          >Priority</tui-input-slider
+        >
+        <tui-input-number tuiTextfieldSize="s" formControlName="want">
+          Want
+          <input tuiTextfield (blur)="onWantBlur('goalShortfall')" />
+        </tui-input-number>
+      </ng-container>
+      <ng-container
+        *ngFor="let keyMan of keyMan.controls; let i = index"
+        formArrayName="keyMan">
+        <ng-container formGroupName="{{ i }}">
+          <h2 class="tui-text_body-l">
+            Key Man - {{ keyMan.get('businessName')?.value }}
+          </h2>
+          <h2 class="tui-text_body-m">
+            {{ keyMan.get('name')?.value }} -
+            {{ keyMan.get('need')?.value | currency }}
+          </h2>
+          <tui-input-slider
+            formControlName="priority"
+            [max]="100"
+            [quantum]="0.01"
+            (focusedChange)="onBlur('keyMan.' + i)"
+            >Priority</tui-input-slider
+          >
+          <tui-input-number tuiTextfieldSize="s" formControlName="want">
+            Want
+            <input tuiTextfield (blur)="onWantBlur('keyMan.' + i)" />
+          </tui-input-number>
+        </ng-container>
+      </ng-container>
+      <ng-container
+        *ngFor="
+          let shareholderAgreement of shareholderAgreement.controls;
+          let i = index
+        "
+        formArrayName="shareholderAgreement">
+        <ng-container formGroupName="{{ i }}">
+          <h2 class="tui-text_body-l">
+            Shareholder Agreement -
+            {{ shareholderAgreement.get('businessName')?.value }}
+          </h2>
+          <h2 class="tui-text_body-m">
+            {{ shareholderAgreement.get('name')?.value }} -
+            {{ shareholderAgreement.get('need')?.value | currency }}
+          </h2>
+          <tui-input-slider
+            formControlName="priority"
+            [max]="100"
+            [quantum]="0.01"
+            (focusedChange)="onBlur('shareholderAgreement.' + i)"
+            >Priority</tui-input-slider
+          >
+          <tui-input-number tuiTextfieldSize="s" formControlName="want">
+            Want
+            <input
+              tuiTextfield
+              (blur)="onWantBlur('shareholderAgreement.' + i)" />
+          </tui-input-number>
+        </ng-container>
+      </ng-container>
+      <div class="spacer"></div>
+    </form>
+    <ng-template #elseBlock>
+      <div class="total-needs-result-container gap-2 flex column c-center">
+        <app-value-card
+          [value]="{
+            label: 'Total Needs',
+            value: (calculateTotalNeeds(vm.totalNeeds) | currency) || '$0.00'
+          }"></app-value-card>
+        <app-value-card
+          [value]="{
+            label: 'Total Wants',
+            value: (calculateTotalWants(vm.totalNeeds) | currency) || '$0.00'
+          }"></app-value-card>
+      </div>
+    </ng-template>
+  </app-calculator>
+</ng-container>

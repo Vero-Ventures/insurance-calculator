@@ -372,24 +372,17 @@ export class AssetsComponent implements OnInit, OnDestroy {
   }
 
   calculateAdditionalRequired(assets: Asset[], beneficiaries: Beneficiary[]) {
-    return Math.max(
-      0,
-      assets.reduce((acc, asset) => {
-        return (
-          acc +
-          asset.beneficiaries.reduce(
-            (acc, beneficiary) =>
-              acc +
-              this.calculateSingleAdditionalRequired(
-                assets,
-                beneficiaries,
-                beneficiary
-              ),
-            0
-          )
-        );
-      }, 0)
-    );
+    const total = beneficiaries.reduce((acc, beneficiary) => {
+      return (
+        acc +
+        this.calculateSingleAdditionalRequired(
+          assets,
+          beneficiaries,
+          beneficiary
+        )
+      );
+    }, 0);
+    return Math.max(0, total);
   }
 
   getAssetTypeDistribution(assets: Asset[]) {
