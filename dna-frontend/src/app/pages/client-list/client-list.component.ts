@@ -12,6 +12,7 @@ import { TUI_PROMPT } from '@taiga-ui/kit';
 import { Router, RouterLink } from '@angular/router';
 import { ClientListStore } from './client-list.store';
 import { ClientListItem } from 'app/states/client-list.state';
+import { SupabaseService } from 'app/core/services/supabase.service';
 
 @Component({
   selector: 'app-client-list',
@@ -40,7 +41,8 @@ export class ClientListComponent {
     private readonly dialogs: TuiDialogService,
     private readonly clientListStore: ClientListStore,
     private readonly zone: NgZone,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly supabaseService: SupabaseService
   ) {
     this.clientListStore.getClients();
   }
@@ -73,5 +75,30 @@ export class ClientListComponent {
           this.deleteClient(clientItem.id);
         }
       });
+  }
+
+  loadProfileFromFile(e: Event) {
+    const input = e.target as HTMLInputElement;
+
+    if (!(input.files && input.files.length > 0)) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async () => {
+      try {
+        const content = reader.result?.toString();
+
+        if (!content) throw new Error('File is empty');
+
+        const data = JSON.parse(content);
+        await this.supabaseService.insertProfile(data);
+        this.clientListStore.getClients();
+      } catch {
+        console.log('Given file was not a valid JSON file.');
+      }
+    };
+
+    reader.readAsText(file);
   }
 }

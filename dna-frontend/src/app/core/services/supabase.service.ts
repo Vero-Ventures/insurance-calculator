@@ -55,13 +55,18 @@ export class SupabaseService {
       throw new Error('Could not find any profile with id of ' + clientId);
     }
 
-    delete result.data[0]['advisor_id'];
-
-    return result.data[0];
+    return result.data;
   }
 
-  async insertProfile() {
-    return Promise.resolve(null);
+  async insertProfile(profile: Record<string, unknown>) {
+    await this.deleteClient(profile['id'] as number);
+    const user = await this.supabase.auth.getUser();
+    return this.supabase.from('client_profiles').insert([
+      {
+        ...profile,
+        advisor_id: user.data.user?.id,
+      },
+    ]);
   }
 
   async getClient(clientId: number) {
