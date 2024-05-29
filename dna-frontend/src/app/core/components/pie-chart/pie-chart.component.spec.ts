@@ -15,12 +15,12 @@ describe('PieChartComponent', () => {
     component = fixture.componentInstance;
     component.value = [
       {
-        name: 'name',
-        value: 1,
+        label: 'name',
+        value: '1',
       },
       {
-        name: 'name',
-        value: 2,
+        label: 'name',
+        value: '2',
       },
     ];
     fixture.detectChanges();
@@ -31,18 +31,18 @@ describe('PieChartComponent', () => {
   });
 
   it('should return the total value', () => {
-    expect(component.total).toBe(
-      component.value.reduce((acc, item) => acc + item.value, 0)
+    expect(component.total).toEqual(
+      component.value.reduce((acc, item) => acc + parseFloat(item.value), 0)
     );
   });
 
   it('should return the names', () => {
-    expect(component.names).toEqual(component.value.map(item => item.name));
+    expect(component.names).toEqual(component.value.map(item => item.label));
   });
 
   it('should return the values', () => {
     expect(component.values).toEqual(
-      component.value.map(item => item.value / component.total)
+      component.value.map(item => parseFloat(item.value) / component.total)
     );
   });
 });

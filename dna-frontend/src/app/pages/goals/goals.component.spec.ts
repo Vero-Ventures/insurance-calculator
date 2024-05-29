@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { GoalsComponent } from './goals.component';
 
 describe('GoalsComponent', () => {
@@ -9,6 +10,14 @@ describe('GoalsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GoalsComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({}),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GoalsComponent);

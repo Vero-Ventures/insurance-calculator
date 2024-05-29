@@ -16,7 +16,7 @@ describe('CalculatorComponent', () => {
           useValue: {
             params: of({}),
             snapshot: {
-              title: 'Test',
+              title: 'Test | Calculator',
             },
           },
         },
@@ -33,6 +33,16 @@ describe('CalculatorComponent', () => {
   });
 
   it('should get the page name', () => {
-    expect(component.getPageName()).toBe('Test');
+    expect(component.getPageName()).toBe('Calculator');
+  });
+
+  it('should sign out', () => {
+    component.signOut();
+    expect(component.signOut).toHaveBeenCalled();
+  });
+
+  it('should open a dialog', () => {
+    component.open('Hello');
+    expect(component.open).toHaveBeenCalled();
   });
 });
