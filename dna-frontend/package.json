@@ -13,6 +13,7 @@
     "prepare": "cd .. && husky dna-frontend/.husky",
     "test": "ng test",
     "test:cov": "ng test --code-coverage",
+    "test:e2e": "npx playwright test",
     "coverage": "npx nyc --reporter=lcov --reporter=text npx npm run test:cov"
   },
   "private": true,
