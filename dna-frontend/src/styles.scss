@@ -296,3 +296,23 @@ img {
 .spacer {
   height: 2.5rem;
 }
+
+.axes {
+  height: 20rem;
+  width: 100%;
+
+  --tui-chart-0: #e06262;
+  --tui-chart-1: #55d655;
+  --tui-chart-2: #5555c2;
+  --tui-chart-3: #e2e258;
+  --tui-chart-4: #e658e6;
+  --tui-chart-5: #57dada;
+  --tui-chart-6: #e7b75e;
+  --tui-chart-7: #9c499c;
+  --tui-chart-8: #347534;
+  --tui-chart-9: #383877;
+}
+
+.chart {
+  position: absolute;
+}

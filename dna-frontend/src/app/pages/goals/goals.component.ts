@@ -1,4 +1,10 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  NgFor,
+  NgIf,
+  PercentPipe,
+} from '@angular/common';
 import { Component, OnInit, OnDestroy, Input, Inject } from '@angular/core';
 import {
   FormArray,
@@ -21,36 +27,52 @@ import {
 } from '@taiga-ui/kit';
 import { CalculatorComponent } from '../calculator/calculator.component';
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
-import { ValueCardComponent } from 'app/core/components/value-card/value-card.component';
-import { BarChartComponent } from 'app/core/components/bar-chart/bar-chart.component';
 import { GoalsStore } from './goals.store';
 import { Goal } from 'app/core/models/goal.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, map, take } from 'rxjs';
+import { ValueListCardComponent } from 'app/core/components/value-list-card/value-list-card.component';
+import { AssetsStore } from '../assets/assets.store';
+import { Asset } from 'app/core/models/asset.model';
+import { ChartIslandComponent } from 'app/core/components/chart-island/chart-island.component';
+import { TuiAxesModule, TuiBarSetModule } from '@taiga-ui/addon-charts';
+import {
+  createAxisYLabels,
+  getColor,
+  horizontalLinesHandler,
+} from 'app/core/utils/charts.utils';
+import { LegendComponent } from 'app/core/components/legend/legend.component';
+import { LegendItem } from 'app/core/models/legend.model';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     TuiInputModule,
     TuiInputNumberModule,
     TuiSelectModule,
     TuiTabsModule,
     TuiCheckboxBlockModule,
     TuiButtonModule,
+    TuiAxesModule,
+    TuiBarSetModule,
     HorizontalDividerComponent,
-    ValueCardComponent,
+    ValueListCardComponent,
+    ChartIslandComponent,
     CalculatorComponent,
-    BarChartComponent,
-    ReactiveFormsModule,
+    LegendComponent,
     NgIf,
     NgFor,
     AsyncPipe,
+    PercentPipe,
+    CurrencyPipe,
   ],
   templateUrl: './goals.component.html',
   styleUrl: './goals.component.scss',
   providers: [
     GoalsStore,
+    AssetsStore,
     tuiNumberFormatProvider({
       decimalSeparator: '.',
       thousandSeparator: ',',
@@ -61,21 +83,25 @@ export class GoalsComponent implements OnInit, OnDestroy {
   @Input() clientId: number = 0;
   activeItemIndex = 0;
   vm$ = this.goalsStore.vm$;
+  assetVm$ = this.assetsStore.vm$;
   readonly goalsForm = this.fb.group({
     percentGoalLiquidity: new FormControl(),
     goals: this.fb.array<Goal>([]),
   });
   initialPercentSub: Subscription | null = null;
+  readonly horizontalLinesHandler = horizontalLinesHandler;
 
   constructor(
     @Inject(TuiDialogService)
     private readonly dialogs: TuiDialogService,
     private readonly goalsStore: GoalsStore,
+    private readonly assetsStore: AssetsStore,
     private readonly fb: FormBuilder,
     private readonly route: ActivatedRoute
   ) {
     this.route.params.subscribe(params => {
       this.clientId = +params['clientId'];
+      this.assetsStore.getAssets(this.clientId);
       this.initializeFields();
     });
   }
@@ -126,7 +152,6 @@ export class GoalsComponent implements OnInit, OnDestroy {
       .pipe(take(3))
       .pipe(map(state => state.goals))
       .subscribe(goals => {
-        console.log(goals);
         if (goals.length !== null) {
           goals.forEach(goal => {
             this.addGoal(goal);
@@ -167,48 +192,158 @@ export class GoalsComponent implements OnInit, OnDestroy {
       });
   }
 
-  currentValueOfFixedAssets = {
-    label: 'Total Current Value of Fixed Assets',
-    value: '$1,000,000',
+  calculateFutureValue(current: number, rate: number, term: number) {
+    return current * Math.pow(1 + rate / 100, term);
+  }
+
+  calculateCurrentValueFixed(assets: Asset[]) {
+    return assets
+      .filter(asset => !asset.isLiquid && !asset.isToBeSold)
+      .reduce((acc, asset) => {
+        return acc + (asset.currentValue || 0);
+      }, 0);
+  }
+
+  calculateFutureValueFixed(assets: Asset[]) {
+    return assets
+      .filter(asset => !asset.isLiquid && !asset.isToBeSold)
+      .reduce((acc, asset) => {
+        return (
+          acc +
+          this.calculateFutureValue(
+            asset.currentValue || 0,
+            asset.rate || 0,
+            asset.term || 0
+          )
+        );
+      }, 0);
+  }
+
+  calculateCurrentValueLiquid(assets: Asset[]) {
+    return assets
+      .filter(asset => asset.isLiquid)
+      .reduce((acc, asset) => {
+        return acc + (asset.currentValue || 0);
+      }, 0);
+  }
+
+  calculateFutureValueLiquid(assets: Asset[]) {
+    return assets
+      .filter(asset => asset.isLiquid)
+      .reduce((acc, asset) => {
+        return (
+          acc +
+          this.calculateFutureValue(
+            asset.currentValue || 0,
+            asset.rate || 0,
+            asset.term || 0
+          )
+        );
+      }, 0);
+  }
+
+  calculateCurrentValueToBeSold(assets: Asset[]) {
+    return assets
+      .filter(asset => asset.isToBeSold)
+      .reduce((acc, asset) => {
+        return acc + (asset.currentValue || 0);
+      }, 0);
+  }
+
+  calculateFutureValueToBeSold(assets: Asset[]) {
+    return assets
+      .filter(asset => asset.isToBeSold)
+      .reduce((acc, asset) => {
+        return (
+          acc +
+          this.calculateFutureValue(
+            asset.currentValue || 0,
+            asset.rate || 0,
+            asset.term || 0
+          )
+        );
+      }, 0);
+  }
+
+  calculateLiquidityPreserved(assets: Asset[], allocation: number) {
+    return this.calculateFutureValueLiquid(assets) * (1 - allocation / 100);
+  }
+
+  calculateLiquidityToGoal(assets: Asset[], allocation: number) {
+    return this.calculateFutureValueLiquid(assets) * (allocation / 100);
+  }
+
+  calculateTotalSumGoals(goals: Goal[]) {
+    return goals.reduce((acc, goal) => {
+      return acc + (goal.amount || 0);
+    }, 0);
+  }
+
+  calculateShortfall(assets: Asset[], goals: Goal[], allocation: number) {
+    return (
+      this.calculateLiquidityToGoal(assets, allocation) -
+      this.calculateTotalSumGoals(goals)
+    );
+  }
+
+  getLiquidityGoalDistribution(
+    assets: Asset[],
+    goals: Goal[],
+    allocation: number
+  ) {
+    const values: number[] = [];
+
+    values.push(this.calculateFutureValueLiquid(assets));
+    values.push(this.calculateLiquidityPreserved(assets, allocation));
+    values.push(this.calculateLiquidityToGoal(assets, allocation));
+    values.push(this.calculateTotalSumGoals(goals) * -1);
+    values.push(this.calculateShortfall(assets, goals, allocation));
+
+    return values;
+  }
+
+  getAssetYMax(assets: Asset[], goals: Goal[], allocation: number) {
+    return Math.max(
+      this.calculateCurrentValueLiquid(assets),
+      this.calculateLiquidityPreserved(assets, allocation),
+      this.calculateLiquidityToGoal(assets, allocation),
+      this.calculateTotalSumGoals(goals),
+      this.calculateShortfall(assets, goals, allocation)
+    );
+  }
+
+  getGoalLegend() {
+    const labels = this.axisXLabels();
+
+    const legendItems: LegendItem[] = [];
+    labels.forEach((label, index) => {
+      legendItems.push({
+        color: getColor(index),
+        label: label,
+      });
+    });
+
+    return legendItems;
+  }
+
+  readonly axisXLabels = () => {
+    return [
+      'Future Liquidity',
+      'Preserved Liquidity',
+      'Allocated To Goals',
+      'Total Goals',
+      'Surplus/Shortfall',
+    ];
   };
-  futureValueOfFixedAssets = {
-    label: 'Total Future Value of Fixed Assets',
-    value: '$1,000,000',
-  };
-  currentValueOfLiquidAssets = {
-    label: 'Total Current Value of Liquid Assets',
-    value: '$1,000,000',
-  };
-  futureValueOfLiquidAssets = {
-    label: 'Total Current Value of Liquid Assets',
-    value: '$1,000,000',
-  };
-  currentValueOfAssetsToBeSold = {
-    label: 'Total Current Value of Assets to be Sold',
-    value: '$1,000,000',
-  };
-  futureValueOfAssetsToBeSold = {
-    label: 'Total Future Value of Assets to be Sold',
-    value: '$1,000,000',
-  };
-  percentageLiquidityAllocatedToGoals = {
-    label: '% Liquidity Allocated Towards Goals',
-    value: '50%',
-  };
-  liquidityPreserved = {
-    label: 'Liquidity Preserved',
-    value: '$1,000,000',
-  };
-  liquidityAllocatedTowardsGoals = {
-    label: 'Liquidity Allocated Towards Goals',
-    value: '$1,000,000',
-  };
-  totalSumOfAllGoals = {
-    label: 'Total Sum of All Goals',
-    value: '$1,000,000',
-  };
-  surplus = {
-    label: 'Surplus / Shortfall',
-    value: '$1,000,000',
+
+  readonly axisValueYLabels = (
+    assets: Asset[],
+    goals: Goal[],
+    allocation: number
+  ) => {
+    const min = 0;
+    const max = this.getAssetYMax(assets, goals, allocation);
+    const steps = 4;
+    return createAxisYLabels(min, max, steps);
   };
 }

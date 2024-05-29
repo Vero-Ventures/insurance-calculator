@@ -1,0 +1,12 @@
+<app-advisor-bar pageName="Robo-Advisor"></app-advisor-bar>
+<div class="chat-contents">
+  <app-chatbox
+    *ngFor="let message of messages"
+    [side]="message['side']"
+    [author]="message['author']"
+    [contents]="message['contents']"></app-chatbox>
+</div>
+<div class="mega-spacer"></div>
+<app-chat-input
+  (send)="sendMessage(defaultUsername, inputBox.prompt)"
+  #inputBox></app-chat-input>

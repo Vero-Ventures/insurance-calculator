@@ -81,16 +81,9 @@
         <app-horizontal-divider></app-horizontal-divider>
         <a
           class="nav-action flex c-center"
-          icon="tuiIconPlusLarge"
-          iconAlign="left"
-          tuiLink
-          >New Client</a
-        >
-        <app-horizontal-divider></app-horizontal-divider>
-        <a
-          class="nav-action flex c-center"
           icon="tuiIconDownloadLarge"
           iconAlign="left"
+          [routerLink]="constructRouteWithoutClientId('/client-list')"
           tuiLink
           >Change Client</a
         >
@@ -99,6 +92,7 @@
           class="nav-action flex c-center"
           icon="tuiIconSaveLarge"
           iconAlign="left"
+          (click)="downloadProfile()"
           tuiLink
           >Save to File</a
         >
@@ -107,6 +101,7 @@
           class="nav-action flex c-center"
           icon="tuiIconLogOutLarge"
           iconAlign="left"
+          [routerLink]="constructRouteWithoutClientId('/landing')"
           tuiLink
           >Exit to Dashboard</a
         >

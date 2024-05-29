@@ -6,5 +6,4 @@ export interface Debt {
   rate: number | null;
   term: number | null;
   annualPayment: number | null;
-  insurableFutureValue: number | null;
 }

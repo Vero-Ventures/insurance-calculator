@@ -13,9 +13,16 @@
       <button
         tuiButton
         class="button width-full-container margin-vertical-xs"
+        (click)="fileInput.click()"
         appearance="secondary">
         Load From File
       </button>
+
+      <input
+        type="file"
+        #fileInput
+        (change)="loadProfileFromFile($event)"
+        style="display: none" />
     </div>
     <app-horizontal-divider></app-horizontal-divider>
     <div class="flex column gap-2 c-start margin-vertical-s">

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LineChartComponent } from './line-chart.component';
+import { ChartIslandComponent } from './chart-island.component';
 
-describe('LineChartComponent', () => {
-  let component: LineChartComponent;
-  let fixture: ComponentFixture<LineChartComponent>;
+describe('ChartIslandComponent', () => {
+  let component: ChartIslandComponent;
+  let fixture: ComponentFixture<ChartIslandComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LineChartComponent],
+      imports: [ChartIslandComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LineChartComponent);
+    fixture = TestBed.createComponent(ChartIslandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

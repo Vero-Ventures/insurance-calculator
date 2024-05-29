@@ -9,6 +9,7 @@ import { Business } from '../models/business.model';
 import { Goal } from '../models/goal.model';
 import { Debt } from '../models/debt.model';
 import { Asset } from '../models/asset.model';
+import { TotalNeeds } from '../models/total-needs.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,31 @@ export class SupabaseService {
       sessionStorage.getItem('session') !== undefined &&
       sessionStorage.getItem('session') !== null
     );
+  }
+
+  async getProfile(clientId: number) {
+    const result = await this.supabase
+      .from('client_profiles')
+      .select()
+      .eq('id', clientId)
+      .single();
+
+    if (!result.data) {
+      throw new Error('Could not find any profile with id of ' + clientId);
+    }
+
+    return result.data;
+  }
+
+  async insertProfile(profile: Record<string, unknown>) {
+    await this.deleteClient(profile['id'] as number);
+    const user = await this.supabase.auth.getUser();
+    return this.supabase.from('client_profiles').insert([
+      {
+        ...profile,
+        advisor_id: user.data.user?.id,
+      },
+    ]);
   }
 
   async getClient(clientId: number) {
@@ -173,6 +199,22 @@ export class SupabaseService {
     return await this.supabase
       .from('client_profiles')
       .update({ goals: goals })
+      .eq('id', clientId)
+      .select();
+  }
+
+  async getTotalNeeds(clientId: number) {
+    return await this.supabase
+      .from('client_profiles')
+      .select('total_needs')
+      .eq('id', clientId)
+      .single();
+  }
+
+  async updateTotalNeeds(clientId: number, totalNeeds: TotalNeeds) {
+    return await this.supabase
+      .from('client_profiles')
+      .update({ total_needs: totalNeeds })
       .eq('id', clientId)
       .select();
   }

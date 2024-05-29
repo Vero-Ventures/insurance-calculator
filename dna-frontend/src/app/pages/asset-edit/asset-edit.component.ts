@@ -24,7 +24,7 @@ import {
 import { HorizontalDividerComponent } from 'app/core/components/horizontal-divider/horizontal-divider.component';
 import { HeaderBarComponent } from 'app/core/components/header-bar/header-bar.component';
 import { ActionBarComponent } from 'app/core/components/action-bar/action-bar.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AssetsStore } from '../assets/assets.store';
 import { BeneficiariesStore } from '../beneficiaries/beneficiaries.store';
 import { Beneficiary } from 'app/core/models/beneficiary.model';
@@ -97,7 +97,8 @@ export class AssetEditComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly zone: NgZone,
     private readonly route: ActivatedRoute,
-    private readonly location: Location
+    private readonly location: Location,
+    private readonly router: Router
   ) {
     this.route.params.subscribe(params => {
       this.assetId = +params['assetId'];
@@ -193,7 +194,7 @@ export class AssetEditComponent implements OnInit {
       this.fb.group({
         id: beneficiary.id,
         name: beneficiary.name,
-        allocation: 0,
+        allocation: beneficiary.allocation,
         isEnabled: false,
       })
     );
@@ -208,7 +209,7 @@ export class AssetEditComponent implements OnInit {
   save() {
     this.assetsStore.updateAssets(this.clientId);
     this.zone.run(() => {
-      this.location.back();
+      this.router.navigate([`/assets/${this.clientId}`]);
     });
   }
 }
