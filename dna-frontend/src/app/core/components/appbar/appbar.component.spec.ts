@@ -19,4 +19,12 @@ describe('AppbarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should construct a route with a clientId', () => {
+    expect(component.constructRoute('test')).toBe('/test/0');
+  });
+
+  it('should construct a route without a clientId', () => {
+    expect(component.constructRouteWithoutClientId('test')).toBe('/test/');
+  });
 });
