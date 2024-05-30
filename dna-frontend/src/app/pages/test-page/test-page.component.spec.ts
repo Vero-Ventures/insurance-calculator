@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { TestPageComponent } from './test-page.component';
 
 describe('TestPageComponent', () => {
@@ -9,6 +10,14 @@ describe('TestPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestPageComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({}),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestPageComponent);

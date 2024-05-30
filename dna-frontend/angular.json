@@ -90,7 +90,9 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true,
+            "codeCoverageExclude": ["**/*.spec.ts", "src/app/shared/pipes/**/*"]
           }
         },
         "lint": {

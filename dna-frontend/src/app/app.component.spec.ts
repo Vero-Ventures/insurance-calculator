@@ -14,10 +14,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'dna-frontend' title`, () => {
+  it(`should have the 'DNA' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('dna-frontend');
+    expect(app.title).toEqual('DNA');
   });
 
   it('should render title', () => {
