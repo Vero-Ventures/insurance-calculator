@@ -56,3 +56,9 @@
   - If you are working on the Python directory (dna-advisor), run `pre-commit install` after changing working directories.
   - If you decide to switch from Python to TypeScript or vice-versa, make sure to push your changes in one language before switching and setting up pre-commit hooks in the other language to prevent any unexpected errors.
 - Be warned that if you ignore, uninstall, or forget to install the pre-commit hooks, there is a good chance that the GitHub Actions workflow that runs on push/pull request will fail due to formatting/linting issues you may have failed to notice.
+
+## Docker
+- Dockerfiles are setup in all 3 directories, and the root directory contains a compose.yaml to build a container running all 3 docker images.
+  - To build an image for each, change into the corresponding directory and run `docker build -t [name] .`.
+  - To build a compose container of all the images, run `docker compose up -d` in the root directory.
+- **Be warned that the dna-advisor image is relatively large (~8 GB+)**
